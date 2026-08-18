@@ -73,6 +73,9 @@ function getZoneCardLimit(zoneLetter) {
     const found = all.find(z => (z.letter === zoneLetter || z.letters === zoneLetter));
     if (found && found.cardLimit) return parseInt(found.cardLimit, 10);
   } catch (e) {}
+  return CARD_LIMITS[zoneLetter] || 30;
+}
+
 // --- Diagnostic Route for Vercel Environment & Sheets ---
 app.get('/api/debug', async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -1250,10 +1253,12 @@ app.post('/api/supervisor/order/update', authMiddleware, async (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Unii Mart Control Center Server is running at http://localhost:${PORT}`);
-});
+// Start server locally (on Vercel, app is exported as a serverless handler)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Unii Mart Control Center Server is running at http://localhost:${PORT}`);
+  });
+}
 
 // =========================================
 // POST /api/routecode/writeback
@@ -2163,3 +2168,6 @@ app.post('/api/stores/save', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error', details: err.message });
   }
 });
+
+module.exports = app;
+
