@@ -1,6 +1,18 @@
-const crypto = require('crypto');
-const { getSheetsClient, getSheetRows } = require('../lib/sheets');
 const { signToken } = require('../lib/jwt');
+const { getDriverProfile } = require('../lib/drivers');
+const fs = require('fs');
+const path = require('path');
+
+const DRIVERS_DB_PATH = path.join(__dirname, '../../local_drivers.json');
+
+function readDrivers() {
+  try {
+    if (fs.existsSync(DRIVERS_DB_PATH)) {
+      return JSON.parse(fs.readFileSync(DRIVERS_DB_PATH, 'utf8'));
+    }
+  } catch (e) {}
+  return [];
+}
 
 module.exports = async (req, res) => {
   // CORS Headers
@@ -24,68 +36,46 @@ module.exports = async (req, res) => {
 
   try {
     const { username, pin } = req.body || {};
-    const inputPassword = pin || req.body?.password;
+    const inputPin = pin || req.body?.password;
 
-    if (!inputPassword) {
-      res.status(400).json({ error: 'Password/PIN is required' });
-      return;
+    if (!inputPin) {
+      return res.status(400).json({ error: 'Password/PIN is required' });
     }
 
-    const sheets = getSheetsClient();
-    const spreadsheetId = process.env.SHEET_ID_ORDERS;
-    
-    // Read Users tab
-    const users = await getSheetRows(sheets, spreadsheetId, 'Users!A1:F100');
+    const allDrivers = readDrivers();
+    const driverUsers = allDrivers.map(d => ({
+      username: d.code || d.id,
+      pin: d.pin,
+      role: 'driver',
+      driver_vehicle_id: d.code || d.id,
+      status: d.status || 'active',
+      name: d.name
+    }));
+    const adminUser = { username: 'admin', pin: '9999', role: 'supervisor', driver_vehicle_id: null, status: 'active', name: 'หัวหน้าคลัง' };
+    const supUser = { username: 'SUP-01', pin: '0000', role: 'supervisor', driver_vehicle_id: null, status: 'active', name: 'หัวหน้าคลัง 1' };
+    const allUsers = [...driverUsers, adminUser, supUser];
 
     let matchedUser = null;
-
     if (username) {
-      // Find matching user by username (case-insensitive)
-      const targetUser = users.find(
-        u => u.username.toLowerCase() === username.toLowerCase()
+      matchedUser = allUsers.find(
+        u => u.username.toLowerCase() === username.toLowerCase() && u.pin === inputPin
       );
-      if (targetUser) {
-        const [saltHex, hashHex] = targetUser.password_hash.split(':');
-        if (saltHex && hashHex) {
-          const salt = Buffer.from(saltHex, 'hex');
-          const derived = crypto.pbkdf2Sync(inputPassword, salt, 100000, 64, 'sha512');
-          if (derived.toString('hex') === hashHex) {
-            matchedUser = targetUser;
-          }
-        }
-      }
     } else {
-      // PIN-only check (for admin/supervisor login)
-      for (const u of users) {
-        if (!u.password_hash) continue;
-        const [saltHex, hashHex] = u.password_hash.split(':');
-        if (saltHex && hashHex) {
-          const salt = Buffer.from(saltHex, 'hex');
-          const derived = crypto.pbkdf2Sync(inputPassword, salt, 100000, 64, 'sha512');
-          if (derived.toString('hex') === hashHex) {
-            matchedUser = u;
-            break;
-          }
-        }
-      }
+      matchedUser = allUsers.find(u => u.pin === inputPin);
     }
 
     if (!matchedUser) {
-      res.status(401).json({ error: 'Invalid credentials or PIN' });
-      return;
+      return res.status(401).json({ error: 'รหัสผ่านหรือ PIN ไม่ถูกต้อง' });
     }
 
-    // Verify user is active
-    if (matchedUser.active && matchedUser.active.toUpperCase() !== 'TRUE') {
-      res.status(403).json({ error: 'User is suspended' });
-      return;
+    if (matchedUser.status === 'inactive') {
+      return res.status(403).json({ error: `คนขับ "${matchedUser.name || matchedUser.username}" ถูกปิดใช้งาน` });
     }
 
-    // Generate JWT token
     const token = signToken({
       username: matchedUser.username,
       role: matchedUser.role,
-      driver_vehicle_id: matchedUser.driver_vehicle_id || null
+      driver_vehicle_id: matchedUser.driver_vehicle_id
     });
 
     res.status(200).json({
@@ -93,8 +83,9 @@ module.exports = async (req, res) => {
       token,
       user: {
         username: matchedUser.username,
+        name: matchedUser.name,
         role: matchedUser.role,
-        driver_vehicle_id: matchedUser.driver_vehicle_id || null
+        driver_vehicle_id: matchedUser.driver_vehicle_id
       }
     });
 
