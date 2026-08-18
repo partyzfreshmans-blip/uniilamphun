@@ -1,0 +1,86 @@
+{
+  "drivers": [
+    {
+      "id": "DRV-A01",
+      "code": "DRV-A01",
+      "name": "ตู่2",
+      "phone": "081-234-5678",
+      "zones": [
+        "Zone A — เมืองลำพูน"
+      ],
+      "color": "var(--st-available)",
+      "avatar": "A01",
+      "pin": "1111",
+      "status": "active",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "updatedAt": "2026-08-17T03:28:41.168Z",
+      "zone": "Zone A — เมืองลำพูน"
+    },
+    {
+      "id": "DRV-B02",
+      "code": "DRV-B02",
+      "name": "วิน",
+      "phone": "082-345-6789",
+      "zones": [
+        "Zone B — หางดง/เชียงใหม่",
+        "Zone AB สารภี/บ้านธิ"
+      ],
+      "color": "#8b5cf6",
+      "avatar": "B02",
+      "pin": "2222",
+      "status": "active",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "zone": "Zone B — หางดง/เชียงใหม่",
+      "updatedAt": "2026-08-17T15:22:03.429Z"
+    },
+    {
+      "id": "DRV-C03",
+      "code": "DRV-C03",
+      "name": "หมี",
+      "phone": "083-456-7890",
+      "zones": [
+        "Zone A — เมืองลำพูน",
+        "Zone C — ป่าซาง",
+        "Zone D - ทาปลาดุก",
+        "Zone AC",
+        "Zone CD"
+      ],
+      "color": "#f59e0b",
+      "avatar": "C03",
+      "pin": "3333",
+      "status": "active",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "zone": "Zone A — เมืองลำพูน",
+      "updatedAt": "2026-08-17T15:23:04.716Z"
+    },
+    {
+      "id": "DRV-S04",
+      "code": "DRV-S04",
+      "name": "คลัง (ทีมพิเศษ)",
+      "phone": "084-567-8901",
+      "zones": [],
+      "color": "#06b6d4",
+      "avatar": "VIP",
+      "pin": "4444",
+      "status": "active",
+      "isSpecial": true,
+      "createdAt": "2026-08-01T00:00:00Z",
+      "zone": "ทุกโซน",
+      "updatedAt": "2026-08-17T02:54:24.609Z"
+    },
+    {
+      "id": "DRV-D05",
+      "code": "DRV-D05",
+      "name": "กิตติพงษ์ ว่องไว",
+      "phone": "085-123-4567",
+      "zones": [],
+      "zone": "Zone D",
+      "color": "#06b6d4",
+      "avatar": "D05",
+      "pin": "5555",
+      "status": "inactive",
+      "createdAt": "2026-08-16T14:23:20.138Z",
+      "updatedAt": "2026-08-17T02:54:24.609Z"
+    }
+  ]
+}

@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ศูนย์ควบคุมหัวหน้าคลัง — Unii Mart 584</title>
+  <meta name="description" content="ระบบบริหารจัดการสำหรับหัวหน้าคลัง Unii Mart 584">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="supervisor.css">
+</head>
+<body>
+  <!-- LOGIN SCREEN -->
+  <div class="sup-login-screen" id="sup-login-screen">
+    <div class="sup-login-card">
+      <div class="sup-login-logo">
+        <img src="assets/logo.png" alt="Unii Mart 584" onerror="this.style.display='none'">
+        <div>
+          <div class="sup-login-logo-text">Unii Mart 584</div>
+          <div class="sup-login-logo-sub">ระบบหัวหน้าคลัง</div>
+        </div>
+      </div>
+      <h1 class="sup-login-title">เข้าสู่ระบบหัวหน้าคลัง</h1>
+      <p class="sup-login-subtitle">ใส่รหัส PIN ของหัวหน้าคลังเพื่อเข้าใช้งาน</p>
+      <label class="sup-pin-label" for="sup-pin-input">รหัส PIN</label>
+      <input type="password" id="sup-pin-input" class="sup-pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="••••" autocomplete="off">
+      <div class="sup-error-msg" id="sup-error-msg">
+        <i class="fa-solid fa-circle-exclamation"></i>&nbsp;<span id="sup-error-text">รหัส PIN ไม่ถูกต้อง โปรดลองอีกครั้ง</span>
+      </div>
+      <button class="sup-login-btn" id="sup-login-btn" onclick="supLogin()">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> เข้าสู่ระบบ
+      </button>
+      <a href="/" class="sup-back-link"><i class="fa-solid fa-chevron-left"></i> กลับหน้าคนขับ</a>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SHELL -->
+  <div class="sup-shell" id="sup-shell">
+    <div class="sup-sidebar-overlay" id="sup-overlay" onclick="closeSidebar()"></div>
+
+    <aside class="sup-sidebar" id="sup-sidebar">
+      <div class="sup-sidebar-brand">
+        <div class="sup-sidebar-brand-name">Unii Mart 584</div>
+        <div class="sup-sidebar-brand-role">ศูนย์ควบคุมหัวหน้าคลัง</div>
+      </div>
+      <nav class="sup-nav">
+        <button class="sup-nav-item is-active" data-page="s1" onclick="supShowPage('s1',this)">
+          <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>ภาพรวมวันนี้
+        </button>
+        <button class="sup-nav-item" data-page="s2" onclick="supShowPage('s2',this)">
+          <span class="nav-icon"><i class="fa-solid fa-box"></i></span>ออเดอร์
+        </button>
+        <button class="sup-nav-item" data-page="s9" onclick="supShowPage('s9',this)">
+          <span class="nav-icon"><i class="fa-solid fa-route"></i></span>จัดการรูทส่ง
+        </button>
+        <button class="sup-nav-item" data-page="s3" onclick="supShowPage('s3',this)">
+          <span class="nav-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>รออนุมัติ
+        </button>
+        <button class="sup-nav-item" data-page="s4" onclick="supShowPage('s4',this)">
+          <span class="nav-icon"><i class="fa-solid fa-coins"></i></span>ตรวจเงิน COD
+        </button>
+        <button class="sup-nav-item" data-page="s5" onclick="supShowPage('s5',this)">
+          <span class="nav-icon"><i class="fa-solid fa-warehouse"></i></span>ของกลับเข้าคลัง
+        </button>
+        <button class="sup-nav-item" data-page="s6" onclick="supShowPage('s6',this)">
+          <span class="nav-icon"><i class="fa-solid fa-store"></i></span>ร้านค้า
+        </button>
+        <button class="sup-nav-item" data-page="s7" onclick="supShowPage('s7',this)">
+          <span class="nav-icon"><i class="fa-solid fa-map"></i></span>โซน
+        </button>
+        <button class="sup-nav-item" data-page="s8" onclick="supShowPage('s8',this)">
+          <span class="nav-icon"><i class="fa-solid fa-users"></i></span>คนขับ
+        </button>
+        <div class="sup-nav-divider"></div>
+        <button class="sup-nav-item is-logout" onclick="supLogout()">
+          <span class="nav-icon"><i class="fa-solid fa-right-from-bracket"></i></span>ออกจากระบบ
+        </button>
+      </nav>
+    </aside>
+
+    <div class="sup-main">
+      <div class="sup-mobile-topbar">
+        <button class="sup-hamburger" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <span class="sup-mobile-page-title" id="sup-mobile-title">ภาพรวมวันนี้</span>
+        <button class="btn btn--primary btn--sm" onclick="syncApiImport()" style="background: #2563eb; border-color: #2563eb; padding: 4px 8px; font-size: 11px;" title="ซิงก์จาก API Import">
+          <i class="fa-solid fa-cloud-arrow-down"></i>
+        </button>
+        <select class="sup-date-select" id="sup-date-mobile" onchange="supChangeDate(this.value)"><option>กำลังโหลด...</option></select>
+      </div>
+
+      <div class="sup-topbar">
+        <span class="sup-topbar-title" id="sup-page-title">ภาพรวมวันนี้</span>
+        <div class="sup-topbar-right" style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn btn--primary btn--sm" id="btn-sync-api-import" onclick="syncApiImport()" style="background: #2563eb; border-color: #2563eb; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; font-size: 12px; height: 34px; border-radius: 6px; cursor: pointer;" title="ซิงก์ออเดอร์ใหม่จากแท็บ API Import">
+            <i class="fa-solid fa-cloud-arrow-down"></i> ซิงก์จาก API Import
+          </button>
+          <select class="sup-date-select" id="sup-date-desktop" onchange="supChangeDate(this.value)"><option>กำลังโหลด...</option></select>
+        </div>
+      </div>
+
+      <div class="sup-content">
+
+        <!-- S1: ภาพรวมวันนี้ -->
+        <div class="sup-page is-active" id="sup-page-s1">
+          <!-- Roster Leave/Off Warning Alert Banner -->
+          <div id="sup-s1-roster-alerts" style="display:none;"></div>
+
+          <div class="sup-stat-grid">
+            <div class="sup-stat-card" id="sup-card-crosszone" onclick="supShowPage('s3', document.querySelector('[data-page=s3]'))" style="cursor:pointer;" title="คลิกเพื่อไปศูนย์รออนุมัติ">
+              <div class="sup-stat-label">รออนุมัติข้ามโซน</div>
+              <div class="sup-stat-value" id="sup-stat-crosszone">0</div>
+              <div class="sup-stat-sub">คำขอ</div>
+            </div>
+            <div class="sup-stat-card" id="sup-card-stops">
+              <div class="sup-stat-label">จุดส่งวันนี้</div>
+              <div class="sup-stat-value" id="sup-stat-stops">—</div>
+              <div class="sup-stat-sub" id="sup-stat-stops-sub">กำลังโหลด...</div>
+            </div>
+            <div class="sup-stat-card" id="sup-card-cod">
+              <div class="sup-stat-label">เงิน COD ควรเก็บ</div>
+              <div class="sup-stat-value" id="sup-stat-cod">—</div>
+              <div class="sup-stat-sub" id="sup-stat-cod-sub">จากออเดอร์วันนี้</div>
+            </div>
+            <div class="sup-stat-card" id="sup-card-clear">
+              <div class="sup-stat-label">ต้องเคลียร์</div>
+              <div class="sup-stat-value" id="sup-stat-clear">—</div>
+              <div class="sup-stat-sub" id="sup-stat-clear-sub">รายการ</div>
+            </div>
+          </div>
+
+          <div class="sup-map-row">
+            <div class="sup-map-card">
+              <div id="sup-map"></div>
+            </div>
+            <div class="sup-driver-panel">
+              <div class="sup-driver-panel-header"><i class="fa-solid fa-users"></i>&nbsp;ความคืบหน้ารายคนขับ</div>
+              <div class="sup-driver-list" id="sup-driver-list">
+                <div style="padding:24px;text-align:center;color:var(--ink-3);font-size:var(--fs-detail);">กำลังโหลด...</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sup-table-section">
+            <h2 class="sup-table-heading">
+              <i class="fa-solid fa-circle-exclamation" style="color:var(--st-attention);"></i>
+              ยังไม่มีคนจอง
+              <span class="sup-badge" id="sup-badge-unbooked">0</span>
+            </h2>
+            <table class="sup-data-table">
+              <thead><tr><th>ร้าน / ผู้รับ</th><th>โซน</th><th>ยอด COD</th><th>วันส่ง</th></tr></thead>
+              <tbody id="sup-tbl-unbooked"><tr class="sup-empty-row"><td colspan="4">กำลังโหลดข้อมูล...</td></tr></tbody>
+            </table>
+          </div>
+
+          <div class="sup-table-section">
+            <h2 class="sup-table-heading">
+              <i class="fa-solid fa-location-crosshairs" style="color:var(--st-failed);"></i>
+              ไม่มีโซน / พิกัดน่าสงสัย
+              <span class="sup-badge" id="sup-badge-nozone">0</span>
+            </h2>
+            <table class="sup-data-table">
+              <thead><tr><th>ร้าน / ผู้รับ</th><th>พิกัด (lat, lng)</th><th>เหตุผล</th><th>วันส่ง</th></tr></thead>
+              <tbody id="sup-tbl-nozone"><tr class="sup-empty-row"><td colspan="4">กำลังโหลดข้อมูล...</td></tr></tbody>
+            </table>
+          </div>
+
+          <!-- Zone Quota Alerts & Capacity Container -->
+          <div id="sup-zone-quota-section">
+            <!-- Injected via JS: supCheckZoneQuotas() -->
+          </div>
+        </div>
+
+        <!-- Placeholder pages S2-S8 -->
+        <!-- S2: ออเดอร์ -->
+        <div class="sup-page" id="sup-page-s2">
+
+          <!-- แถบเตือนโซน (โผล่เมื่อ noZoneCount > 20) -->
+          <div class="ord-zone-alert" id="ord-zone-alert" style="display:none">
+            <div class="ord-zone-alert-body">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span id="ord-zone-alert-msg">471 จุดยังไม่มีโซน — อาจเป็นเพราะโซนที่วาดไว้ยังไม่ครอบคลุมพื้นที่จริง</span>
+            </div>
+            <div class="ord-zone-alert-actions">
+              <button class="ord-zone-alert-btn" onclick="ordFilterNoZone()">
+                <i class="fa-solid fa-location-crosshairs"></i> ดูจุดที่ไม่มีโซน
+              </button>
+              <button class="ord-zone-alert-btn" onclick="supShowPage('s7', document.querySelector('[data-page=s7]'))">
+                <i class="fa-solid fa-map"></i> ไปหน้าจัดการโซน
+              </button>
+            </div>
+          </div>
+
+          <!-- แถบกรอง (sticky) -->
+          <div class="ord-filter-bar" id="ord-filter-bar">
+            <div class="ord-filter-row">
+
+              <!-- ช่วงวันที่ -->
+              <div class="ord-filter-group">
+                <label class="ord-filter-label">วันส่ง</label>
+                <div class="ord-date-range">
+                  <input type="date" id="ord-date-from" class="ord-date-input" onchange="ordApplyFilters()">
+                  <span class="ord-date-sep">–</span>
+                  <input type="date" id="ord-date-to" class="ord-date-input" onchange="ordApplyFilters()">
+                </div>
+              </div>
+
+              <!-- โซน -->
+              <div class="ord-filter-group">
+                <label class="ord-filter-label">โซน</label>
+                <div class="ord-chip-group" id="ord-zone-chips">
+                  <button class="ord-chip is-active" data-zone="all" onclick="ordToggleZone(this,'all')">ทั้งหมด</button>
+                </div>
+              </div>
+
+              <!-- คนขับ -->
+              <div class="ord-filter-group">
+                <label class="ord-filter-label">คนขับ</label>
+                <div class="ord-chip-group" id="ord-driver-chips">
+                  <button class="ord-chip is-active" data-driver="all" onclick="ordToggleDriver(this,'all')">ทั้งหมด</button>
+                  <button class="ord-chip" data-driver="none" onclick="ordToggleDriver(this,'none')">ยังไม่มีคนจอง</button>
+                </div>
+              </div>
+
+              <!-- สถานะ -->
+              <div class="ord-filter-group">
+                <label class="ord-filter-label">สถานะ</label>
+                <div class="ord-chip-group">
+                  <button class="ord-chip is-active" data-status="all" onclick="ordToggleStatus(this,'all')">ทั้งหมด</button>
+                  <button class="ord-chip" data-status="available" onclick="ordToggleStatus(this,'available')">รอจอง</button>
+                  <button class="ord-chip" data-status="mine" onclick="ordToggleStatus(this,'mine')">จองแล้ว</button>
+                  <button class="ord-chip" data-status="done" onclick="ordToggleStatus(this,'done')">ส่งสำเร็จ</button>
+                  <button class="ord-chip" data-status="failed" onclick="ordToggleStatus(this,'failed')">ส่งไม่ได้</button>
+                  <button class="ord-chip ord-chip--archive" data-status="archived" onclick="ordToggleStatus(this,'archived')" title="รายการที่ถูกพักรอหรือติดขั้นตอน"><i class="fa-solid fa-box-archive"></i> พักรอ / Archive <span class="ord-chip-num" id="ord-chip-archived">0</span></button>
+                </div>
+              </div>
+
+              <!-- ธงปัญหา -->
+              <div class="ord-filter-group">
+                <label class="ord-filter-label">ธงปัญหา</label>
+                <div class="ord-chip-group">
+                  <button class="ord-flag-chip" id="ord-flag-nozone" data-flag="nozone" onclick="ordToggleFlag(this,'nozone')">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    ไม่มีโซน <span class="ord-flag-count" id="ord-flag-count-nozone">—</span>
+                  </button>
+                  <button class="ord-flag-chip" id="ord-flag-nocoord" data-flag="nocoord" onclick="ordToggleFlag(this,'nocoord')">
+                    <i class="fa-solid fa-map-pin"></i>
+                    ไม่มีพิกัด <span class="ord-flag-count" id="ord-flag-count-nocoord">—</span>
+                  </button>
+                  <button class="ord-flag-chip" id="ord-flag-nodate" data-flag="nodate" onclick="ordToggleFlag(this,'nodate')">
+                    <i class="fa-solid fa-calendar-xmark"></i>
+                    ไม่กำหนดวันส่ง <span class="ord-flag-count" id="ord-flag-count-nodate">—</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ค้นหา + sync -->
+              <div class="ord-filter-search-row">
+                <div class="ord-search-wrap">
+                  <i class="fa-solid fa-magnifying-glass ord-search-icon"></i>
+                  <input type="search" id="ord-search" class="ord-search-input"
+                    placeholder="เลขออเดอร์, ชื่อร้าน, เบอร์โทร…"
+                    oninput="ordApplyFilters()">
+                </div>
+                <div class="ord-sync-row">
+                  <span class="ord-sync-ts" id="ord-sync-ts">—</span>
+                  <button class="ord-sync-btn" id="ord-sync-inc-btn" onclick="ordSyncIncremental()" title="sync ข้อมูลใหม่">
+                    <i class="fa-solid fa-arrows-rotate" id="ord-sync-icon"></i> sync
+                  </button>
+                  <button class="ord-sync-btn ord-sync-btn--full" onclick="ordSyncFull()" title="sync ทั้งหมดใหม่">
+                    <i class="fa-solid fa-database"></i> sync เต็ม
+                  </button>
+                  <button class="ord-sync-btn" onclick="ordWritebackAll()" title="เขียนรหัสรูตลงคอลัมน์ A ของชีตคำสั่งซื้อ" style="border-color:var(--st-done);color:var(--st-done)">
+                    <i class="fa-solid fa-table-list"></i> รหัสรูต → Sheet
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ตัวนับผลลัพธ์ + View Switcher -->
+          <div class="ord-result-bar">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="ord-result-count" id="ord-result-count">—</span>
+              <span class="ord-result-hint" id="ord-result-hint"></span>
+            </div>
+            <div class="ord-view-switcher">
+              <button class="ord-view-btn is-active" id="ord-view-split-btn" onclick="ordSetViewMode('split')" title="มุมมองแผนที่ & การ์ด (Spatial Split-View)">
+                <i class="fa-solid fa-map-location-dot"></i> แผนที่ & การ์ด
+              </button>
+              <button class="ord-view-btn" id="ord-view-table-btn" onclick="ordSetViewMode('table')" title="มุมมองตาราง (Table View)">
+                <i class="fa-solid fa-table-list"></i> ตาราง
+              </button>
+            </div>
+          </div>
+
+          <!-- Bulk Action Bar (โผล่เมื่อเลือก checkbox) -->
+          <div class="ord-bulk-bar" id="ord-bulk-bar">
+            <div class="ord-bulk-info">
+              <i class="fa-solid fa-check-square"></i>
+              เลือกแล้ว <strong id="ord-bulk-count">0</strong> รายการ
+              <button class="ord-bulk-clear" onclick="ordClearSelection()">ยกเลิก</button>
+            </div>
+            <div class="ord-bulk-actions">
+              <button class="ord-bulk-btn ord-bulk-btn--primary" onclick="ordBulkAction('reschedule')">
+                <i class="fa-solid fa-calendar-pen"></i> กำหนด/เลื่อนวันส่ง
+              </button>
+              <button class="ord-bulk-btn" onclick="ordBulkAction('assignzone')">
+                <i class="fa-solid fa-map-location-dot"></i> กำหนดโซน
+              </button>
+              <button class="ord-bulk-btn" onclick="ordBulkAction('assigndriver')">
+                <i class="fa-solid fa-user-check"></i> มอบหมายคนขับ
+              </button>
+              <button class="ord-bulk-btn" onclick="ordBulkAction('archive')" style="color:#d97706">
+                <i class="fa-solid fa-box-archive"></i> พักรอ (Archive)
+              </button>
+              <button class="ord-bulk-btn" onclick="ordBulkAction('unarchive')" style="color:var(--st-mine)">
+                <i class="fa-solid fa-box-open"></i> นำกลับมาส่ง
+              </button>
+              <button class="ord-bulk-btn" onclick="ordPrintBatch()" title="ปริ้นใบส่งของที่เลือก (เรียงตามรหัสรูท)">
+                <i class="fa-solid fa-print"></i> ปริ้นใบส่งของ
+              </button>
+            </div>
+          </div>
+
+          <!-- Spatial Split-View Layout (Cards + Interactive Map) -->
+          <div class="ord-split-view" id="ord-split-view">
+            <!-- Left Column: Scrollable Order Cards -->
+            <div class="ord-split-cards-col" id="ord-split-cards-col">
+              <div class="ord-split-cards-list" id="ord-split-cards-list">
+                <!-- Injected dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Right Column: Interactive Map with Legend -->
+            <div class="ord-split-map-col">
+              <div id="ord-split-map" class="ord-split-map"></div>
+              <div class="ord-map-legend">
+                <span class="ord-legend-item"><span class="ord-legend-dot is-available"></span> รอจอง</span>
+                <span class="ord-legend-item"><span class="ord-legend-dot is-mine"></span> จองแล้ว</span>
+                <span class="ord-legend-item"><span class="ord-legend-dot is-done"></span> ส่งสำเร็จ</span>
+                <span class="ord-legend-item"><span class="ord-legend-dot is-failed"></span> ส่งไม่ได้</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop Table (เมื่อสลับไปโหมดตาราง) -->
+          <div class="ord-table-wrap" id="ord-table-wrap" style="display:none;">
+            <table class="ord-table" id="ord-table">
+              <thead>
+                <tr>
+                  <th class="ord-th--check">
+                    <input type="checkbox" id="ord-select-all" onchange="ordToggleSelectAll(this)" aria-label="เลือกทั้งหมด">
+                  </th>
+                  <th class="ord-th--flag"></th>
+                  <th class="ord-th--name ord-sortable" data-col="customer" onclick="ordSort('customer')">
+                    ร้านค้า <i class="fa-solid fa-sort ord-sort-icon"></i>
+                  </th>
+                  <th class="ord-th--ordered ord-sortable" data-col="orderPlacedAt" onclick="ordSort('orderPlacedAt')">
+                    วันที่สั่ง <i class="fa-solid fa-sort ord-sort-icon"></i>
+                  </th>
+                  <th class="ord-th--date ord-sortable" data-col="deliveryDate" onclick="ordSort('deliveryDate')">
+                    วันส่ง <i class="fa-solid fa-sort ord-sort-icon"></i>
+                  </th>
+                  <th class="ord-th--zone ord-sortable" data-col="geojsonZone" onclick="ordSort('geojsonZone')">
+                    โซน <i class="fa-solid fa-sort ord-sort-icon"></i>
+                  </th>
+                  <th class="ord-th--driver">คนขับ</th>
+                  <th class="ord-th--status ord-sortable" data-col="apiStatus" onclick="ordSort('apiStatus')">
+                    สถานะ <i class="fa-solid fa-sort ord-sort-icon"></i>
+                  </th>
+                  <th class="ord-th--price ord-sortable" data-col="price" onclick="ordSort('price')">
+                    ยอด <i class="fa-solid fa-sort ord-sort-icon"></i>
+                  </th>
+                  <th class="ord-th--coord">พิกัด</th>
+                  <th class="ord-th--menu"></th>
+                </tr>
+              </thead>
+              <tbody id="ord-tbody">
+                <tr class="sup-empty-row">
+                  <td colspan="11">
+                    <i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดข้อมูล…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile card list (hidden on desktop) -->
+          <div class="ord-card-list" id="ord-card-list"></div>
+
+          <!-- Sticky Bottom Summary Bar -->
+          <div class="ord-sticky-bar" id="ord-sticky-bar">
+            <div class="ord-sticky-item">
+              <span class="ord-sticky-label"><i class="fa-solid fa-users" style="color:var(--st-available)"></i> คนขับพร้อมทำงาน</span>
+              <strong class="ord-sticky-val" id="ord-sticky-active-drivers">0 คน</strong>
+            </div>
+            <div class="ord-sticky-sep"></div>
+            <div class="ord-sticky-item">
+              <span class="ord-sticky-label"><i class="fa-solid fa-box-open" style="color:var(--st-mine)"></i> จุดยังไม่มีคนจอง</span>
+              <strong class="ord-sticky-val" id="ord-sticky-unassigned-orders">0 จุด</strong>
+            </div>
+            <div class="ord-sticky-sep"></div>
+            <div class="ord-sticky-item">
+              <span class="ord-sticky-label"><i class="fa-solid fa-circle-check" style="color:var(--st-done)"></i> ส่งสำเร็จแล้ว</span>
+              <strong class="ord-sticky-val" id="ord-sticky-done-orders">0 จุด</strong>
+            </div>
+            <div class="ord-sticky-sep"></div>
+            <div class="ord-sticky-item">
+              <span class="ord-sticky-label"><i class="fa-solid fa-money-bill-wave" style="color:var(--ink-2)"></i> ยอดรวม COD</span>
+              <strong class="ord-sticky-val num" id="ord-sticky-total-cod">฿0.00</strong>
+            </div>
+          </div>
+
+          <!-- โหลดเพิ่ม -->
+          <div class="ord-load-more" id="ord-load-more" style="display:none">
+            <button class="ord-load-more-btn" onclick="ordLoadMoreRows()">
+              <i class="fa-solid fa-chevron-down"></i> โหลดเพิ่ม
+            </button>
+          </div>
+        </div>
+
+        <!-- Slide-over รายละเอียดออเดอร์ -->
+        <div class="ord-slideover-overlay" id="ord-slideover-overlay" onclick="ordCloseDetail()"></div>
+        <div class="ord-slideover" id="ord-slideover" role="dialog" aria-modal="true" aria-label="รายละเอียดออเดอร์">
+          <div class="ord-slideover-header">
+            <button class="ord-slideover-close" onclick="ordCloseDetail()" aria-label="ปิด">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="ord-slideover-title-wrap">
+              <div class="ord-slideover-title" id="ord-detail-title">—</div>
+              <div class="ord-slideover-uid" id="ord-detail-uid">—</div>
+            </div>
+          </div>
+          <div class="ord-slideover-body" id="ord-slideover-body">
+            <!-- เนื้อหาถูก inject ด้วย JS -->
+            <!-- store photo popover target -->
+            <div id="ord-photo-popover" class="ord-photo-popover" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- Bulk Action Dialog -->
+        <div class="ord-dialog-overlay" id="ord-dialog-overlay">
+          <div class="ord-dialog" id="ord-dialog" role="dialog" aria-modal="true">
+            <div class="ord-dialog-header">
+              <div class="ord-dialog-title" id="ord-dialog-title">ยืนยัน</div>
+              <button class="ord-dialog-close" onclick="ordCloseDialog()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="ord-dialog-body" id="ord-dialog-body"></div>
+            <div class="ord-dialog-foot">
+              <label class="ord-dialog-reason-label" for="ord-dialog-reason">เหตุผล <span style="color:var(--st-failed)">*</span></label>
+              <input type="text" id="ord-dialog-reason" class="ord-dialog-reason-input" placeholder="ระบุเหตุผลก่อนยืนยัน…">
+              <div class="ord-dialog-actions">
+                <button class="ord-dialog-cancel" onclick="ordCloseDialog()">ยกเลิก</button>
+                <button class="ord-dialog-confirm" id="ord-dialog-confirm-btn" onclick="ordConfirmBulk()">ยืนยัน</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- S3: ศูนย์รออนุมัติ (Approval Center) -->
+        <div class="sup-page" id="sup-page-s3">
+          <div class="appr-shell">
+            
+            <!-- Top Control & Tab Header Bar -->
+            <div class="appr-topbar">
+              <div class="appr-title-wrap">
+                <div class="appr-title">
+                  <i class="fa-solid fa-clipboard-check" style="color: var(--st-mine);"></i>
+                  ศูนย์รออนุมัติ (Approval Center)
+                </div>
+                <div class="appr-subtitle">
+                  จัดการคิวคำขอเร่งด่วนหน้างานและข้อมูลสินค้า เพื่อความคล่องตัวและถูกต้องตามมาตรฐานคลัง
+                </div>
+              </div>
+              <div class="appr-topbar-actions">
+                <button class="btn btn--secondary btn--sm" onclick="apprRefreshCurrentTab()" title="ซิงค์ข้อมูลล่าสุด">
+                  <i class="fa-solid fa-rotate"></i> ซิงค์ข้อมูล
+                </button>
+              </div>
+            </div>
+
+            <!-- Tab Navigation Bar -->
+            <div class="appr-tab-bar">
+              <button class="appr-tab-btn is-active" id="appr-tab-btn-cz" onclick="apprSwitchTab('crosszone')">
+                <i class="fa-solid fa-bolt"></i>
+                ขอข้ามโซน
+                <span class="appr-tab-badge is-urgent" id="appr-badge-cz">0</span>
+              </button>
+              <button class="appr-tab-btn" id="appr-tab-btn-prod" onclick="apprSwitchTab('products')">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                ข้อมูลสินค้า
+                <span class="appr-tab-badge" id="appr-badge-prod">0</span>
+              </button>
+            </div>
+
+            <!-- TAB 1: คำขอส่งข้ามโซน (Cross-Zone Requests) -->
+            <div class="appr-tab-pane is-active" id="appr-pane-cz">
+              
+              <!-- Empty State Banner -->
+              <div class="appr-empty-banner" id="appr-cz-empty" style="display:none;">
+                <div class="appr-empty-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="appr-empty-text">
+                  <div class="appr-empty-title">ไม่มีคำขอข้ามโซนรอดำเนินการ</div>
+                  <div class="appr-empty-sub">คนขับทุกคนปฏิบัติงานในโซนรับผิดชอบตามปกติ ไม่มีงานที่รอตัดสินใจ</div>
+                </div>
+              </div>
+
+              <!-- Cross-zone Requests Cards Grid -->
+              <div class="appr-cz-grid" id="appr-cz-list">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <!-- TAB 2: ข้อมูลสินค้ารออนุมัติ (Product Master Data Queue) -->
+            <div class="appr-tab-pane" id="appr-pane-prod" style="display:none;">
+              <div class="appr-empty-banner" id="appr-prod-empty">
+                <div class="appr-empty-icon"><i class="fa-solid fa-boxes-stacked" style="color:var(--ink-3);"></i></div>
+                <div class="appr-empty-text">
+                  <div class="appr-empty-title">ไม่มีรายการแก้ไขข้อมูลสินค้ารออนุมัติ</div>
+                  <div class="appr-empty-sub">เมื่อพนักงานคลังส่งคำขอแก้ไขน้ำหนัก/ขนาดสินค้า หรือเพิ่มรายการสินค้าใหม่ รายการจะเข้าคิวที่นี่เพื่อรอการอนุมัติก่อนบันทึกจริง</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Reject Cross-Zone Reason Modal -->
+          <div class="modal-backdrop" id="appr-reject-modal" style="display:none;" onclick="if(event.target===this)apprCloseRejectModal()">
+            <div class="modal-dialog" style="max-width:480px;">
+              <div class="modal-header">
+                <div class="modal-title" style="display:flex; align-items:center; gap:8px; color:var(--st-failed);">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                  <span>ระบุเหตุผลการไม่อนุมัติข้ามโซน</span>
+                </div>
+                <button class="modal-close" onclick="apprCloseRejectModal()">&times;</button>
+              </div>
+              <div class="modal-body" style="padding:20px;">
+                <div class="cod-close-summary" style="margin-bottom:16px;">
+                  <div class="cod-close-row">
+                    <span class="cod-close-label">เลขออเดอร์:</span>
+                    <span class="cod-close-val" id="appr-rej-order-id" style="font-family:monospace; font-weight:700;">-</span>
+                  </div>
+                  <div class="cod-close-row">
+                    <span class="cod-close-label">คนขับที่ขอ:</span>
+                    <span class="cod-close-val" id="appr-rej-driver-name">-</span>
+                  </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <label style="font-size:12px; font-weight:700; color:var(--ink);">เหตุผลการไม่อนุมัติ: <span style="color:var(--st-failed);">*</span></label>
+                  <select class="cod-reason-select" id="appr-rej-reason-select" style="width:100%; padding:8px 10px; font-size:13px;" onchange="apprOnSelectRejReason(this.value)">
+                    <option value="คนขับประจำโซนพร้อมรับงานแล้ว">คนขับประจำโซนพร้อมรับงานแล้ว</option>
+                    <option value="ภาระงานคนขับปลายทางเริ่มแน่นแล้ว">ภาระงานคนขับปลายทางเริ่มแน่นแล้ว</option>
+                    <option value="อยู่นอกเส้นทางวิ่งประจำวันมากเกินไป">อยู่นอกเส้นทางวิ่งประจำวันมากเกินไป</option>
+                    <option value="คลังจะจัดรอบพิเศษให้ช่วงบ่าย">คลังจะจัดรอบพิเศษให้ช่วงบ่าย</option>
+                    <option value="อื่นๆ">อื่นๆ (ระบุเพิ่มเติมด้านล่าง)</option>
+                  </select>
+                  <input type="text" class="cod-reason-input" id="appr-rej-custom-input" placeholder="คำอธิบายเพิ่มเติมถึงคนขับ..." style="width:100%; padding:8px 10px; font-size:13px;">
+                </div>
+              </div>
+              <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px; padding:16px 20px;">
+                <button class="btn btn--secondary btn--sm" onclick="apprCloseRejectModal()">ยกเลิก</button>
+                <button class="btn btn--danger btn--sm" id="appr-rej-confirm-btn" onclick="apprConfirmReject()">
+                  <i class="fa-solid fa-xmark"></i> ยืนยันไม่อนุมัติ
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- S4: ตรวจเงินสด COD (Cash On Delivery Reconciliation) -->
+        <div class="sup-page" id="sup-page-s4">
+          <div class="cod-shell">
+            
+            <!-- Top Control Bar -->
+            <div class="cod-topbar">
+              <div class="cod-title-wrap">
+                <div class="cod-title">
+                  <i class="fa-solid fa-coins" style="color: var(--st-available);"></i>
+                  ตรวจรับเงินสด COD
+                </div>
+                <div class="cod-subtitle">
+                  ตรวจรับและตัดยอดเงินสดจากพนักงานขับรถประจำวัน แยก 4 ชั้นตามหลักการบัญชีคลัง
+                </div>
+              </div>
+              <div class="cod-controls">
+                <div class="cod-date-wrap">
+                  <label class="cod-date-lbl"><i class="fa-regular fa-calendar"></i> วันจัดส่ง:</label>
+                  <select class="cod-date-select" id="cod-date-select" onchange="codChangeDate(this.value)">
+                    <option value="">กำลังโหลดวันจัดส่ง...</option>
+                  </select>
+                </div>
+                <button class="btn btn--secondary" onclick="codLoadSummary()" title="โหลดข้อมูลใหม่">
+                  <i class="fa-solid fa-arrows-rotate"></i> ซิงค์ยอด
+                </button>
+                <button class="btn btn--primary cod-btn-dayclose" id="cod-btn-dayclose" onclick="codOpenDaycloseModal()" title="ปิดยอดประจำวันและล็อกบัญชี">
+                  <i class="fa-solid fa-lock"></i> ปิดยอดวันนี้
+                </button>
+              </div>
+            </div>
+
+            <!-- Locked Day Banner (Read-only State) -->
+            <div class="cod-locked-banner" id="cod-locked-banner" style="display: none;">
+              <div class="cod-locked-icon"><i class="fa-solid fa-lock"></i></div>
+              <div class="cod-locked-text">
+                <div class="cod-locked-title">วันที่นี้ปิดยอดประจำวันและล็อกบัญชีแล้ว (Locked)</div>
+                <div class="cod-locked-desc" id="cod-locked-desc">บันทึกบัญชีลงแท็บ _DAYCLOSE เรียบร้อยแล้ว ข้อมูลทั้งหมดเป็นแบบอ่านอย่างเดียว (Read-only) เพื่อความปลอดภัยทางบัญชี</div>
+              </div>
+              <span class="cod-locked-pill">🔒 บัญชีถูกล็อก</span>
+            </div>
+
+            <!-- 4-tier Financial KPI Summary -->
+            <div class="cod-kpi-grid">
+              <!-- Tier 1: ควรเก็บสด -->
+              <div class="cod-kpi-card is-expected">
+                <div class="cod-kpi-header">
+                  <span class="cod-kpi-lbl">1. ควรเก็บสด (Expected)</span>
+                  <span class="cod-kpi-badge is-expected"><i class="fa-solid fa-calculator"></i> เงินสดสำเร็จ</span>
+                </div>
+                <div class="cod-kpi-val num" id="cod-kpi-expected">฿0.00</div>
+                <div class="cod-kpi-sub" id="cod-kpi-expected-sub">กรองเฉพาะเงินสด + ส่งสำเร็จแล้ว 0 จุด</div>
+              </div>
+
+              <!-- Tier 2: คนขับแจ้ง -->
+              <div class="cod-kpi-card is-reported">
+                <div class="cod-kpi-header">
+                  <span class="cod-kpi-lbl">2. คนขับแจ้ง (Reported)</span>
+                  <span class="cod-kpi-badge is-reported"><i class="fa-solid fa-truck"></i> ปิดงาน</span>
+                </div>
+                <div class="cod-kpi-val num" id="cod-kpi-reported">฿0.00</div>
+                <div class="cod-kpi-sub" id="cod-kpi-reported-sub">ยอดที่กดยืนยันตอนปิดงาน</div>
+              </div>
+
+              <!-- Tier 3: หัวหน้านับได้จริง -->
+              <div class="cod-kpi-card is-verified">
+                <div class="cod-kpi-header">
+                  <span class="cod-kpi-lbl">3. หัวหน้านับได้ (Verified)</span>
+                  <span class="cod-kpi-badge is-verified"><i class="fa-solid fa-hand-holding-dollar"></i> นับจริง</span>
+                </div>
+                <div class="cod-kpi-val num" id="cod-kpi-verified">฿0.00</div>
+                <div class="cod-kpi-sub" id="cod-kpi-verified-sub">รับมอบเงินสดเข้าคลังแล้ว 0 คน</div>
+              </div>
+
+              <!-- Tier 4: ส่วนต่าง -->
+              <div class="cod-kpi-card is-diff" id="cod-kpi-diff-card">
+                <div class="cod-kpi-header">
+                  <span class="cod-kpi-lbl">4. ส่วนต่างรวม (Diff)</span>
+                  <span class="cod-kpi-badge" id="cod-kpi-diff-badge">นับได้ − ควรเก็บ</span>
+                </div>
+                <div class="cod-kpi-val num" id="cod-kpi-diff">฿0.00</div>
+                <div class="cod-kpi-sub" id="cod-kpi-diff-sub">คำนวณอัตโนมัติ</div>
+              </div>
+            </div>
+
+            <!-- Non-Cash Info Banner -->
+            <div class="cod-info-banner" id="cod-transfer-banner">
+              <i class="fa-solid fa-circle-info" style="color: var(--st-available); font-size: 16px;"></i>
+              <div>
+                <strong>ยอดโอนเงิน/เครดิต (ไม่รวมใน COD):</strong>
+                <span id="cod-transfer-amount" class="num" style="font-weight: 700; color: var(--ink);">฿0.00</span>
+                <span style="color: var(--ink-3); margin-left: 6px;">(เงินโอนเข้าบัญชีบริษัทโดยตรง คนขับไม่ได้รับเงินสด)</span>
+              </div>
+            </div>
+
+            <!-- Level 1: Main Driver COD Table -->
+            <div class="cod-table-card">
+              <div class="cod-table-header">
+                <div style="font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px;">
+                  <i class="fa-solid fa-users-viewfinder" style="color: var(--st-available);"></i>
+                  สรุปการรับมอบเงินสดรายคนขับ (ระดับที่ 1)
+                </div>
+                <div class="cod-table-legend">
+                  <span class="legend-dot" style="background: var(--st-done);"></span> ยอดตรง
+                  <span class="legend-dot" style="background: var(--st-failed); margin-left: 8px;"></span> มีส่วนต่าง
+                  <span class="legend-dot" style="background: var(--ink-3); margin-left: 8px;"></span> รอรับมอบ
+                </div>
+              </div>
+
+              <div class="cod-table-wrap">
+                <table class="cod-table">
+                  <thead>
+                    <tr>
+                      <th style="min-width: 180px;">พนักงานขับรถ</th>
+                      <th style="width: 130px; text-align: center;">ผลงานส่ง</th>
+                      <th style="width: 140px; text-align: right;">ควรเก็บสด</th>
+                      <th style="width: 140px; text-align: right;">คนขับแจ้ง</th>
+                      <th style="width: 180px; text-align: center;">หัวหน้านับได้จริง (สด)</th>
+                      <th style="width: 130px; text-align: right;">ส่วนต่าง</th>
+                      <th style="width: 150px; text-align: center;">สถานะ</th>
+                      <th style="width: 140px; text-align: center;">การจัดการ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cod-tbody">
+                    <tr><td colspan="8" style="text-align:center; padding: 40px; color: var(--ink-3);"><i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Modal Level 2: Driver Orders Detail Slide-over -->
+        <div class="modal-overlay" id="modal-cod-driver-detail">
+          <div class="modal-content" style="max-width: 860px; max-height: 88vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 14px;">
+              <div>
+                <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);" id="cod-detail-modal-title">
+                  รายละเอียดออเดอร์ของคนขับ (ระดับที่ 2)
+                </h3>
+                <div style="font-size: 12px; color: var(--ink-2); margin-top: 2px;" id="cod-detail-modal-sub">
+                  รายการบิลทั้งหมดที่จัดส่งในวันนี้
+                </div>
+              </div>
+              <button class="modal-close" onclick="codCloseDriverDetail()">&times;</button>
+            </div>
+
+            <!-- Driver KPI mini bar in modal -->
+            <div class="cod-modal-summary-bar" id="cod-modal-summary-bar">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Orders Table in modal -->
+            <div style="overflow-y: auto; flex: 1; margin-top: 12px; border: 1px solid var(--line); border-radius: 8px;">
+              <table class="cod-table" style="font-size: 12px;">
+                <thead>
+                  <tr style="background: var(--page);">
+                    <th style="width: 160px;">เลขออเดอร์</th>
+                    <th>ร้านค้า / ที่อยู่</th>
+                    <th style="width: 120px;">เวลาปิดงาน</th>
+                    <th style="width: 130px; text-align: center;">วิธีชำระ</th>
+                    <th style="width: 110px; text-align: right;">ยอดบิล</th>
+                    <th style="width: 110px; text-align: center;">สถานะ COD</th>
+                    <th style="width: 130px; text-align: center;">ระยะ GPS</th>
+                  </tr>
+                </thead>
+                <tbody id="cod-modal-tbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+              <button class="btn btn--secondary" onclick="codCloseDriverDetail()">ปิดหน้าต่าง</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal ยืนยันการปิดยอด COD และล็อกวัน -->
+        <div class="modal-backdrop" id="cod-dayclose-modal" style="display:none;" onclick="codCloseDaycloseModal(event)">
+          <div class="modal-dialog modal-dialog--center" style="max-width: 520px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+              <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-lock" style="color:var(--st-attention);"></i>
+                <span>ยืนยันการปิดยอด COD และล็อกวัน</span>
+              </div>
+              <button class="modal-close" onclick="codCloseDaycloseModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+              <div class="cod-modal-alert">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 22px; color: var(--st-attention); flex-shrink:0;"></i>
+                <div>
+                  <b>คำเตือนสำคัญ:</b> เมื่อยืนยันปิดยอดแล้ว ระบบจะ<b>ล็อกตัวเลขของวันนี้ถาวร (Read-only)</b> และบันทึกข้อมูลเข้าชีต <code>_DAYCLOSE</code> และ <code>_COD</code> ทันที โดยจะไม่สามารถแก้ไขยอดเงินได้อีก
+                </div>
+              </div>
+
+              <div class="cod-close-summary-table">
+                <div class="cod-close-row">
+                  <span class="cod-close-label">วันจัดส่ง:</span>
+                  <span class="cod-close-val font-code" id="cod-dc-date">-</span>
+                </div>
+                <div class="cod-close-row">
+                  <span class="cod-close-label">คนขับที่ตรวจรับแล้ว:</span>
+                  <span class="cod-close-val" id="cod-dc-drivers">-</span>
+                </div>
+                <div class="cod-close-row">
+                  <span class="cod-close-label">จุดส่งสำเร็จรวม:</span>
+                  <span class="cod-close-val" id="cod-dc-points">-</span>
+                </div>
+                <div class="cod-close-row">
+                  <span class="cod-close-label">ยอดควรเก็บสด (Expected):</span>
+                  <span class="cod-close-val num" id="cod-dc-expected">฿0.00</span>
+                </div>
+                <div class="cod-close-row">
+                  <span class="cod-close-label">ยอดนับได้จริง (Verified):</span>
+                  <span class="cod-close-val num" id="cod-dc-verified" style="font-weight:700; color:var(--st-available);">฿0.00</span>
+                </div>
+                <div class="cod-close-row is-total">
+                  <span class="cod-close-label">ส่วนต่างสุทธิ (Net Diff):</span>
+                  <span class="cod-close-val num" id="cod-dc-diff">฿0.00</span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px; padding:16px 20px;">
+              <button type="button" class="btn btn--secondary" onclick="codCloseDaycloseModal()">ยกเลิก</button>
+              <button type="button" class="btn btn--primary" id="cod-dc-confirm-btn" onclick="codConfirmDayclose()" style="background:var(--st-attention); border-color:var(--st-attention); color:#fff;">
+                <i class="fa-solid fa-lock"></i> ยืนยันปิดยอดและล็อกวัน
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- S9: จัดการรูทส่ง (Dispatch Board / Workload Balancing) -->
+        <div class="sup-page" id="sup-page-s9">
+          <div class="dsp-shell">
+            <!-- Topbar -->
+            <div class="dsp-topbar">
+              <div class="dsp-title-wrap">
+                <div class="dsp-title">
+                  <i class="fa-solid fa-route" style="color: var(--st-available);"></i>
+                  จัดการรูทส่ง — กระดานเกลี่ยงาน
+                </div>
+                <div class="dsp-subtitle">
+                  เกลี่ยและมอบหมายออเดอร์ระหว่างคนขับอย่างสมดุลตามภาระงานจริง
+                </div>
+              </div>
+              <div class="dsp-controls">
+                <div class="dsp-date-wrap">
+                  <label class="dsp-date-lbl"><i class="fa-regular fa-calendar"></i> วันจัดส่ง:</label>
+                  <select class="dsp-date-select" id="dsp-date-select" onchange="dspChangeDate(this.value)">
+                    <option value="">กำลังโหลดวันจัดส่ง...</option>
+                  </select>
+                </div>
+                <button class="btn btn--secondary" onclick="dspLoadSummary()" title="โหลดข้อมูลใหม่">
+                  <i class="fa-solid fa-arrows-rotate"></i> ซิงค์กระดาน
+                </button>
+              </div>
+            </div>
+
+            <!-- 4 Stat Cards Topbar -->
+            <div class="dsp-kpi-grid">
+              <div class="dsp-kpi-card">
+                <div class="dsp-kpi-lbl">จุดส่งทั้งหมดวันนี้</div>
+                <div class="dsp-kpi-val num" id="dsp-stat-total">0</div>
+                <div class="dsp-kpi-sub" id="dsp-stat-total-sub">ออเดอร์ในระบบ</div>
+              </div>
+              <div class="dsp-kpi-card">
+                <div class="dsp-kpi-lbl">จองแล้ว</div>
+                <div class="dsp-kpi-val num" id="dsp-stat-claimed" style="color: var(--st-available);">0</div>
+                <div class="dsp-kpi-sub" id="dsp-stat-claimed-sub">บันทึกลง _ASSIGN</div>
+              </div>
+              <div class="dsp-kpi-card">
+                <div class="dsp-kpi-lbl">คนขับพร้อมทำงาน</div>
+                <div class="dsp-kpi-val num" id="dsp-stat-drivers" style="color: #2563eb;">0</div>
+                <div class="dsp-kpi-sub" id="dsp-stat-drivers-sub">ตารางงาน working วันนี้</div>
+              </div>
+              <div class="dsp-kpi-card is-clear">
+                <div class="dsp-kpi-lbl">ต้องเคลียร์</div>
+                <div class="dsp-kpi-val num" id="dsp-stat-clear" style="color: var(--st-failed);">0</div>
+                <div class="dsp-kpi-sub" id="dsp-stat-clear-sub">ยังไม่จอง / ไม่มีโซน</div>
+              </div>
+            </div>
+
+            <!-- Main 2-Column Board -->
+            <div class="dsp-board">
+              <!-- Left Column: Unassigned Orders Pool -->
+              <div class="dsp-unassigned-panel">
+                <div class="dsp-panel-header">
+                  <div class="dsp-panel-title">
+                    <i class="fa-solid fa-boxes-stacked" style="color: #b45309;"></i>
+                    <span>ยังไม่มีคนจอง</span>
+                    <span class="chip chip--failed" id="dsp-unassigned-badge">0</span>
+                  </div>
+                  <div class="dsp-zone-filter" id="dsp-zone-filter-bar">
+                    <!-- Zone filter buttons rendered via JS -->
+                  </div>
+                </div>
+                <div class="dsp-unassigned-list" id="dsp-unassigned-list">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+
+              <!-- Right Column: Driver Cards Grid -->
+              <div class="dsp-drivers-panel">
+                <div class="dsp-panel-header">
+                  <div class="dsp-panel-title">
+                    <i class="fa-solid fa-truck-fast" style="color: var(--st-available);"></i>
+                    <span>คนขับประจำวัน</span>
+                    <span class="chip chip--available" id="dsp-drivers-badge">0 คน</span>
+                  </div>
+                  <div class="dsp-driver-avg-info" id="dsp-driver-avg-info">
+                    ค่าเฉลี่ยจุดค้าง: <strong id="dsp-avg-val">0</strong> จุด/คน
+                  </div>
+                </div>
+                <div class="dsp-driver-grid" id="dsp-driver-grid">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal ขอเหตุผลปล่อยข้ามโซน (Cross-zone Release Reason Modal) -->
+            <div class="modal-backdrop" id="dsp-crosszone-modal" style="display:none;" onclick="dspCloseCrosszoneModal(event)">
+              <div class="modal-dialog modal-dialog--center" style="max-width: 520px;" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                  <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-people-arrows" style="color:var(--st-attention);"></i>
+                    <span>ยืนยันมอบหมายงานข้ามโซน</span>
+                  </div>
+                  <button class="modal-close" onclick="dspCloseCrosszoneModal()">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 20px;">
+                  <div class="cod-modal-alert" style="border-left-color: var(--st-attention); background: #fffbeb;">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 20px; color: var(--st-attention); flex-shrink:0;"></i>
+                    <div>
+                      <b>ตรวจพบการข้ามกำแพงโซน:</b> ออเดอร์นี้อยู่นอกโซนรับผิดชอบของคนขับ จำเป็นต้องระบุเหตุผลเพื่อบันทึกประวัติกำกับดูแล
+                    </div>
+                  </div>
+
+                  <div class="cod-close-summary-table" style="margin-bottom: 16px;">
+                    <div class="cod-close-row">
+                      <span class="cod-close-label">เลขออเดอร์:</span>
+                      <span class="cod-close-val font-code" id="dsp-cz-order-uid">-</span>
+                    </div>
+                    <div class="cod-close-row">
+                      <span class="cod-close-label">ร้านค้า / ลูกค้า:</span>
+                      <span class="cod-close-val" id="dsp-cz-customer">-</span>
+                    </div>
+                    <div class="cod-close-row">
+                      <span class="cod-close-label">โซนของออเดอร์:</span>
+                      <span class="cod-close-val" id="dsp-cz-order-zone">-</span>
+                    </div>
+                    <div class="cod-close-row">
+                      <span class="cod-close-label">มอบหมายให้คนขับ:</span>
+                      <span class="cod-close-val" id="dsp-cz-driver-name">-</span>
+                    </div>
+                    <div class="cod-close-row is-total">
+                      <span class="cod-close-label">โซนประจำตัวคนขับ:</span>
+                      <span class="cod-close-val" id="dsp-cz-driver-zones">-</span>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--ink);">ระบุเหตุผลการปล่อยข้ามโซน: <span style="color:var(--st-failed);">*</span></label>
+                    <select class="cod-reason-select" id="dsp-cz-reason-select" style="width:100%; padding:8px 10px; font-size:13px;" onchange="dspOnSelectCzReason(this.value)">
+                      <option value="ช่วยกระจายภาระงาน (โซนหลักงานล้น)">ช่วยกระจายภาระงาน (โซนหลักงานล้น)</option>
+                      <option value="โซนใกล้เคียง / ทางผ่านขากลับ">โซนใกล้เคียง / ทางผ่านขากลับ</option>
+                      <option value="คนขับประจำโซนไม่พอ / รถเสีย">คนขับประจำโซนไม่พอ / รถเสีย</option>
+                      <option value="ลูกค้ารีเควสคนขับ / นัดหมายพิเศษ">ลูกค้ารีเควสคนขับ / นัดหมายพิเศษ</option>
+                      <option value="อื่นๆ">อื่นๆ (ระบุเพิ่มเติมด้านล่าง)</option>
+                    </select>
+                    <input type="text" class="cod-reason-input" id="dsp-cz-custom-input" placeholder="คำอธิบายเพิ่มเติม (ถ้ามี)..." style="width:100%; padding:8px 10px; font-size:13px;">
+                  </div>
+                </div>
+                <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px; padding:16px 20px;">
+                  <button type="button" class="btn btn--secondary" onclick="dspCloseCrosszoneModal()">ยกเลิก</button>
+                  <button type="button" class="btn btn--primary" id="dsp-cz-confirm-btn" onclick="dspConfirmCrosszone()" style="background:var(--st-attention); border-color:var(--st-attention); color:#fff;">
+                    <i class="fa-solid fa-check"></i> ยืนยันมอบหมายข้ามโซน
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal เลือกคนขับสำหรับ Mobile (Mobile Assign Modal) -->
+            <div class="modal-backdrop" id="dsp-mobile-assign-modal" style="display:none;" onclick="dspCloseMobileAssignModal(event)">
+              <div class="modal-dialog modal-dialog--center" style="max-width: 480px;" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                  <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-user-plus" style="color:var(--st-available);"></i>
+                    <span>เลือกคนขับสำหรับออเดอร์</span>
+                  </div>
+                  <button class="modal-close" onclick="dspCloseMobileAssignModal()">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 16px;">
+                  <div id="dsp-mob-order-info" style="font-size: 12px; margin-bottom: 12px; padding: 10px; background: var(--page); border-radius: 8px;"></div>
+                  <div style="font-size: 12px; font-weight: 700; color: var(--ink-2); margin-bottom: 8px;">เลือกคนขับที่จะรับงาน:</div>
+                  <div class="dsp-mob-drivers-list" id="dsp-mob-drivers-list" style="display:flex; flex-direction:column; gap:8px; max-height: 350px; overflow-y: auto;">
+                    <!-- Rendered via JS -->
+                  </div>
+                </div>
+                <div class="modal-footer" style="display:flex; justify-content:flex-end; padding:12px 16px;">
+                  <button type="button" class="btn btn--secondary" onclick="dspCloseMobileAssignModal()">ปิด</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5: ของกลับเข้าคลัง (Warehouse Returns Intake) -->
+        <div class="sup-page" id="sup-page-s5">
+          <div class="ret-shell">
+            
+            <!-- Top Control Bar -->
+            <div class="ret-topbar">
+              <div class="ret-title-wrap">
+                <div class="ret-title">
+                  <i class="fa-solid fa-warehouse" style="color: var(--st-failed);"></i>
+                  ของกลับเข้าคลัง (Warehouse Returns Intake)
+                </div>
+                <div class="ret-subtitle">
+                  ตรวจรับสินค้าที่ส่งไม่สำเร็จกลับเข้าคลัง ป้องกันของตกค้างบนรถข้ามวัน พร้อมบันทึกสภาพสินค้าแบบเรียลไทม์
+                </div>
+              </div>
+              <div class="ret-topbar-actions">
+                <button class="btn btn--secondary btn--sm" onclick="retLoadReturns()" title="ซิงค์ข้อมูลล่าสุด">
+                  <i class="fa-solid fa-rotate"></i> ซิงค์ข้อมูล
+                </button>
+              </div>
+            </div>
+
+            <!-- Top Stats Bar -->
+            <div class="ret-stats-grid">
+              <div class="ret-stat-card">
+                <div class="ret-stat-icon ret-stat-icon--pending"><i class="fa-solid fa-boxes-packing"></i></div>
+                <div class="ret-stat-content">
+                  <div class="ret-stat-label">ของรอรับคืนวันนี้</div>
+                  <div class="ret-stat-val" id="ret-stat-pending">0</div>
+                  <div class="ret-stat-sub">จุดที่คนขับนำของกลับมาส่ง</div>
+                </div>
+              </div>
+
+              <div class="ret-stat-card" id="ret-card-overdue">
+                <div class="ret-stat-icon ret-stat-icon--overdue"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="ret-stat-content">
+                  <div class="ret-stat-label">ค้างเกิน 1 วัน (เร่งด่วน)</div>
+                  <div class="ret-stat-val ret-stat-val--overdue" id="ret-stat-overdue">0</div>
+                  <div class="ret-stat-sub" id="ret-sub-overdue">ไม่มีของค้างข้ามวัน</div>
+                </div>
+              </div>
+
+              <div class="ret-stat-card">
+                <div class="ret-stat-icon ret-stat-icon--received"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="ret-stat-content">
+                  <div class="ret-stat-label">รับคืนแล้ววันนี้</div>
+                  <div class="ret-stat-val ret-stat-val--received" id="ret-stat-received">0</div>
+                  <div class="ret-stat-sub">ตรวจรับและลงคลังเรียบร้อย</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="ret-filter-card">
+              <div class="ret-filter-row">
+                
+                <!-- Search -->
+                <div class="ret-search-wrap">
+                  <i class="fa-solid fa-magnifying-glass ret-search-icon"></i>
+                  <input type="search" id="ret-search-input" class="ret-search-input"
+                    placeholder="ค้นหาร้านค้า, เลขออเดอร์, คนขับ..."
+                    oninput="retApplyFilters()">
+                </div>
+
+                <!-- Status Filter Chips -->
+                <div class="ret-chip-group">
+                  <span class="ret-filter-label">สถานะ:</span>
+                  <button class="ret-chip is-active" data-status="all" onclick="retSetStatusFilter('all')">ทั้งหมด</button>
+                  <button class="ret-chip" data-status="รอรับคืน" onclick="retSetStatusFilter('รอรับคืน')">รอรับคืน</button>
+                  <button class="ret-chip" data-status="รับคืนแล้ว" onclick="retSetStatusFilter('รับคืนแล้ว')">รับคืนแล้ว</button>
+                </div>
+
+                <!-- Driver Filter Dropdown -->
+                <div class="ret-select-wrap">
+                  <label class="ret-filter-label">คนขับ:</label>
+                  <select class="ret-select" id="ret-driver-select" onchange="retSetDriverFilter(this.value)">
+                    <option value="all">คนขับทั้งหมด</option>
+                  </select>
+                </div>
+
+                <!-- Condition Filter Dropdown -->
+                <div class="ret-select-wrap">
+                  <label class="ret-filter-label">สภาพของ:</label>
+                  <select class="ret-select" id="ret-condition-select" onchange="retSetConditionFilter(this.value)">
+                    <option value="all">ทุกสภาพ</option>
+                    <option value="ปกติ">ปกติ</option>
+                    <option value="เสียหาย">เสียหาย</option>
+                    <option value="ไม่ครบ">ไม่ครบ</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Returns Content: Table (Desktop) & Cards (Mobile) -->
+            <div class="ret-table-wrap">
+              <table class="ret-table" id="ret-table">
+                <thead>
+                  <tr>
+                    <th>ร้านค้า / จุดส่ง</th>
+                    <th>เลขออเดอร์</th>
+                    <th>คนขับ</th>
+                    <th>จำนวนรายการ</th>
+                    <th>เหตุผลที่ส่งไม่สำเร็จ</th>
+                    <th>ค้างมา</th>
+                    <th>สถานะ</th>
+                    <th style="text-align:right;">การดำเนินการ</th>
+                  </tr>
+                </thead>
+                <tbody id="ret-table-tbody">
+                  <!-- Injected via JavaScript -->
+                </tbody>
+              </table>
+
+              <!-- Mobile Cards Container -->
+              <div class="ret-mobile-cards" id="ret-mobile-list">
+                <!-- Injected via JavaScript -->
+              </div>
+
+              <!-- Empty State -->
+              <div class="ret-empty-state" id="ret-empty-state" style="display:none;">
+                <div class="ret-empty-icon"><i class="fa-solid fa-box-open"></i></div>
+                <div class="ret-empty-title">ไม่พบรายการของกลับเข้าคลัง</div>
+                <div class="ret-empty-sub">ไม่มีสินค้าส่งไม่สำเร็จค้างอยู่ตามเงื่อนไขที่เลือก</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Intake Condition Modal (รับของคืนแล้ว) -->
+          <div class="modal-backdrop" id="ret-intake-modal" style="display:none;" onclick="if(event.target===this)retCloseIntakeModal()">
+            <div class="modal-dialog" style="max-width:500px;">
+              <div class="modal-header">
+                <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-boxes-packing" style="color:var(--st-mine);"></i>
+                  <span>ตรวจรับของกลับเข้าคลัง</span>
+                </div>
+                <button class="modal-close" onclick="retCloseIntakeModal()">&times;</button>
+              </div>
+              <div class="modal-body" style="padding:20px;">
+                <div class="cod-close-summary" style="margin-bottom:16px;">
+                  <div class="cod-close-row">
+                    <span class="cod-close-label">เลขออเดอร์:</span>
+                    <span class="cod-close-val" id="ret-modal-order-no" style="font-family:monospace; font-weight:700;">-</span>
+                  </div>
+                  <div class="cod-close-row">
+                    <span class="cod-close-label">ร้านค้า:</span>
+                    <span class="cod-close-val" id="ret-modal-customer">-</span>
+                  </div>
+                  <div class="cod-close-row">
+                    <span class="cod-close-label">คนขับผู้นำส่ง:</span>
+                    <span class="cod-close-val" id="ret-modal-driver">-</span>
+                  </div>
+                  <div class="cod-close-row">
+                    <span class="cod-close-label">เหตุผลที่ส่งไม่สำเร็จ:</span>
+                    <span class="cod-close-val" id="ret-modal-reason" style="color:var(--st-failed); font-weight:600;">-</span>
+                  </div>
+                </div>
+
+                <!-- Condition Radios -->
+                <div style="margin-bottom:16px;">
+                  <label style="font-size:12px; font-weight:700; color:var(--ink); display:block; margin-bottom:8px;">
+                    สภาพสินค้าที่รับคืน: <span style="color:var(--st-failed);">*</span>
+                  </label>
+                  <div class="ret-radio-group">
+                    <label class="ret-radio-label">
+                      <input type="radio" name="ret-condition" value="ปกติ" checked onchange="retOnConditionChange('ปกติ')">
+                      <span class="ret-radio-btn is-normal"><i class="fa-solid fa-circle-check"></i> ปกติ (สมบูรณ์)</span>
+                    </label>
+                    <label class="ret-radio-label">
+                      <input type="radio" name="ret-condition" value="เสียหาย" onchange="retOnConditionChange('เสียหาย')">
+                      <span class="ret-radio-btn is-damaged"><i class="fa-solid fa-triangle-exclamation"></i> เสียหาย</span>
+                    </label>
+                    <label class="ret-radio-label">
+                      <input type="radio" name="ret-condition" value="ไม่ครบ" onchange="retOnConditionChange('ไม่ครบ')">
+                      <span class="ret-radio-btn is-shortage"><i class="fa-solid fa-box-open"></i> ไม่ครบ</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Conditional Inputs for Damage/Shortage -->
+                <div id="ret-shortage-fields" style="display:none; flex-direction:column; gap:10px; background:#fff1f2; border:1px solid #fecdd3; border-radius:8px; padding:12px; margin-bottom:16px;">
+                  <div style="font-size:12px; font-weight:700; color:#9f1239;">
+                    <i class="fa-solid fa-circle-exclamation"></i> บังคับระบุรายละเอียดสินค้าที่มีปัญหา:
+                  </div>
+                  <div>
+                    <label style="font-size:11px; font-weight:700; color:#9f1239;">จำนวนที่ขาด/เสียหาย (ชิ้น): <span style="color:var(--st-failed);">*</span></label>
+                    <input type="number" id="ret-shortage-count" min="1" placeholder="ระบุจำนวนชิ้น..." style="width:100%; padding:6px 10px; font-size:13px; border:1px solid #fda4af; border-radius:6px; margin-top:4px;" oninput="retValidateIntakeForm()">
+                  </div>
+                  <div>
+                    <label style="font-size:11px; font-weight:700; color:#9f1239;">หมายเหตุสภาพสินค้า: <span style="color:var(--st-failed);">*</span></label>
+                    <input type="text" id="ret-shortage-note" placeholder="เช่น กล่องบุบ แตกหัก ขาด 2 กระป๋อง..." style="width:100%; padding:6px 10px; font-size:13px; border:1px solid #fda4af; border-radius:6px; margin-top:4px;" oninput="retValidateIntakeForm()">
+                  </div>
+                </div>
+
+              </div>
+              <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px; padding:16px 20px;">
+                <button type="button" class="btn btn--secondary btn--sm" onclick="retCloseIntakeModal()">ยกเลิก</button>
+                <button type="button" class="btn btn--primary btn--sm" id="ret-btn-confirm-intake" onclick="retConfirmIntake()">
+                  <i class="fa-solid fa-check"></i> ยืนยันรับคืนเข้าคลัง
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detail & Photo Modal -->
+          <div class="modal-backdrop" id="ret-detail-modal" style="display:none;" onclick="if(event.target===this)retCloseDetailModal()">
+            <div class="modal-dialog" style="max-width:540px;">
+              <div class="modal-header">
+                <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-file-lines" style="color:var(--st-available);"></i>
+                  <span>รายละเอียดออเดอร์ส่งไม่สำเร็จ</span>
+                </div>
+                <button class="modal-close" onclick="retCloseDetailModal()">&times;</button>
+              </div>
+              <div class="modal-body" style="padding:20px;" id="ret-detail-modal-body">
+                <!-- Injected via JavaScript -->
+              </div>
+              <div class="modal-footer" style="display:flex; justify-content:flex-end; padding:14px 20px;">
+                <button type="button" class="btn btn--secondary btn--sm" onclick="retCloseDetailModal()">ปิด</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- S6: ร้านค้า (Store Registry & Requirements) -->
+        <div class="sup-page" id="sup-page-s6">
+          <div class="sto-shell">
+            <!-- Top Filter & Search Bar -->
+            <div class="sto-topbar">
+              <!-- Search -->
+              <div class="sto-search-wrap">
+                <i class="fa-solid fa-magnifying-glass sto-search-icon"></i>
+                <input type="search" id="sto-search-input" class="sto-search-input"
+                  placeholder="ค้นหาชื่อร้าน, เบอร์โทร, ที่อยู่, โซน…"
+                  oninput="stoApplyFilters()">
+              </div>
+
+              <!-- Quick Filter Chips -->
+              <div class="sto-filter-chips">
+                <button class="sto-chip is-active" id="sto-filter-all" onclick="stoSetFilter('all')">
+                  ทั้งหมด (<span id="sto-count-all">0</span>)
+                </button>
+                <button class="sto-chip sto-chip--warn" id="sto-filter-incomplete" onclick="stoSetFilter('incomplete')">
+                  <i class="fa-solid fa-circle-exclamation"></i> ยังไม่มีข้อมูล (<span id="sto-count-incomplete">0</span>)
+                </button>
+                <button class="sto-chip sto-chip--done" id="sto-filter-complete" onclick="stoSetFilter('complete')">
+                  <i class="fa-solid fa-circle-check"></i> กรอกข้อมูลแล้ว (<span id="sto-count-complete">0</span>)
+                </button>
+              </div>
+
+              <button class="sto-refresh-btn" onclick="stoLoadStores(true)" title="รีเฟรชข้อมูล">
+                <i class="fa-solid fa-arrows-rotate"></i>
+              </button>
+            </div>
+
+            <!-- Stores Table Container -->
+            <div class="sto-table-wrap">
+              <table class="sto-table" id="sto-table">
+                <thead>
+                  <tr>
+                    <th style="width:44px;"></th>
+                    <th class="sto-th-name">ชื่อร้านค้า / ลูกค้า</th>
+                    <th>เบอร์โทร</th>
+                    <th>โซน</th>
+                    <th>ข้อกำหนดสำคัญ</th>
+                    <th style="text-align:center;">ออเดอร์</th>
+                    <th>ส่งล่าสุด</th>
+                    <th style="text-align:center;">สถานะข้อมูล</th>
+                    <th style="width:60px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="sto-tbody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Table Footer / Result Count -->
+            <div class="sto-footer">
+              <span>แสดง <strong id="sto-displayed-count">0</strong> จากทั้งหมด <strong id="sto-total-count">0</strong> ร้านค้า</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Store Detail Slide-over / Modal -->
+        <div class="sto-slideover-overlay" id="sto-slideover-overlay" onclick="stoCloseSlideover(event)">
+          <div class="sto-slideover" id="sto-slideover" onclick="event.stopPropagation()">
+            <div class="sto-slideover-header">
+              <div class="sto-slideover-title-row">
+                <div class="sto-slideover-title" id="sto-detail-name">ชื่อร้านค้า</div>
+                <span class="sto-status-badge" id="sto-detail-status-badge">ยังไม่กรอกข้อมูล</span>
+              </div>
+              <button class="sto-slideover-close" onclick="stoCloseSlideover()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form class="sto-slideover-body" onsubmit="stoSaveRequirements(event)">
+              <input type="hidden" id="sto-form-phone" value="">
+              <input type="hidden" id="sto-form-name" value="">
+
+              <!-- Meta info strip -->
+              <div class="sto-meta-strip">
+                <div class="sto-meta-item">
+                  <span class="sto-meta-label">เบอร์โทรหลัก:</span>
+                  <strong id="sto-meta-phone" style="font-family:var(--font-code);">—</strong>
+                </div>
+                <div class="sto-meta-item">
+                  <span class="sto-meta-label">โซนจัดส่ง:</span>
+                  <span id="sto-meta-zone" class="sto-zone-chip">—</span>
+                </div>
+                <div class="sto-meta-item">
+                  <span class="sto-meta-label">ออเดอร์สะสม:</span>
+                  <strong id="sto-meta-orders">0 ออเดอร์</strong>
+                </div>
+              </div>
+
+              <!-- Group 1: เวลาเปิด-ปิด และช่วงห้ามส่ง -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-clock" style="color:var(--st-available);"></i> 1. เวลาทำการและการส่งของ</div>
+                <div class="sto-form-grid-3">
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">เวลาเปิด</label>
+                    <input type="time" class="drv-form-input" id="sto-form-open-time">
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">เวลาปิด</label>
+                    <input type="time" class="drv-form-input" id="sto-form-close-time">
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">ช่วงพักที่ห้ามส่ง</label>
+                    <input type="text" class="drv-form-input" id="sto-form-break-time" placeholder="เช่น 12:00-13:00">
+                  </div>
+                </div>
+
+                <div class="drv-form-group" style="margin-top:8px;">
+                  <label class="drv-form-label">วันหยุดประจำสัปดาห์</label>
+                  <div class="sto-days-pills" id="sto-days-pills">
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันจันทร์"><span>จันทร์</span></label>
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันอังคาร"><span>อังคาร</span></label>
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันพุธ"><span>พุธ</span></label>
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันพฤหัสฯ"><span>พฤหัสฯ</span></label>
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันศุกร์"><span>ศุกร์</span></label>
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันเสาร์"><span>เสาร์</span></label>
+                    <label class="sto-day-pill"><input type="checkbox" name="sto_closed_day" value="วันอาทิตย์"><span>อาทิตย์</span></label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Group 2: การเข้าถึงและสถานที่ -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-truck" style="color:var(--st-mine);"></i> 2. สภาพแวดล้อมและการเข้าถึง</div>
+                <div class="sto-switches-row">
+                  <label class="sto-switch-label">
+                    <span class="drv-switch">
+                      <input type="checkbox" id="sto-form-narrow-alley">
+                      <span class="drv-slider"></span>
+                    </span>
+                    <span>ซอยแคบ / รถใหญ่เข้าไม่ได้</span>
+                  </label>
+
+                  <label class="sto-switch-label">
+                    <span class="drv-switch">
+                      <input type="checkbox" id="sto-form-stairs">
+                      <span class="drv-slider"></span>
+                    </span>
+                    <span>ต้องขึ้นบันได</span>
+                  </label>
+                </div>
+
+                <div class="sto-form-grid-2" style="margin-top:8px;">
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">จุดจอดรถขนส่ง</label>
+                    <input type="text" class="drv-form-input" id="sto-form-parking" placeholder="เช่น จอดชิดซ้ายหน้าร้าน, ซอยข้างวัด">
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">ทางเข้า / จุดรับของ</label>
+                    <input type="text" class="drv-form-input" id="sto-form-entrance" placeholder="เช่น ประตูหน้า, ประตูโกดังด้านหลัง">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Group 3: การติดต่อและผู้รับ -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-phone" style="color:#06b6d4;"></i> 3. การติดต่อและผู้มีอำนาจรับของ</div>
+                <div class="sto-form-grid-3">
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">ต้องโทรแจ้งก่อนถึง (นาที)</label>
+                    <input type="number" class="drv-form-input" id="sto-form-call-before" min="0" max="120" placeholder="เช่น 15">
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">ชื่อผู้รับ / ผู้เซ็นรับ</label>
+                    <input type="text" class="drv-form-input" id="sto-form-signee" placeholder="เช่น พี่นก เจ้าของร้าน">
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">เบอร์โทรสำรอง</label>
+                    <input type="tel" class="drv-form-input" id="sto-form-backup-phone" placeholder="เช่น 089-xxx-xxxx">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Group 4: การเงินและเอกสาร -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-file-invoice-dollar" style="color:#f59e0b;"></i> 4. การเงินและเอกสาร</div>
+                <div class="sto-form-grid-3">
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">เงื่อนไขการชำระเงิน</label>
+                    <select class="drv-form-input" id="sto-form-payment-type">
+                      <option value="สดเท่านั้น">💵 เงินสดเท่านั้น</option>
+                      <option value="โอนได้">📱 โอนผ่านบัญชีได้</option>
+                      <option value="เครดิต">📝 เครดิต / วางบิล</option>
+                    </select>
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">จำนวนใบกำกับภาษี</label>
+                    <input type="number" class="drv-form-input" id="sto-form-tax-count" min="1" max="10" value="1">
+                  </div>
+                  <div class="drv-form-group">
+                    <label class="drv-form-label">วันเก็บเช็ค / วางบิล</label>
+                    <input type="text" class="drv-form-input" id="sto-form-check-day" placeholder="เช่น ทุกวันพุธ">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Group 5: อื่นๆ & หมายเหตุอิสระ -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-box" style="color:#8b5cf6;"></i> 5. ข้อกำหนดอื่นๆ & หมายเหตุ</div>
+                <div class="sto-switches-row" style="margin-bottom:8px;">
+                  <label class="sto-switch-label">
+                    <span class="drv-switch">
+                      <input type="checkbox" id="sto-form-heavy-help">
+                      <span class="drv-slider"></span>
+                    </span>
+                    <span>ของหนักต้องมีคนช่วยยก</span>
+                  </label>
+                </div>
+
+                <div class="drv-form-group">
+                  <label class="drv-form-label">หมายเหตุอิสระ (สำหรับคนขับเห็นตอนส่งของ)</label>
+                  <textarea class="drv-form-input" id="sto-form-custom-notes" rows="2" style="height:auto;padding:8px;" placeholder="เช่น ร้านอยู่ในตลาดสด ทางเข้าแคบมาก มีสุนัขดุ"></textarea>
+                </div>
+              </div>
+
+              <!-- Group 6: พิกัด & ที่อยู่ -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-map-location-dot" style="color:var(--st-available);"></i> 6. ข้อมูลที่อยู่และพิกัด</div>
+                <div class="sto-address-box" id="sto-detail-address">—</div>
+                <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                  <span style="font-size:12px;color:var(--ink-3);">พิกัด:</span>
+                  <code id="sto-detail-coords" style="font-size:12px;font-weight:700;">—</code>
+                  <a id="sto-detail-maps-link" href="#" target="_blank" rel="noopener" class="sto-maps-btn">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> เปิดใน Google Maps
+                  </a>
+                </div>
+              </div>
+
+              <!-- Group 7: ประวัติออเดอร์ล่าสุด -->
+              <div class="sto-section">
+                <div class="sto-section-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--ink-3);"></i> 7. ประวัติออเดอร์ล่าสุด</div>
+                <div class="sto-orders-history" id="sto-detail-orders-history">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Slideover Footer / Save Button -->
+              <div class="sto-slideover-foot">
+                <button type="button" class="drv-btn-cancel" onclick="stoCloseSlideover()">ปิด</button>
+                <button type="submit" class="drv-btn-save" id="sto-btn-submit">
+                  <i class="fa-solid fa-floppy-disk"></i> บันทึกข้อกำหนดร้านค้า
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="sup-page" id="sup-page-s7">
+          <div class="zm-shell">
+            <!-- Map Column (Left) -->
+            <div class="zm-map-wrap">
+              <div id="zm-map" class="zm-map"></div>
+              
+              <!-- Floating Toolbar Top-Left -->
+              <div class="zm-map-toolbar">
+                <button class="zm-tool-btn" id="zm-btn-draw" onclick="zmStartDraw()" title="วาดโซนใหม่">
+                  <i class="fa-solid fa-draw-polygon"></i> วาดโซนใหม่
+                </button>
+                <button class="zm-tool-btn" id="zm-btn-edit" onclick="zmToggleEdit()" title="แก้ไขรูปทรง (ลากมุมหรือจุดกึ่งกลาง)">
+                  <i class="fa-solid fa-pen-to-square"></i> <span id="zm-edit-label">แก้ไขรูปทรง</span>
+                </button>
+                <button class="zm-tool-btn zm-tool-btn--danger" id="zm-btn-delete" onclick="zmDeleteSelected()" title="ลบโซนที่เลือก" style="display:none">
+                  <i class="fa-solid fa-trash-can"></i> ลบโซน
+                </button>
+                <button class="zm-tool-btn" id="zm-btn-cancel" onclick="zmCancelAction()" style="display:none">
+                  <i class="fa-solid fa-xmark"></i> ยกเลิก
+                </button>
+                <button class="zm-tool-btn" id="zm-btn-toggle-heatmap" onclick="zmToggleHeatmap()" title="เปิด/ปิดแสดงจุดลูกค้า 30 วัน">
+                  <i class="fa-solid fa-users-viewfinder"></i> <span id="zm-heatmap-label">จุดลูกค้า 30 วัน</span>
+                </button>
+              </div>
+
+              <!-- Coverage Summary Bar Bottom-Left -->
+              <div class="zm-map-bottom-bar">
+                <button class="zm-tool-btn zm-tool-btn--accent" onclick="zmCheckCoverage()">
+                  <i class="fa-solid fa-crosshairs"></i> ตรวจความครอบคลุม
+                </button>
+                <span class="zm-coverage-status" id="zm-coverage-status">กำลังโหลดข้อมูลลูกค้า…</span>
+              </div>
+            </div>
+
+            <!-- Right Side Panel -->
+            <div class="zm-panel">
+              <div class="zm-panel-header">
+                <div>
+                  <div class="zm-panel-title">โซนทั้งหมด (<span id="zm-zone-total-count">0</span>)</div>
+                  <div class="zm-panel-subtitle">บริหารจัดการพื้นที่จัดส่งและคนขับ</div>
+                </div>
+                <button class="zm-save-btn" id="zm-save-btn" onclick="zmSaveAll()">
+                  <i class="fa-solid fa-floppy-disk"></i> บันทึกโซน
+                </button>
+              </div>
+
+              <!-- Overlap Warning Banner -->
+              <div class="zm-overlap-banner" id="zm-overlap-banner" style="display:none">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div id="zm-overlap-banner-text">พบพื้นที่ทับซ้อนที่ยังไม่มีคนขับ</div>
+              </div>
+
+              <!-- Zone List Container -->
+              <div class="zm-zone-list" id="zm-zone-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sup-page" id="sup-page-s8">
+          <div class="drv-shell">
+            <!-- Header with Tabs and Add Button -->
+            <div class="drv-header">
+              <div class="drv-nav-tabs">
+                <button class="drv-tab-btn is-active" id="drv-tab-list" onclick="drvSwitchTab('list')">
+                  <i class="fa-solid fa-users"></i> รายชื่อคนขับ (<span id="drv-total-count">0</span>)
+                </button>
+                <button class="drv-tab-btn" id="drv-tab-roster" onclick="drvSwitchTab('roster')" title="ตารางงานรายสัปดาห์">
+                  <i class="fa-solid fa-calendar-week"></i> ตารางงาน (รายสัปดาห์)
+                </button>
+              </div>
+
+              <div class="drv-actions">
+                <div class="drv-stat-badge">
+                  <span class="drv-stat-dot"></span>
+                  <span>ใช้งานอยู่ <strong id="drv-active-count">0</strong> คน</span>
+                </div>
+                <button class="drv-add-btn" onclick="drvOpenAddModal()">
+                  <i class="fa-solid fa-user-plus"></i> เพิ่มคนขับ
+                </button>
+              </div>
+            </div>
+
+            <!-- Section 1: Driver List View -->
+            <div class="drv-content" id="drv-sec-list">
+              <div class="drv-grid" id="drv-grid">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Section 2: Weekly Roster -->
+            <div class="drv-content" id="drv-sec-roster" style="display:none">
+              <div class="ros-nav-bar">
+                <div class="ros-nav-left">
+                  <button class="ros-btn-nav" onclick="rosPrevWeek()" title="สัปดาห์ก่อนหน้า"><i class="fa-solid fa-chevron-left"></i></button>
+                  <button class="ros-btn-today" onclick="rosThisWeek()">สัปดาห์นี้</button>
+                  <button class="ros-btn-nav" onclick="rosNextWeek()" title="สัปดาห์ถัดไป"><i class="fa-solid fa-chevron-right"></i></button>
+                  <span class="ros-week-range" id="ros-week-range-text">17 ส.ค. 2569 – 23 ส.ค. 2569</span>
+                </div>
+
+                <div class="ros-legend">
+                  <div class="ros-legend-item"><span class="ros-chip is-working">ทำงาน</span></div>
+                  <div class="ros-legend-item"><span class="ros-chip is-off">หยุด</span></div>
+                  <div class="ros-legend-item"><span class="ros-chip is-leave">ลา</span></div>
+                  <span style="font-size:11px;color:var(--ink-3);margin-left:6px;">(คลิกที่ช่องเพื่อสลับสถานะ)</span>
+                </div>
+              </div>
+
+              <!-- Weekly Roster Table -->
+              <div class="ros-table-container">
+                <table class="ros-table" id="ros-table">
+                  <thead>
+                    <tr id="ros-thead-row">
+                      <th class="ros-th-driver">คนขับ</th>
+                      <!-- 7 Days headers injected via JS -->
+                    </tr>
+                  </thead>
+                  <tbody id="ros-tbody">
+                    <!-- Injected via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal สำหรับใส่หมายเหตุการลา -->
+        <div class="drv-modal-overlay" id="ros-note-modal-overlay" onclick="rosCloseNoteModal(event)">
+          <div class="drv-modal" id="ros-note-modal" onclick="event.stopPropagation()" style="max-width:380px;">
+            <div class="drv-modal-header">
+              <div class="drv-modal-title" id="ros-note-modal-title">บันทึกการลา</div>
+              <button class="drv-modal-close" onclick="rosCloseNoteModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form class="drv-modal-body" onsubmit="rosSaveLeaveNote(event)">
+              <input type="hidden" id="ros-note-driver-id" value="">
+              <input type="hidden" id="ros-note-date" value="">
+
+              <div class="drv-form-group">
+                <label class="drv-form-label">คนขับ & วันที่</label>
+                <div id="ros-note-summary" style="font-size:var(--fs-detail);font-weight:700;color:var(--ink);padding:4px 0;"></div>
+              </div>
+
+              <div class="drv-form-group">
+                <label class="drv-form-label">ประเภท / หมายเหตุการลา</label>
+                <select class="drv-form-input" id="ros-note-preset" onchange="rosSelectNotePreset(this.value)">
+                  <option value="ลาป่วย">🤒 ลาป่วย</option>
+                  <option value="ลากิจ">📝 ลากิจ</option>
+                  <option value="ลาพักร้อน">🏖️ ลาพักร้อน</option>
+                  <option value="ติดธุระด่วน">⚡ ติดธุระด่วน</option>
+                  <option value="custom">✏️ อื่นๆ (ระบุเอง)</option>
+                </select>
+              </div>
+
+              <div class="drv-form-group" id="ros-note-custom-group" style="display:none;">
+                <label class="drv-form-label">ระบุรายละเอียด</label>
+                <input type="text" class="drv-form-input" id="ros-note-custom-input" placeholder="เช่น ไปต่อใบขับขี่">
+              </div>
+
+              <div class="drv-modal-footer">
+                <button type="button" class="drv-btn-cancel" onclick="rosCloseNoteModal()">ยกเลิก</button>
+                <button type="submit" class="drv-btn-save">
+                  <i class="fa-solid fa-check"></i> บันทึก
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Add / Edit Driver Modal -->
+        <div class="drv-modal-overlay" id="drv-modal-overlay" onclick="drvCloseModal(event)">
+          <div class="drv-modal" id="drv-modal" onclick="event.stopPropagation()">
+            <div class="drv-modal-header">
+              <div class="drv-modal-title" id="drv-modal-title">เพิ่มคนขับใหม่</div>
+              <button class="drv-modal-close" onclick="drvCloseModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form class="drv-modal-body" onsubmit="drvHandleSave(event)">
+              <input type="hidden" id="drv-form-code" value="">
+
+              <div class="drv-form-group">
+                <label class="drv-form-label">ชื่อ - นามสกุล <span style="color:var(--st-failed)">*</span></label>
+                <input type="text" class="drv-form-input" id="drv-form-name" placeholder="เช่น สมชาย จัดส่ง" required>
+              </div>
+
+              <div class="drv-form-group">
+                <label class="drv-form-label">เบอร์โทรศัพท์</label>
+                <input type="tel" class="drv-form-input" id="drv-form-phone" placeholder="เช่น 081-234-5678">
+              </div>
+
+              <div class="drv-form-group">
+                <label class="drv-form-label">โซนที่รับผิดชอบ (เลือกได้หลายโซน)</label>
+                <div class="drv-zone-checkboxes" id="drv-form-zones">
+                  <!-- Injected dynamically from active zones -->
+                </div>
+              </div>
+
+              <div class="drv-form-row">
+                <div class="drv-form-group" style="flex:1">
+                  <label class="drv-form-label">รหัส PIN 4 หลัก (สำหรับล็อกอิน)</label>
+                  <div style="display:flex;gap:6px">
+                    <input type="text" class="drv-form-input" id="drv-form-pin" maxlength="4" pattern="[0-9]{4}" placeholder="4 หลัก" required style="font-family:var(--font-code);font-weight:700;letter-spacing:2px;text-align:center">
+                    <button type="button" class="drv-pin-rand-btn" onclick="drvGenRandomPin()" title="สุ่ม PIN ใหม่">
+                      <i class="fa-solid fa-dice"></i> สุ่ม
+                    </button>
+                  </div>
+                </div>
+
+                <div class="drv-form-group" style="width:130px">
+                  <label class="drv-form-label">สีประจำตัว</label>
+                  <select class="drv-form-input" id="drv-form-color">
+                    <option value="var(--st-available)">🟩 เขียว</option>
+                    <option value="#8b5cf6">🟪 ม่วง</option>
+                    <option value="#f59e0b">🟧 ส้ม</option>
+                    <option value="#06b6d4">🟦 ฟ้า</option>
+                    <option value="#ec4899">🌸 ชมพู</option>
+                    <option value="#3b82f6">🔷 น้ำเงิน</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="drv-modal-footer">
+                <button type="button" class="drv-btn-cancel" onclick="drvCloseModal()">ยกเลิก</button>
+                <button type="submit" class="drv-btn-save" id="drv-btn-submit">
+                  <i class="fa-solid fa-floppy-disk"></i> บันทึกคนขับ
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="sup-notification"></div>
+
+  <!-- Call Log Modal -->
+  <div class="ord-call-modal-overlay" id="ord-call-modal-overlay" onclick="ordCloseCallModal(event)"></div>
+  <div class="ord-call-modal" id="ord-call-modal" role="dialog" aria-modal="true" aria-label="บันทึกการโทร" style="display:none">
+    <div class="ord-call-modal-header">
+      <div class="ord-call-modal-title">📞 บันทึกการโทร</div>
+      <button class="ord-call-modal-close" onclick="ordCloseCallModal()" aria-label="ปิด"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ord-call-modal-body">
+      <div class="ord-call-phone-row">
+        <span class="ord-call-phone-label">เบอร์:</span>
+        <span class="ord-call-phone-num" id="ord-call-phone-display">—</span>
+        <button class="ord-call-copy-btn" id="ord-call-copy-btn" onclick="ordCopyPhone()" title="คัดลอก">
+          <i class="fa-regular fa-copy"></i> คัดลอก
+        </button>
+      </div>
+      <div class="ord-call-result-label">ผลการโทร:</div>
+      <div class="ord-call-result-group" id="ord-call-result-group">
+        <label class="ord-call-radio-label">
+          <input type="radio" name="call-result" value="reached" id="ord-call-r1"> ติดต่อได้
+        </label>
+        <label class="ord-call-radio-label">
+          <input type="radio" name="call-result" value="no_answer" id="ord-call-r2"> ติดต่อไม่ได้
+        </label>
+        <label class="ord-call-radio-label">
+          <input type="radio" name="call-result" value="voicemail" id="ord-call-r3"> ฝากข้อความไว้
+        </label>
+      </div>
+      <div class="ord-call-note-row">
+        <label class="ord-call-note-label" for="ord-call-note">บันทึกเพิ่มเติม (ถ้ามี)</label>
+        <input type="text" id="ord-call-note" class="ord-call-note-input" placeholder="ระบุข้อความเพิ่มเติม…">
+      </div>
+    </div>
+    <div class="ord-call-modal-footer">
+      <button class="ord-call-btn-cancel" onclick="ordCloseCallModal()">ยกเลิก</button>
+      <button class="ord-call-btn-save" onclick="ordSaveCallLog()">บันทึก</button>
+    </div>
+  </div>
+
+  <!-- Pinfix Modal -->
+  <div class="ord-pinfix-modal-overlay" id="ord-pinfix-modal-overlay" onclick="ordClosePinfixModal(event)"></div>
+  <div class="ord-pinfix-modal" id="ord-pinfix-modal" role="dialog" aria-modal="true" aria-label="แก้ไขหมุด" style="display:none">
+    <div class="ord-pinfix-modal-header">
+      <div class="ord-pinfix-modal-title">📍 แก้ไขหมุด</div>
+      <button class="ord-pinfix-modal-close" onclick="ordClosePinfixModal()" aria-label="ปิด"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ord-pinfix-modal-body">
+      <div id="ord-pinfix-map" class="ord-pinfix-map"></div>
+      <div class="ord-pinfix-coord-row">
+        <span class="ord-pinfix-coord-label">พิกัดใหม่:</span>
+        <span id="ord-pinfix-coord-display" class="ord-pinfix-coord-val">—</span>
+      </div>
+      <p class="ord-pinfix-hint"><i class="fa-solid fa-hand-pointer"></i> ลากหมุดเพื่อแก้ไขตำแหน่ง</p>
+    </div>
+    <div class="ord-pinfix-modal-footer">
+      <button class="ord-pinfix-btn-cancel" onclick="ordClosePinfixModal()">ยกเลิก</button>
+      <button class="ord-pinfix-btn-save" onclick="ordSavePinfix()">บันทึกหมุดใหม่</button>
+    </div>
+  </div>
+
+  <!-- Store Photo Popover (global) -->
+  <div class="ord-photo-popover-global" id="ord-photo-popover-global" style="display:none">
+    <div class="ord-photo-popover-inner">
+      <img id="ord-photo-preview" src="" alt="รูปหน้าร้าน" class="ord-photo-preview-img" style="display:none">
+      <div class="ord-photo-placeholder" id="ord-photo-placeholder">
+        <i class="fa-solid fa-store"></i>
+      </div>
+      <label class="ord-photo-upload-btn" for="ord-photo-file-input">
+        <i class="fa-solid fa-camera"></i> เปลี่ยนรูป
+      </label>
+      <input type="file" id="ord-photo-file-input" accept="image/*" style="display:none" onchange="ordHandlePhotoUpload(event)">
+    </div>
+  </div>
+
+  <!-- Modal: Quick Date Picker (กำหนดวันส่งด่วน) -->
+  <div class="ord-modal-overlay" id="ord-quick-date-overlay" onclick="ordCloseQuickDateModal(event)"></div>
+  <div class="ord-modal" id="ord-quick-date-modal" role="dialog" aria-modal="true" aria-label="กำหนดวันจัดส่ง" style="display:none">
+    <div class="ord-modal-header">
+      <div class="ord-modal-title"><i class="fa-solid fa-calendar-day" style="color:var(--st-available)"></i> กำหนดวันจัดส่ง</div>
+      <button class="ord-modal-close" onclick="ordCloseQuickDateModal()" aria-label="ปิด"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ord-modal-body">
+      <div class="ord-modal-target-info" id="ord-quick-date-target">
+        <!-- Target customer & order ID -->
+      </div>
+      
+      <div class="ord-quick-date-presets">
+        <button type="button" class="ord-preset-btn" onclick="ordSelectQuickDatePreset(0)">
+          <i class="fa-solid fa-bolt"></i> วันนี้ (<span id="ord-preset-today-label">—</span>)
+        </button>
+        <button type="button" class="ord-preset-btn" onclick="ordSelectQuickDatePreset(1)">
+          <i class="fa-regular fa-sun"></i> พรุ่งนี้ (<span id="ord-preset-tmr-label">—</span>)
+        </button>
+        <button type="button" class="ord-preset-btn" onclick="ordSelectQuickDatePreset(2)">
+          <i class="fa-solid fa-calendar-days"></i> มะรืนนี้ (<span id="ord-preset-dayafter-label">—</span>)
+        </button>
+      </div>
+
+      <div class="ord-edit-row" style="margin-top:14px">
+        <label class="ord-edit-label" for="ord-quick-date-input">หรือเลือกวันที่จากปฏิทิน:</label>
+        <input type="date" id="ord-quick-date-input" class="ord-edit-input" style="height:44px;font-size:15px">
+      </div>
+    </div>
+    <div class="ord-modal-footer">
+      <button type="button" class="btn btn--secondary" onclick="ordClearQuickDate()" style="margin-right:auto;color:var(--st-failed)">
+        <i class="fa-solid fa-trash-can"></i> ล้างวันส่ง
+      </button>
+      <button type="button" class="btn btn--secondary" onclick="ordCloseQuickDateModal()">ยกเลิก</button>
+      <button type="button" class="btn btn--primary" onclick="ordSaveQuickDateFromModal()">
+        <i class="fa-solid fa-check"></i> บันทึกวันจัดส่ง
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal: Archive Order (พักรอ/เก็บถาวร) -->
+  <div class="ord-modal-overlay" id="ord-archive-overlay" onclick="ordCloseArchiveModal(event)"></div>
+  <div class="ord-modal" id="ord-archive-modal" role="dialog" aria-modal="true" aria-label="พักรอออเดอร์" style="display:none">
+    <div class="ord-modal-header">
+      <div class="ord-modal-title"><i class="fa-solid fa-box-archive" style="color:#d97706"></i> พักรอออเดอร์ (Archive)</div>
+      <button class="ord-modal-close" onclick="ordCloseArchiveModal()" aria-label="ปิด"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ord-modal-body">
+      <div class="ord-modal-target-info" id="ord-archive-target">
+        <!-- Target customer & order ID -->
+      </div>
+      
+      <div style="font-size:13px;color:var(--ink-2);margin-bottom:12px">
+        ออเดอร์ที่ถูกพักรอ (Archive) จะถูกแยกออกจากคิวจัดส่งประจำวันชั่วคราว คุณสามารถเรียกดูและนำกลับมาจัดส่งได้ทุกเมื่อ
+      </div>
+
+      <div class="ord-edit-row">
+        <label class="ord-edit-label">เลือกเหตุผลในการพักรอ:</label>
+        <div class="ord-archive-reasons-grid">
+          <button type="button" class="ord-reason-preset-btn" onclick="ordPickArchiveReason('รอลูกค้าโอนเงิน/ชำระเงิน')">
+            💳 รอลูกค้าโอนเงิน/ชำระเงิน
+          </button>
+          <button type="button" class="ord-reason-preset-btn" onclick="ordPickArchiveReason('สินค้าหมดชั่วคราว รอเข้าคลัง')">
+            📦 สินค้าหมดชั่วคราว รอเข้าคลัง
+          </button>
+          <button type="button" class="ord-reason-preset-btn" onclick="ordPickArchiveReason('ลูกค้ารอคอนเฟิร์มวันว่างรับของ')">
+            📅 ลูกค้ารอคอนเฟิร์มวันว่างรับของ
+          </button>
+          <button type="button" class="ord-reason-preset-btn" onclick="ordPickArchiveReason('ที่อยู่/พิกัดไม่ชัดเจน รอประสานงาน')">
+            📍 ที่อยู่/พิกัดไม่ชัดเจน รอประสานงาน
+          </button>
+          <button type="button" class="ord-reason-preset-btn" onclick="ordPickArchiveReason('คำขอระงับชั่วคราวจากลูกค้า/แอดมิน')">
+            ⏸️ คำขอระงับชั่วคราว
+          </button>
+        </div>
+      </div>
+
+      <div class="ord-edit-row" style="margin-top:12px">
+        <label class="ord-edit-label" for="ord-archive-reason-input">รายละเอียดเหตุผล:</label>
+        <textarea id="ord-archive-reason-input" class="ord-edit-textarea" rows="2" placeholder="ระบุเหตุผลในการพักรอออเดอร์นี้…"></textarea>
+      </div>
+    </div>
+    <div class="ord-modal-footer">
+      <button type="button" class="btn btn--secondary" onclick="ordCloseArchiveModal()">ยกเลิก</button>
+      <button type="button" class="btn btn--primary" style="background:#d97706;border-color:#d97706" onclick="ordConfirmArchiveFromModal()">
+        <i class="fa-solid fa-box-archive"></i> ยืนยันพักรอ (Archive)
+      </button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <script src="https://unpkg.com/polygon-clipping/dist/polygon-clipping.umd.min.js"></script>
+  <script src="supervisor.js"></script>
+</body>
+</html>

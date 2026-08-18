@@ -1,0 +1,1862 @@
+[
+  {
+    "index": 1,
+    "mojibake": "${log.new_value || '喔о箞喔侧竾'}",
+    "corrupted": "${log.new_value || 'ว่าง'}",
+    "reconstructed": "${log.new_value || 'ว่าง'}"
+  },
+  {
+    "index": 2,
+    "mojibake": "${log.old_value || '喔о箞喔侧竾'}",
+    "corrupted": "${log.old_value || 'ว่าง'}",
+    "reconstructed": "${log.old_value || 'ว่าง'}"
+  },
+  {
+    "index": 3,
+    "mojibake": "(喔堗覆喔� Unii)",
+    "corrupted": "(จาค17 Unii)",
+    "reconstructed": "(จาค1�7 Unii)"
+  },
+  {
+    "index": 4,
+    "mojibake": "(喙佮竵喙夃箘喔傕箓喔斷涪 M5)",
+    "corrupted": "(แก้ไขโดย M5)",
+    "reconstructed": "(แก้ไขโดย M5)"
+  },
+  {
+    "index": 5,
+    "mojibake": "Admin (喔о复喔娻副喔�)",
+    "corrupted": "Admin (วิชัค17)",
+    "reconstructed": "Admin (วิชัค1�7)"
+  },
+  {
+    "index": 6,
+    "mojibake": "Admin (喔�浮喔娻覆喔�)",
+    "corrupted": "Admin (ค17ชาค17)",
+    "reconstructed": "Admin (ค1�7��ชาค1�7)"
+  },
+  {
+    "index": 7,
+    "mojibake": "COD (喙€喔佮箛喔氞箑喔囙复喔權笡喔ム覆喔⑧笚喔侧竾)",
+    "corrupted": "COD (๢ก็บเงินปลายทาง)",
+    "reconstructed": "COD (๢�ก็บเงินปลายทาง)"
+  },
+  {
+    "index": 8,
+    "mojibake": "S1. 喔�笝喙夃覆喙佮福喔佮斧喔编抚喔�笝喙夃覆 (Supervisor Dashboard)",
+    "corrupted": "S1. ค17้าแรกหัวค17้า (Supervisor Dashboard)",
+    "reconstructed": "S1. ค1�7��้าแรกหัวค1�7��้า (Supervisor Dashboard)"
+  },
+  {
+    "index": 9,
+    "mojibake": "S2. 喔�笝喔膏浮喔编笗喔脆釜喙堗竾喔傕箟喔侧浮喙傕笅喔� (Cross-zone Approval)",
+    "corrupted": "S2. ค17ุมัติส่งข้ามโซค17 (Cross-zone Approval)",
+    "reconstructed": "S2. ค1�7��ุมัติส่งข้ามโซค1�7 (Cross-zone Approval)"
+  },
+  {
+    "index": 10,
+    "mojibake": "S3. 喔曕福喔о笀喙€喔囙复喔� COD & 喔涏复喔斷涪喔�笖喔｀覆喔⑧抚喔编笝",
+    "corrupted": "S3. ตรวจ๢งิค17 COD & ปิดยค17รายวัน",
+    "reconstructed": "S3. ตรวจ๢�งิค1�7 COD & ปิดยค1�7��รายวัน"
+  },
+  {
+    "index": 11,
+    "mojibake": "S4. 喔｀副喔氞競喔�竾喔勦阜喔權箑喔傕箟喔侧竸喔ム副喔� (Warehouse Returns)",
+    "corrupted": "S4. รับขค17คืนเข้าคลัค17 (Warehouse Returns)",
+    "reconstructed": "S4. รับขค1�7��คืนเข้าคลัค1�7 (Warehouse Returns)"
+  },
+  {
+    "index": 12,
+    "mojibake": "S5. 喔｀覆喔⑧笀喙堗覆喔⑧笀喔侧竵喔佮覆喔｀競喔權釜喙堗竾 (Transport Expenses)",
+    "corrupted": "S5. รายจ่ายจากการขนส่ง (Transport Expenses)",
+    "reconstructed": "S5. รายจ่ายจากการขนส่ง (Transport Expenses)"
+  },
+  {
+    "index": 13,
+    "mojibake": "S6. 喔�箞喔囙腑喔�竵喔傕箟喔�浮喔灌弗喙冟斧喙夃笚喔掂浮喔氞副喔嵿笂喔� (Accounting Export)",
+    "corrupted": "S6. ค17งอค17ข้ค17ูลให้ทีมบัญชค17 (Accounting Export)",
+    "reconstructed": "S6. ค1�7��งอค1�7��ข้ค1�7��ูลให้ทีมบัญชค1�7 (Accounting Export)"
+  },
+  {
+    "index": 14,
+    "mojibake": "S7. 喔�笝喔膏浮喔编笗喔脆競喙夃腑喔∴腹喔ム釜喔脆笝喔勦箟喔� (Product Approval Center)",
+    "corrupted": "S7. ค17ุมัติข้อมูลสินค้ค17 (Product Approval Center)",
+    "reconstructed": "S7. ค1�7��ุมัติข้อมูลสินค้ค1�7 (Product Approval Center)"
+  },
+  {
+    "index": 15,
+    "mojibake": "S8. 喙佮笖喔娻笟喔�福喙屶笖喔�复喔權竸喙夃覆 & 喔勦抚喔侧浮喔堗父喔｀笘 (Product & Capacity)",
+    "corrupted": "S8. แดชบค17์ดค17นค้า & ความจุรถ (Product & Capacity)",
+    "reconstructed": "S8. แดชบค1�7��์ดค1�7��นค้า & ความจุรถ (Product & Capacity)"
+  },
+  {
+    "index": 16,
+    "mojibake": "Unii Mart Hub 584 (喔ㄠ腹喔權涪喙屶竵喔｀赴喔堗覆喔⑧釜喔脆笝喔勦箟喔侧斧喔ム副喔�)",
+    "corrupted": "Unii Mart Hub 584 (ศูนย์กระจายสินค้าหลัค17)",
+    "reconstructed": "Unii Mart Hub 584 (ศูนย์กระจายสินค้าหลัค1�7)"
+  },
+  {
+    "index": 17,
+    "mojibake": "Zone A 鈥� 喙€喔∴阜喔�竾喔ム赋喔炧腹喔�",
+    "corrupted": "Zone A  17 ๢มืค17ลำพูค17",
+    "reconstructed": "Zone A  1�7 ๢�มืค1�7��ลำพูค1�7"
+  },
+  {
+    "index": 18,
+    "mojibake": "Zone B 鈥� 喔�覆喔｀笭喔�/喙€喔娻傅喔⑧竾喙冟斧喔∴箞",
+    "corrupted": "Zone B  17 ค17รภค17/๢ชียงใหม่",
+    "reconstructed": "Zone B  1�7 ค1�7��รภค1�7/๢�ชียงใหม่"
+  },
+  {
+    "index": 19,
+    "mojibake": "Zone C 鈥� 喔涏箞喔侧笅喔侧竾",
+    "corrupted": "Zone C  17 ป่าซาง",
+    "reconstructed": "Zone C  1�7 ป่าซาง"
+  },
+  {
+    "index": 20,
+    "mojibake": "喔о副喔權腑喔侧笚喔脆笗喔⑧箤",
+    "corrupted": "วันอาทิตย์",
+    "reconstructed": "วันอาทิตย์"
+  },
+  {
+    "index": 21,
+    "mojibake": "喔о复喔娻副喔� 喔傕副喔氞箑喔｀箛喔� (B02)",
+    "corrupted": "วิชัค17 ขับเร็ค17 (B02)",
+    "reconstructed": "วิชัค1�7 ขับเร็ค1�7 (B02)"
+  },
+  {
+    "index": 22,
+    "mojibake": "喔о复喔娻副喔� 喔傕副喔氞箑喔｀箛喔�",
+    "corrupted": "วิชัค17 ขับเร็ค17",
+    "reconstructed": "วิชัค1�7 ขับเร็ค1�7"
+  },
+  {
+    "index": 23,
+    "mojibake": "喔о复喙堗竾喔溹箞喔侧笝喙€喔�箟喔權笚喔侧竾喔權傅喙夃笧喔�笖喔� 喔ム腹喔佮竸喙夃覆喙傕笚喔｀笗喔侧浮喔傕腑喔｀副喔氞競喔�竾喔斷箞喔о笝",
+    "corrupted": "วิ่งผ่าน๢ค17นทางนี้พค17ค17 ลูกค้าโทรตามขอรับขค17ด่วน",
+    "reconstructed": "วิ่งผ่าน๢�ค1�7��นทางนี้พค1�7��ค1�7 ลูกค้าโทรตามขอรับขค1�7��ด่วน"
+  },
+  {
+    "index": 24,
+    "mojibake": "喔∴傅.喔�.",
+    "corrupted": "มี.ค17.",
+    "reconstructed": "มี.ค1�7."
+  },
+  {
+    "index": 25,
+    "mojibake": "喔∴复.喔�.",
+    "corrupted": "มิ.ค17.",
+    "reconstructed": "มิ.ค1�7."
+  },
+  {
+    "index": 26,
+    "mojibake": "喔ム弗喔脆笗喔犩副喔椸福 喙€喔佮笗喔膏竵喔脆箞喔�",
+    "corrupted": "ลลิตภัทร ๢กตุกิ่ค17",
+    "reconstructed": "ลลิตภัทร ๢�กตุกิ่ค1�7"
+  },
+  {
+    "index": 27,
+    "mojibake": "喔ム腹喔佮竸喙夃覆喔傕腑喙€喔ム阜喙堗腑喔權抚喔编笝喔�箞喔囙箑喔權阜喙堗腑喔囙笀喔侧竵喔曕复喔斷竾喔侧笝喔氞父喔�",
+    "corrupted": "ลูกค้าขอ๢ลื่อนวันค17งเนื่องจากติดงานบุค17",
+    "reconstructed": "ลูกค้าขอ๢�ลื่อนวันค1�7��งเนื่องจากติดงานบุค1�7"
+  },
+  {
+    "index": 28,
+    "mojibake": "喔ム腹喔佮竸喙夃覆喙€喔｀箞喔囙箖喔�箟喔�箞喔囙竵喙堗腑喔權箑喔椸傅喙堗涪喔� 喔�涪喔灌箞喙冟竵喔ム箟喙佮笝喔о箑喔傕笗喙傕笅喔� B喔炧腑喔斷傅",
+    "corrupted": "ลูกค้า๢ร่งใค17ค17งก่อนเที่ยค17 ค17ู่ใกล้แนวเขตโซค17 Bพอดี",
+    "reconstructed": "ลูกค้า๢�ร่งใค1�7��ค1�7��งก่อนเที่ยค1�7 ค1�7��ู่ใกล้แนวเขตโซค1�7 Bพอดี"
+  },
+  {
+    "index": 29,
+    "mojibake": "喔ㄠ腹喔權涪喙屶竸喔о笟喔勦父喔∴抚喔编笝喔權傅喙� (A1)",
+    "corrupted": "ศูนย์ควบคุมวันนีไ17 (A1)",
+    "reconstructed": "ศูนย์ควบคุมวันนีไ1�7 (A1)"
+  },
+  {
+    "index": 30,
+    "mojibake": "喔ㄠ腹喔權涪喙屶竸喔о笟喔勦父喔∴箒喔�笖喔∴复喔�",
+    "corrupted": "ศูนย์ควบคุมแค17มิค17",
+    "reconstructed": "ศูนย์ควบคุมแค1�7��มิค1�7"
+  },
+  {
+    "index": 31,
+    "mojibake": "喔佮福喔班笖喔侧笝喙€喔佮弗喔掂箞喔⑧竾喔侧笝 (A3)",
+    "corrupted": "กระดาน๢กลี่ยงาน (A3)",
+    "reconstructed": "กระดาน๢�กลี่ยงาน (A3)"
+  },
+  {
+    "index": 32,
+    "mojibake": "喔佮福喔膏笓喔侧福喔班笟喔膏箑喔�笗喔膏笢喔ム竵喔侧福喔涏笍喔脆箑喔�笜喔勦赋喔傕腑喙佮竵喙夃箘喔傕競喙夃腑喔∴腹喔ム釜喔脆笝喔勦箟喔� (喔氞副喔囙竸喔编笟):",
+    "corrupted": "กรุณาระบุเค17ุผลการปฏิเค17คำขอแก้ไขข้อมูลสินค้ค17 (บังคับ):",
+    "reconstructed": "กรุณาระบุเค1�7��ุผลการปฏิเค1�7��คำขอแก้ไขข้อมูลสินค้ค1�7 (บังคับ):"
+  },
+  {
+    "index": 33,
+    "mojibake": "喔佮福喔膏笓喔侧竵喔｀腑喔佮笀喔赤笝喔о笝喙€喔囙复喔權箖喔�箟喔栢腹喔佮笗喙夃腑喔�",
+    "corrupted": "กรุณากรอกจำนวน๢งินใค17ถูกต้อค17",
+    "reconstructed": "กรุณากรอกจำนวน๢�งินใค1�7��ถูกต้อค1�7"
+  },
+  {
+    "index": 34,
+    "mojibake": "喔佮福喔膏笓喔侧竵喔｀腑喔佮笂喔粪箞喔�福喙夃覆喔權竸喙夃覆喙佮弗喔班箑喔氞腑喔｀箤喙傕笚喔｀辅喔编笧喔椸箤",
+    "corrupted": "กรุณากรอกชื่ค17้านค้าและเบอร์โทรศัพท์",
+    "reconstructed": "กรุณากรอกชื่ค1�7��้านค้าและเบอร์โทรศัพท์"
+  },
+  {
+    "index": 35,
+    "mojibake": "喔佮覆喔權笗喙屶笜喔脆笖喔� 喔氞父喔嵿斧喔權腹",
+    "corrupted": "กานต์ธิดค17 บุญหนู",
+    "reconstructed": "กานต์ธิดค1�7 บุญหนู"
+  },
+  {
+    "index": 36,
+    "mojibake": "喔佮覆喔｀笖喔赤箑喔權复喔權竵喔侧福喔權傅喙�",
+    "corrupted": "การดำเนินการนีไ17",
+    "reconstructed": "การดำเนินการนีไ1�7"
+  },
+  {
+    "index": 37,
+    "mojibake": "喔佮赋喔ム副喔囙箑喔｀傅喔⑧竵喔斷腹喔炧复喔佮副喔� GPS 喔堗覆喔佮腑喔膏笡喔佮福喔撪箤...",
+    "corrupted": "กำลังเรียกดูพิกัค17 GPS จากอุปกรณ์...",
+    "reconstructed": "กำลังเรียกดูพิกัค1�7 GPS จากอุปกรณ์..."
+  },
+  {
+    "index": 38,
+    "mojibake": "喔傕付喙夃笝喔氞副喔權箘喔�",
+    "corrupted": "ขึ้นบันไค17",
+    "reconstructed": "ขึ้นบันไค1�7"
+  },
+  {
+    "index": 39,
+    "mojibake": "喔勦副喔斷弗喔�竵喙€喔ム競喔勦赋喔�副喙堗竾喔嬥阜喙夃腑喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚: ",
+    "corrupted": "คัดลค17๢ลขคำค17่งซื้อ๢รียบร้ค17แล้ว: ",
+    "reconstructed": "คัดลค1�7��๢�ลขคำค1�7��่งซื้อ๢�รียบร้ค1�7��แล้ว: "
+  },
+  {
+    "index": 40,
+    "mojibake": "喔勦父喔撪弗喔ム复喔曕笭喔编笚喔�",
+    "corrupted": "คุณลลิตภัทค17",
+    "reconstructed": "คุณลลิตภัทค1�7"
+  },
+  {
+    "index": 41,
+    "mojibake": "喔勦父喔撪箑喔堗箠喙€喔�傅喙堗涪喔�",
+    "corrupted": "คุณเจ๊๢ค17่ยค17",
+    "reconstructed": "คุณเจ๊๢�ค1�7��่ยค1�7"
+  },
+  {
+    "index": 42,
+    "mojibake": "喔勦笝喔傕副喔氞箑喔斷复喔�",
+    "corrupted": "คนขับเดิค17",
+    "reconstructed": "คนขับเดิค1�7"
+  },
+  {
+    "index": 43,
+    "mojibake": "喔勦笝喔�箞喔�",
+    "corrupted": "คนค17ค17",
+    "reconstructed": "คนค1�7��ค1�7"
+  },
+  {
+    "index": 44,
+    "mojibake": "喔堗副喔斷竵喔侧福喔勦笝喔傕副喔� (A7)",
+    "corrupted": "จัดการคนขัค17 (A7)",
+    "reconstructed": "จัดการคนขัค1�7 (A7)"
+  },
+  {
+    "index": 45,
+    "mojibake": "喔堗副喔斷竵喔侧福喙傕笅喔� GeoJSON (A6)",
+    "corrupted": "จัดการโซค17 GeoJSON (A6)",
+    "reconstructed": "จัดการโซค1�7 GeoJSON (A6)"
+  },
+  {
+    "index": 46,
+    "mojibake": "喔堗箞喔侧涪喙€喔囙复喔權箒喔ム箟喔�",
+    "corrupted": "จ่าย๢งินแล้ค17",
+    "reconstructed": "จ่าย๢�งินแล้ค1�7"
+  },
+  {
+    "index": 47,
+    "mojibake": "喔堗腑喔囙箒喔ム箟喔� 12 喔堗父喔� (喔囙覆喔權箒喔權箞喔�)",
+    "corrupted": "จองแล้ค17 12 จุค17 (งานแน่ค17)",
+    "reconstructed": "จองแล้ค1�7 12 จุค1�7 (งานแน่ค1�7)"
+  },
+  {
+    "index": 48,
+    "mojibake": "喔堗腑喔囙箒喔ム箟喔� 6 喔堗父喔� (喔囙覆喔權笡喔佮笗喔�)",
+    "corrupted": "จองแล้ค17 6 จุค17 (งานปกตค17)",
+    "reconstructed": "จองแล้ค1�7 6 จุค1�7 (งานปกตค1�7)"
+  },
+  {
+    "index": 49,
+    "mojibake": "喔堗腑喔斷弗喔侧笝喔�弗喔编竾喔曕付喔�",
+    "corrupted": "จอดลานค17ังตึค17",
+    "reconstructed": "จอดลานค1�7��ังตึค1�7"
+  },
+  {
+    "index": 50,
+    "mojibake": "喔堗腑喔斷斧喔權箟喔侧福喙夃覆喔權福喔脆浮喔栢笝喔�",
+    "corrupted": "จอดหน้าร้านริมถนค17",
+    "reconstructed": "จอดหน้าร้านริมถนค1�7"
+  },
+  {
+    "index": 51,
+    "mojibake": "喔娻浮喔炧腹喙� 喔佮覆喔｀竸喙夃覆",
+    "corrupted": "ชมพูไ17 การค้า",
+    "reconstructed": "ชมพูไ1�7 การค้า"
+  },
+  {
+    "index": 52,
+    "mojibake": "喔娻赋喔｀赴喔�腑喔權箘喔ム笝喙屶箒喔ム箟喔�",
+    "corrupted": "ชำระค17นไลน์แล้ค17",
+    "reconstructed": "ชำระค1�7��นไลน์แล้ค1�7"
+  },
+  {
+    "index": 53,
+    "mojibake": "喔嬥腑喔⑧箒喔勦笟",
+    "corrupted": "ซอยแคบ",
+    "reconstructed": "ซอยแคบ"
+  },
+  {
+    "index": 54,
+    "mojibake": "喔斷付喔囙竾喔侧笝喔斷箞喔о笝喔斷箟喔о涪喔椸傅喔∴笧喔脆箑喔ㄠ俯 (喔傕箟喔侧浮喔傕副喙夃笝喔曕腑喔權腑喔權父喔∴副喔曕复喙€喔｀箞喔囙笖喙堗抚喔�)",
+    "corrupted": "ดึงงานด่วนด้วยทีมพิเศษ (ข้ามขั้นตอนอนุมัติ๢ร่งด่วค17)",
+    "reconstructed": "ดึงงานด่วนด้วยทีมพิเศษ (ข้ามขั้นตอนอนุมัติ๢�ร่งด่วค1�7)"
+  },
+  {
+    "index": 55,
+    "mojibake": "喔斷腹喔｀覆喔⑧竵喔侧福 A2",
+    "corrupted": "ดูรายการ A2",
+    "reconstructed": "ดูรายการ A2"
+  },
+  {
+    "index": 56,
+    "mojibake": "喔曕复喔斷笗喔侧浮喙佮弗喔班笂喙堗抚喔⑧箑喔�弗喔粪腑 (A5)",
+    "corrupted": "ติดตามและช่วยเค17ือ (A5)",
+    "reconstructed": "ติดตามและช่วยเค1�7��ือ (A5)"
+  },
+  {
+    "index": 57,
+    "mojibake": "喔曕箟喔�竾喔｀赴喔氞父喙€喔�笗喔膏笢喔ム竵喔侧福喔涏笍喔脆箑喔�笜!",
+    "corrupted": "ต้ค17ระบุ๢ค17ุผลการปฏิเค17!",
+    "reconstructed": "ต้ค1�7��ระบุ๢�ค1�7��ุผลการปฏิเค1�7��!"
+  },
+  {
+    "index": 58,
+    "mojibake": "喔椸傅喔∴笟喔编笉喔娻傅 (Accounting)",
+    "corrupted": "ทีมบัญชี (Accounting)",
+    "reconstructed": "ทีมบัญชี (Accounting)"
+  },
+  {
+    "index": 59,
+    "mojibake": "喔椸父喔佮箓喔嬥笝 (喔ム腑喔曕箖喔�笉喙� / 喙€喔佮箛喔氞笗喔� / VVIP)",
+    "corrupted": "ทุกโซน (ลอตใค17ไ17 / ๢ก็บตค17 / VVIP)",
+    "reconstructed": "ทุกโซน (ลอตใค1�7��ไ1�7 / ๢�ก็บตค1�7 / VVIP)"
+  },
+  {
+    "index": 60,
+    "mojibake": "喔椸赴喙€喔氞傅喔⑧笝喔｀箟喔侧笝喔勦箟喔� (A4)",
+    "corrupted": "ทะ๢บียนร้านค้ค17 (A4)",
+    "reconstructed": "ทะ๢�บียนร้านค้ค1�7 (A4)"
+  },
+  {
+    "index": 61,
+    "mojibake": "喔權腑喔佮箓喔嬥笝",
+    "corrupted": "นอกโซน",
+    "reconstructed": "นอกโซน"
+  },
+  {
+    "index": 62,
+    "mojibake": "喔權赋喙€喔傕箟喔侧竸喔赤釜喔编箞喔囙笅喔粪箟喔�笗喔编箟喔囙笗喙夃笝喙€喔｀傅喔⑧笟喔｀箟喔�涪",
+    "corrupted": "นำ๢ข้าคำสั่งซื้ค17ั้งต้น๢รียบร้ค17",
+    "reconstructed": "นำ๢�ข้าคำสั่งซื้ค1�7��ั้งต้น๢�รียบร้ค1�7��"
+  },
+  {
+    "index": 63,
+    "mojibake": "喔氞副喔權笚喔多竵喔佮弗喔膏箞喔∴釜喔赤箑喔｀箛喔�",
+    "corrupted": "บันทึกกลุ่มสำเร็ค17",
+    "reconstructed": "บันทึกกลุ่มสำเร็ค1�7"
+  },
+  {
+    "index": 64,
+    "mojibake": "喔氞副喔權笚喔多竵喔｀覆喔⑧笀喙堗覆喔⑧競喔權釜喙堗竾",
+    "corrupted": "บันทึกรายจ่ายขนส่ง",
+    "reconstructed": "บันทึกรายจ่ายขนส่ง"
+  },
+  {
+    "index": 65,
+    "mojibake": "喔涏复喔斷涪喔�笖喔｀覆喔⑧抚喔编笝",
+    "corrupted": "ปิดยค17รายวัน",
+    "reconstructed": "ปิดยค1�7��รายวัน"
+  },
+  {
+    "index": 66,
+    "mojibake": "喔涏复喔� 12:00-13:00",
+    "corrupted": "ปิค17 12:00-13:00",
+    "reconstructed": "ปิค1�7 12:00-13:00"
+  },
+  {
+    "index": 67,
+    "mojibake": "喔涏竵喔曕复",
+    "corrupted": "ปกติ",
+    "reconstructed": "ปกติ"
+  },
+  {
+    "index": 68,
+    "mojibake": "喔涏笍喔脆箑喔�笜喔勦赋喔傕腑喔�箞喔囙競喙夃覆喔∴箓喔嬥笝",
+    "corrupted": "ปฏิเค17คำขอค17งข้ามโซน",
+    "reconstructed": "ปฏิเค1�7��คำขอค1�7��งข้ามโซน"
+  },
+  {
+    "index": 69,
+    "mojibake": "喔涏笍喔脆箑喔�笜喔勦赋喔傕腑喙佮竵喙夃釜喔脆笝喔勦箟喔�",
+    "corrupted": "ปฏิเค17คำขอแก้สินค้ค17",
+    "reconstructed": "ปฏิเค1�7��คำขอแก้สินค้ค1�7"
+  },
+  {
+    "index": 70,
+    "mojibake": "喔涏箟喔侧笝喔о弗喔佮覆喔｀竸喙夃覆 喔ㄠ福喔掂笟喔编抚喔氞覆喔�",
+    "corrupted": "ป้านวลการค้า ศรีบัวบาค17",
+    "reconstructed": "ป้านวลการค้า ศรีบัวบาค1�7"
+  },
+  {
+    "index": 71,
+    "mojibake": "喔炧笝喔编竵喔囙覆喔權競喔编笟喔｀笘喔佮笖喔堗腑喔囙竾喔侧笝喔椸覆喔囙斧喔權箟喔侧箒喔�笧",
+    "corrupted": "พนักงานขับรถกดจองงานทางหน้าแค17",
+    "reconstructed": "พนักงานขับรถกดจองงานทางหน้าแค1�7��"
+  },
+  {
+    "index": 72,
+    "mojibake": "喔炧笝喔编竵喔囙覆喔權競喔编笟喔｀笘喔佮笖喔堗腑喔囙笚喔编箟喔囙笀喔膏笖喔�箞喔�",
+    "corrupted": "พนักงานขับรถกดจองทั้งจุดค17ค17",
+    "reconstructed": "พนักงานขับรถกดจองทั้งจุดค1�7��ค1�7"
+  },
+  {
+    "index": 73,
+    "mojibake": "喔｀傅喙€喔嬥箛喔曕斧喔∴父喔斷竵喔ム副喔氞釜喔灌箞喔炧复喔佮副喔斷箑喔斷复喔∴笀喔侧竵喔娻傅喔椸箑喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "รี๢ซ็ตหมุดกลับสู่พิกัดเดิมจากชีทเรียบร้ค17แล้ว",
+    "reconstructed": "รี๢�ซ็ตหมุดกลับสู่พิกัดเดิมจากชีทเรียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 74,
+    "mojibake": "喔｀副喔氞浮喔�笟喙€喔囙复喔� COD",
+    "corrupted": "รับมค17๢งิค17 COD",
+    "reconstructed": "รับมค1�7��๢�งิค1�7 COD"
+  },
+  {
+    "index": 75,
+    "mojibake": "喔｀副喔氞競喔�竾喔勦阜喔權箑喔傕箟喔侧竸喔ム副喔�",
+    "corrupted": "รับขค17คืนเข้าคลัค17",
+    "reconstructed": "รับขค1�7��คืนเข้าคลัค1�7"
+  },
+  {
+    "index": 76,
+    "mojibake": "喔｀斧喔编釜 PIN 喔�副喔о斧喔權箟喔侧箘喔∴箞喔栢腹喔佮笗喙夃腑喔� (喔｀斧喔编釜喔椸笖喔�腑喔�: 9999 喔�福喔粪腑 8888)",
+    "corrupted": "รหัส PIN ค17วหน้าไม่ถูกต้อค17 (รหัสทดค17ค17: 9999 ค17ือ 8888)",
+    "reconstructed": "รหัส PIN ค1�7��วหน้าไม่ถูกต้อค1�7 (รหัสทดค1�7��ค1�7: 9999 ค1�7��ือ 8888)"
+  },
+  {
+    "index": 77,
+    "mojibake": "喔｀箟喔侧笝喙€喔堗箠喙€喔�傅喙堗涪喔� 喔｀箟喔�竾喔�箟喔侧抚",
+    "corrupted": "ร้าน๢จ๊๢ค17่ยค17 ร้ค17ค17าว",
+    "reconstructed": "ร้าน๢�จ๊๢�ค1�7��่ยค1�7 ร้ค1�7��ค1�7��าว"
+  },
+  {
+    "index": 78,
+    "mojibake": "喔｀覆喔⑧竵喔侧福喔曕箟喔�竾喙€喔勦弗喔掂涪喔｀箤喔佮箞喔�笝喔�腑喔佮福喔� (A2)",
+    "corrupted": "รายการต้ค17๢คลียร์ก่ค17ค17กรค17 (A2)",
+    "reconstructed": "รายการต้ค1�7��๢�คลียร์ก่ค1�7��ค1�7��กรค1�7 (A2)"
+  },
+  {
+    "index": 79,
+    "mojibake": "喔｀赴喔氞父喔堗赋喔權抚喔權釜喔脆笝喔勦箟喔侧笚喔掂箞喔傕覆喔斷斧喔侧涪喔�福喔粪腑喙€喔�傅喔⑧斧喔侧涪 (喔娻复喙夃笝):",
+    "corrupted": "ระบุจำนวนสินค้าที่ขาดหายค17ือ๢ค17ยหาย (ชิ้น):",
+    "reconstructed": "ระบุจำนวนสินค้าที่ขาดหายค1�7��ือ๢�ค1�7��ยหาย (ชิ้น):"
+  },
+  {
+    "index": 80,
+    "mojibake": "喔｀赴喔氞父喔�浮喔侧涪喙€喔�笗喔膏竸喔о覆喔∴箑喔�傅喔⑧斧喔侧涪/喔傕覆喔斷斧喔侧涪 (喔氞副喔囙竸喔编笟):",
+    "corrupted": "ระบุค17าย๢ค17ุความเค17ยหาย/ขาดหาย (บังคับ):",
+    "reconstructed": "ระบุค1�7��าย๢�ค1�7��ุความเค1�7��ยหาย/ขาดหาย (บังคับ):"
+  },
+  {
+    "index": 81,
+    "mojibake": "喔｀赴喔氞父喔�笭喔侧笧喔傕腑喔囙箑喔∴阜喙堗腑喔｀副喔氞竸喔粪笝喙€喔傕箟喔侧竸喔ム副喔� (喔涏竵喔曕复 / 喙€喔�傅喔⑧斧喔侧涪 / 喙勦浮喙堗竸喔｀笟):",
+    "corrupted": "ระบุค17าพของเมื่อรับคืน๢ข้าคลัค17 (ปกติ / ๢ค17ยหาย / ไม่ครบ):",
+    "reconstructed": "ระบุค1�7��าพของเมื่อรับคืน๢�ข้าคลัค1�7 (ปกติ / ๢�ค1�7��ยหาย / ไม่ครบ):"
+  },
+  {
+    "index": 82,
+    "mojibake": "喔｀赴喔氞父喙€喔�笗喔膏笢喔ム箖喔權竵喔侧福喔⑧竵喙€喔ム复喔佮笀喔编笖喔�箞喔囙腑喔�箑喔斷腑喔｀箤喔權傅喙� (喔氞副喔囙竸喔编笟喔佮福喔�竵):",
+    "corrupted": "ระบุ๢ค17ุผลในการยก๢ลิกจัดค17งอค17ดอร์นีไ17 (บังคับกรค17):",
+    "reconstructed": "ระบุ๢�ค1�7��ุผลในการยก๢�ลิกจัดค1�7��งอค1�7��ดอร์นีไ1�7 (บังคับกรค1�7��):"
+  },
+  {
+    "index": 83,
+    "mojibake": "喔｀赴喔氞父喙€喔�笗喔膏笢喔ム箖喔權竵喔侧福喙勦浮喙堗腑喔權父喔∴副喔曕复喔�箞喔囙競喙夃覆喔∴箓喔嬥笝 (喔氞副喔囙竸喔编笟喔佮福喔�竵):",
+    "corrupted": "ระบุ๢ค17ุผลในการไม่อนุมัติค17งข้ามโซน (บังคับกรค17):",
+    "reconstructed": "ระบุ๢�ค1�7��ุผลในการไม่อนุมัติค1�7��งข้ามโซน (บังคับกรค1�7��):"
+  },
+  {
+    "index": 84,
+    "mojibake": "喔｀赴喔氞父喙傕笅喔權釜喙堗竾喔斷箞喔о笝喔炧复喙€喔ㄠ俯",
+    "corrupted": "ระบุโซนส่งด่วนพิ๢ศษ",
+    "reconstructed": "ระบุโซนส่งด่วนพิ๢�ศษ"
+  },
+  {
+    "index": 85,
+    "mojibake": "喔�.喔�.",
+    "corrupted": "ค17.ค17.",
+    "reconstructed": "ค1�7.ค1�7."
+  },
+  {
+    "index": 86,
+    "mojibake": "喔�副喔о斧喔權箟喔侧竸喔ム副喔� (Supervisor)",
+    "corrupted": "ค17วหน้าคลัค17 (Supervisor)",
+    "reconstructed": "ค1�7��วหน้าคลัค1�7 (Supervisor)"
+  },
+  {
+    "index": 87,
+    "mojibake": "喔�浮喔ㄠ副喔佮笖喔脆箤 喔�父喔傕箖喔�",
+    "corrupted": "ค17ศักดิ์ ค17ขใค17",
+    "reconstructed": "ค1�7��ศักดิ์ ค1�7��ขใค1�7"
+  },
+  {
+    "index": 88,
+    "mojibake": "喔�浮喔娻覆喔⑧箒喔堗箟喔囙弗喔侧竵喔脆笀喔勦福喔多箞喔囙笟喙堗覆喔� 喔娻箞喔о涪喔佮福喔班笀喔侧涪喔囙覆喔權箓喔嬥笝 A",
+    "corrupted": "ค17ชายแจ้งลากิจครึ่งบ่าค17 ช่วยกระจายงานโซน A",
+    "reconstructed": "ค1�7��ชายแจ้งลากิจครึ่งบ่าค1�7 ช่วยกระจายงานโซน A"
+  },
+  {
+    "index": 89,
+    "mojibake": "喔�浮喔娻覆喔� 喔堗副喔斷釜喙堗竾 (A01)",
+    "corrupted": "ค17ชาค17 จัดส่ง (A01)",
+    "reconstructed": "ค1�7��ชาค1�7 จัดส่ง (A01)"
+  },
+  {
+    "index": 90,
+    "mojibake": "喔�浮喔娻覆喔� 喔堗副喔斷釜喙堗竾",
+    "corrupted": "ค17ชาค17 จัดส่ง",
+    "reconstructed": "ค1�7��ชาค1�7 จัดส่ง"
+  },
+  {
+    "index": 91,
+    "mojibake": "喔�父喔涏竵喔｀笓喙屶箘喔∴箞喔｀腑喔囙福喔编笟 GPS (喔�覆喔∴覆喔｀笘喔涏复喔斷竾喔侧笝喙勦笖喙�)",
+    "corrupted": "ค17ปกรณ์ไม่รองรับ GPS (ค17มารถปิดงานไดไ17)",
+    "reconstructed": "ค1�7��ปกรณ์ไม่รองรับ GPS (ค1�7��มารถปิดงานไดไ1�7)"
+  },
+  {
+    "index": 92,
+    "mojibake": "喔�父喔｀笂喔编涪 喔�覆喔⑧笖喙堗抚喔� (喔椸傅喔∴笧喔脆箑喔ㄠ俯)",
+    "corrupted": "ค17รชัย ค17ยด่วค17 (ทีมพิเศษ)",
+    "reconstructed": "ค1�7��รชัย ค1�7��ยด่วค1�7 (ทีมพิเศษ)"
+  },
+  {
+    "index": 93,
+    "mojibake": "喔�父喔｀笂喔编涪 喔�覆喔⑧笖喙堗抚喔�",
+    "corrupted": "ค17รชัย ค17ยด่วค17",
+    "reconstructed": "ค1�7��รชัย ค1�7��ยด่วค1�7"
+  },
+  {
+    "index": 94,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆竵喔ム父喙堗浮喙冟斧喔嵿箞喔堗覆喔� Parser",
+    "corrupted": "ค17ุมัติกลุ่มใหญ่จาค17 Parser",
+    "reconstructed": "ค1�7��ุมัติกลุ่มใหญ่จาค1�7 Parser"
+  },
+  {
+    "index": 95,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆競喙夃腑喔∴腹喔ム釜喔脆笝喔勦箟喔侧竵喔ム父喙堗浮喙冟斧喔嵿箞",
+    "corrupted": "ค17ุมัติข้อมูลสินค้ากลุ่มใหญ่",
+    "reconstructed": "ค1�7��ุมัติข้อมูลสินค้ากลุ่มใหญ่"
+  },
+  {
+    "index": 96,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆競喙夃腑喔∴腹喔ム釜喔脆笝喔勦箟喔�",
+    "corrupted": "ค17ุมัติข้อมูลสินค้ค17",
+    "reconstructed": "ค1�7��ุมัติข้อมูลสินค้ค1�7"
+  },
+  {
+    "index": 97,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆竸喔赤競喔�笚喔编箟喔囙斧喔∴笖",
+    "corrupted": "ค17ุมัติคำขค17ั้งหมด",
+    "reconstructed": "ค1�7��ุมัติคำขค1�7��ั้งหมด"
+  },
+  {
+    "index": 98,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆釜喙堗竾喔傕箟喔侧浮喙傕笅喔�",
+    "corrupted": "ค17ุมัติส่งข้ามโซค17",
+    "reconstructed": "ค1�7��ุมัติส่งข้ามโซค1�7"
+  },
+  {
+    "index": 99,
+    "mojibake": "喔�笝喙堗抚喔⑧箑喔斷傅喙堗涪喔�=1",
+    "corrupted": "ค17่วยเดี่ยค17=1",
+    "reconstructed": "ค1�7��่วยเดี่ยค1�7=1"
+  },
+  {
+    "index": 100,
+    "mojibake": "喔�箞喔囙箘喔∴箞喔�赋喙€喔｀箛喔�",
+    "corrupted": "ค17งไม่ค17๢ร็ค17",
+    "reconstructed": "ค1�7��งไม่ค1�7��๢�ร็ค1�7"
+  },
+  {
+    "index": 101,
+    "mojibake": "喙€喔∴阜喔�竾喔ム赋喔炧腹喔�, 喔ム赋喔炧腹喔� (G2QG+2FG)",
+    "corrupted": "๢มืค17ลำพูค17, ลำพูค17 (G2QG+2FG)",
+    "reconstructed": "๢�มืค1�7��ลำพูค1�7, ลำพูค1�7 (G2QG+2FG)"
+  },
+  {
+    "index": 102,
+    "mojibake": "喙€喔∴阜喔�竾喔ム赋喔炧腹喔�, 喔ム赋喔炧腹喔� (H6RT+8V 喔曕赋喔氞弗 喙冟笝喙€喔∴阜喔�竾 喔�赋喙€喔犩腑喙€喔∴阜喔�竾喔ム赋喔炧腹喔� 喔ム赋喔炧腹喔� 51000 喔涏福喔班箑喔椸辅喙勦笚喔�)",
+    "corrupted": "๢มืค17ลำพูค17, ลำพูค17 (H6RT+8V ตำบล ใน๢มืค17 ค17๢ภอ๢มืค17ลำพูค17 ลำพูค17 51000 ประเทศไทค17)",
+    "reconstructed": "๢�มืค1�7��ลำพูค1�7, ลำพูค1�7 (H6RT+8V ตำบล ใน๢�มืค1�7�� ค1�7��๢�ภอ๢�มืค1�7��ลำพูค1�7 ลำพูค1�7 51000 ประเทศไทค1�7)"
+  },
+  {
+    "index": 103,
+    "mojibake": "喙€喔ム阜喙堗腑喔權弗喔�",
+    "corrupted": "๢ลื่อนลค17",
+    "reconstructed": "๢�ลื่อนลค1�7"
+  },
+  {
+    "index": 104,
+    "mojibake": "喙€喔ム阜喙堗腑喔權競喔多箟喔�",
+    "corrupted": "๢ลื่อนขึ้ค17",
+    "reconstructed": "๢�ลื่อนขึ้ค1�7"
+  },
+  {
+    "index": 105,
+    "mojibake": "喙€喔傕箟喔侧笅喔�涪 2 喔澿副喙堗竾喔о副喔斷福喙夃腑喔囙釜喙夃覆喔�",
+    "corrupted": "๢ข้าซค17 2 ฝั่งวัดร้องส้าค17",
+    "reconstructed": "๢�ข้าซค1�7�� 2 ฝั่งวัดร้องส้าค1�7"
+  },
+  {
+    "index": 106,
+    "mojibake": "喙€喔傕箟喔侧釜喔灌箞喔ㄠ腹喔權涪喙屶竸喔о笟喔勦父喔∴笢喔灌箟喔斷腹喙佮弗喔｀赴喔氞笟喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "๢ข้าสู่ศูนย์ควบคุมผู้ดูแลระบบ๢รียบร้ค17แล้ว",
+    "reconstructed": "๢�ข้าสู่ศูนย์ควบคุมผู้ดูแลระบบ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 107,
+    "mojibake": "喙€喔夃笧喔侧赴喔椸傅喔∴笧喔脆箑喔ㄠ俯喙€喔椸箞喔侧笝喔编箟喔權笚喔掂箞喔�覆喔∴覆喔｀笘喔斷付喔囙竾喔侧笝喔斷箞喔о笝喙勦笖喙�",
+    "corrupted": "๢ฉพาะทีมพิเศษ๢ท่านั้นที่ค17มารถดึงงานด่วนไดไ17",
+    "reconstructed": "๢�ฉพาะทีมพิเศษ๢�ท่านั้นที่ค1�7��มารถดึงงานด่วนไดไ1�7"
+  },
+  {
+    "index": 108,
+    "mojibake": "喙€喔涏复喔斷福喔编笟喔∴腑喔氞箑喔囙复喔權笡喔｀赴喔堗赋喔о副喔�",
+    "corrupted": "๢ปิดรับมอบเงินประจำวัค17",
+    "reconstructed": "๢�ปิดรับมอบเงินประจำวัค1�7"
+  },
+  {
+    "index": 109,
+    "mojibake": "喙€喔｀傅喔⑧竾喔曕覆喔∴福喔班涪喔班笚喔侧竾喔堗覆喔佮笁喔编笝",
+    "corrupted": "๢รียงตามระยะทางจากฉัน",
+    "reconstructed": "๢�รียงตามระยะทางจากฉัน"
+  },
+  {
+    "index": 110,
+    "mojibake": "喙€喔｀傅喔⑧竾喔｀覆喔⑧竵喔侧福喔曕覆喔∴福喔班涪喔班笚喔侧竾喔堗覆喔佮笗喔赤箒喔�笝喙堗竾喔勦笝喔傕副喔氞箑喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 (喙勦浮喙堗抚喔侧笖喙€喔�箟喔權笚喔侧竾)",
+    "corrupted": "๢รียงรายการตามระยะทางจากตำแค17่งคนขับเรียบร้ค17แล้ว (ไม่วาด๢ค17นทาง)",
+    "reconstructed": "๢�รียงรายการตามระยะทางจากตำแค1�7��่งคนขับเรียบร้ค1�7��แล้ว (ไม่วาด๢�ค1�7��นทาง)"
+  },
+  {
+    "index": 111,
+    "mojibake": "喙€喔�.喔�.",
+    "corrupted": "๢ค17.ค17.",
+    "reconstructed": "๢�ค1�7.ค1�7."
+  },
+  {
+    "index": 112,
+    "mojibake": "喙€喔�傅喔⑧斧喔侧涪",
+    "corrupted": "๢ค17ยหาย",
+    "reconstructed": "๢�ค1�7��ยหาย"
+  },
+  {
+    "index": 113,
+    "mojibake": "喙€喔�箟喔權笚喔侧竾喔溹箞喔侧笝喔炧腑喔斷傅",
+    "corrupted": "๢ค17นทางผ่านพอดี",
+    "reconstructed": "๢�ค1�7��นทางผ่านพอดี"
+  },
+  {
+    "index": 114,
+    "mojibake": "喙佮笀喙夃竾喔ム覆喔佮复喔堗竸喔｀付喙堗竾喔氞箞喔侧涪",
+    "corrupted": "แจ้งลากิจครึ่งบ่าย",
+    "reconstructed": "แจ้งลากิจครึ่งบ่าย"
+  },
+  {
+    "index": 115,
+    "mojibake": "喙傕斧喔�",
+    "corrupted": "โหค17",
+    "reconstructed": "โหค1�7"
+  },
+  {
+    "index": 116,
+    "mojibake": "喙傕斧喔�=12",
+    "corrupted": "โหค17=12",
+    "reconstructed": "โหค1�7=12"
+  },
+  {
+    "index": 117,
+    "mojibake": "喙傕笅喔權腑喔粪箞喔�",
+    "corrupted": "โซนอื่ค17",
+    "reconstructed": "โซนอื่ค1�7"
+  },
+  {
+    "index": 118,
+    "mojibake": "喙傕笚喔｀竵喙堗腑喔� 10 喔�.",
+    "corrupted": "โทรก่อค17 10 ค17.",
+    "reconstructed": "โทรก่อค1�7 10 ค1�7."
+  },
+  {
+    "index": 119,
+    "mojibake": "喙傕笚喔｀竵喙堗腑喔� 15 喔�.",
+    "corrupted": "โทรก่อค17 15 ค17.",
+    "reconstructed": "โทรก่อค1�7 15 ค1�7."
+  },
+  {
+    "index": 120,
+    "mojibake": "喙勦浮喙堗浮喔掂福喔侧涪喔佮覆喔｀笚喔掂箞喙佮竵喔班笀喔侧竵 Parser 喔曕竵喔勦箟喔侧竾喙冟笝喔｀赴喔氞笟",
+    "corrupted": "ไม่มีรายการที่แกะจาก Parser ตกค้างในระบบ",
+    "reconstructed": "ไม่มีรายการที่แกะจาก Parser ตกค้างในระบบ"
+  },
+  {
+    "index": 121,
+    "mojibake": "喙勦浮喙堗浮喔掂竸喔赤福喔班笟喔膏箒喔炧竸=1",
+    "corrupted": "ไม่มีคำระบุแพค=1",
+    "reconstructed": "ไม่มีคำระบุแพค=1"
+  },
+  {
+    "index": 122,
+    "mojibake": "喙勦浮喙堗浮喔掂竸喔赤競喔�釜喙堗竾喔傕箟喔侧浮喙傕笅喔權笚喔掂箞喔｀腑喔�笝喔膏浮喔编笗喔�",
+    "corrupted": "ไม่มีคำขค17่งข้ามโซนที่รอค17ุมัตค17",
+    "reconstructed": "ไม่มีคำขค1�7��่งข้ามโซนที่รอค1�7��ุมัตค1�7"
+  },
+  {
+    "index": 123,
+    "mojibake": "喙勦浮喙堗竸喔｀笟",
+    "corrupted": "ไม่ครบ",
+    "reconstructed": "ไม่ครบ"
+  },
+  {
+    "index": 124,
+    "mojibake": "喙勦浮喙堗笧喔氞競喙夃腑喔∴腹喔ム弗喔灌竵喔勦箟喔侧笀喔侧竵喙€喔氞腑喔｀箤喙傕笚喔｀辅喔编笧喔椸箤喔權傅喙�",
+    "corrupted": "ไม่พบข้อมูลลูกค้าจาก๢บอร์โทรศัพท์นีไ17",
+    "reconstructed": "ไม่พบข้อมูลลูกค้าจาก๢�บอร์โทรศัพท์นีไ1�7"
+  },
+  {
+    "index": 125,
+    "mojibake": "鈥�",
+    "corrupted": " 17",
+    "reconstructed": " 1�7"
+  },
+  {
+    "index": 126,
+    "mojibake": "鈴革笍 喔炧副喔佮竵喔侧福喔堗副喔斷釜喙堗竾喙勦抚喙夃竵喙堗腑喔� (Batch Hold)",
+    "corrupted": "⏸️ พักการจัดส่งไว้ก่อค17 (Batch Hold)",
+    "reconstructed": "⏸️ พักการจัดส่งไว้ก่อค1�7 (Batch Hold)"
+  },
+  {
+    "index": 127,
+    "mojibake": "鉀� 喔勦箞喔侧笝喙夃赋喔∴副喔�",
+    "corrupted": "⛄17 ค่าน้ำมัค17",
+    "reconstructed": "⛄1�7 ค่าน้ำมัค1�7"
+  },
+  {
+    "index": 128,
+    "mojibake": "馃懛 喔勦箞喔侧箑喔椸傅喙堗涪喔�/喔勦箞喔侧箒喔｀竾",
+    "corrupted": "👷 ค่าเที่ยค17/ค่าแรง",
+    "reconstructed": "👷 ค่าเที่ยค1�7/ค่าแรง"
+  },
+  {
+    "index": 129,
+    "mojibake": "馃搮 喙€喔ム阜喙堗腑喔權抚喔编笝喔堗副喔斷釜喙堗竾 (Batch Reschedule)",
+    "corrupted": "📅 ๢ลื่อนวันจัดส่ง (Batch Reschedule)",
+    "reconstructed": "📅 ๢�ลื่อนวันจัดส่ง (Batch Reschedule)"
+  },
+  {
+    "index": 130,
+    "mojibake": "馃敀 喔傕箟喔�竵喔赤斧喔權笖喔椸傅喔∴笟喔编笉喔娻傅: 喔�覆喔∴覆喔｀笘喔�箞喔囙腑喔�竵喔傕箟喔�浮喔灌弗喙勦笖喙夃箑喔夃笧喔侧赴喔о副喔權笚喔掂箞 '喔涏复喔斷涪喔�笖喔｀覆喔⑧抚喔编笝 (Day Close)' 喙佮弗喙夃抚喙€喔椸箞喔侧笝喔编箟喔橽n\\n喔佮福喔膏笓喔侧箘喔涏笚喔掂箞喙佮笚喙囙笟 'S3. 喔曕福喔о笀喙€喔囙复喔� COD' 喙佮弗喙夃抚喔佮笖喔涏父喙堗浮 '馃敀 喔涏复喔斷涪喔�笖喔о副喔權笝喔掂箟' 喔佮箞喔�笝喔椸赋喔佮覆喔｀笖喔侧抚喔權箤喙傕斧喔ム笖喙勦笩喔ム箤 CSV",
+    "corrupted": "🔒 ข้ค17ำหนดทีมบัญชี: ค17มารถค17งอค17ข้ค17ูลได้เฉพาะวันที่ 'ปิดยค17รายวัน (Day Close)' แล้ว๢ท่านั้น\\n\\nกรุณาไปที่แท็บ 'S3. ตรวจ๢งิค17 COD' แล้วกดปุ่ม '🔒 ปิดยค17วันนี้' ก่ค17ทำการดาวน์โหลดไฟล์ CSV",
+    "reconstructed": "🔒 ข้ค1�7��ำหนดทีมบัญชี: ค1�7��มารถค1�7��งอค1�7��ข้ค1�7��ูลได้เฉพาะวันที่ 'ปิดยค1�7��รายวัน (Day Close)' แล้ว๢�ท่านั้น\\n\nกรุณาไปที่แท็บ 'S3. ตรวจ๢�งิค1�7 COD' แล้วกดปุ่ม '🔒 ปิดยค1�7��วันนี้' ก่ค1�7��ทำการดาวน์โหลดไฟล์ CSV"
+  },
+  {
+    "index": 131,
+    "mojibake": "馃敀 喔涏复喔斷涪喔�笖喔｀覆喔⑧抚喔编笝喙佮弗喙夃抚 (喔傕箟喔�浮喔灌弗喔栢腹喔佮弗喙囙腑喔�)",
+    "corrupted": "🔒 ปิดยค17รายวันแล้ว (ข้ค17ูลถูกล็อค17)",
+    "reconstructed": "🔒 ปิดยค1�7��รายวันแล้ว (ข้ค1�7��ูลถูกล็อค1�7)"
+  },
+  {
+    "index": 132,
+    "mojibake": "馃敀 喙勦浮喙堗釜喔侧浮喔侧福喔栢笟喔编笝喔椸付喔佮箑喔囙复喔權箘喔斷箟 喙€喔權阜喙堗腑喔囙笀喔侧竵喔涏复喔斷涪喔�笖喔о副喔權笝喔掂箟喙勦笡喙佮弗喙夃抚",
+    "corrupted": "🔒 ไม่สามารถบันทึกเงินได้ ๢นื่องจากปิดยค17วันนี้ไปแล้ว",
+    "reconstructed": "🔒 ไม่สามารถบันทึกเงินได้ ๢�นื่องจากปิดยค1�7��วันนี้ไปแล้ว"
+  },
+  {
+    "index": 133,
+    "mojibake": "馃敡 喔勦箞喔侧笅喙堗腑喔∴笟喔赤福喔膏竾喔｀笘",
+    "corrupted": "🔧 ค่าซ่อมบำรุงรถ",
+    "reconstructed": "🔧 ค่าซ่อมบำรุงรถ"
+  },
+  {
+    "index": 134,
+    "mojibake": "馃椇锔� 喔佮赋喔�笝喔斷箓喔嬥笝喔堗副喔斷釜喙堗竾 (Batch Zone Override)",
+    "corrupted": "🗺︄17 กำค17ดโซนจัดส่ง (Batch Zone Override)",
+    "reconstructed": "🗺︄1�7 กำค1�7��ดโซนจัดส่ง (Batch Zone Override)"
+  },
+  {
+    "index": 135,
+    "mojibake": "馃殮 喔∴腑喔氞斧喔∴覆喔⑧竸喔權競喔编笟 (Batch Driver Assignment)",
+    "corrupted": "🚚 มอบหมายคนขับ (Batch Driver Assignment)",
+    "reconstructed": "🚚 มอบหมายคนขับ (Batch Driver Assignment)"
+  },
+  {
+    "index": 136,
+    "mojibake": "馃洠锔� 喔勦箞喔侧笚喔侧竾喔斷箞喔о笝/喔勦箞喔侧笀喔�笖",
+    "corrupted": "🛣︄17 ค่าทางด่วน/ค่าจค17",
+    "reconstructed": "🛣︄1�7 ค่าทางด่วน/ค่าจค1�7��"
+  },
+  {
+    "index": 137,
+    "mojibake": "<!-- Weight Gauge -",
+    "corrupted": "",
+    "reconstructed": "<!-- Weight Gauge -"
+  },
+  {
+    "index": 138,
+    "mojibake": "<!-- Volume Gauge -",
+    "corrupted": "",
+    "reconstructed": "<!-- Volume Gauge -"
+  },
+  {
+    "index": 139,
+    "mojibake": "? `<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px; border-color: var(--st-available); color: var(--st-available);\" onclick=\"attachBarcodeToProduct('",
+    "corrupted": "')\" style=\"font-size: 11px; padding: 2px 8px;\">กรค17น้ำหนัค17</button>",
+    "reconstructed": "? `<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px; border-color: var(--st-available); color: var(--st-available);\" onclick=\"attachBarcodeToProduct('"
+  },
+  {
+    "index": 140,
+    "mojibake": "<!-- Weight Gauge -",
+    "corrupted": "",
+    "reconstructed": "<!-- Weight Gauge -"
+  },
+  {
+    "index": 141,
+    "mojibake": "<!-- Volume Gauge -",
+    "corrupted": "",
+    "reconstructed": "<!-- Volume Gauge -"
+  },
+  {
+    "index": 142,
+    "mojibake": "<button class=\"btn btn--primary btn--sm\" onclick=\"openProductQuickEditModal('",
+    "corrupted": "')\" style=\"font-size: 11px; padding: 2px 8px;\">แก้ไค17</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--sm\" onclick=\"openProductQuickEditModal('"
+  },
+  {
+    "index": 143,
+    "mojibake": "<div style=\"font-size: 9px; color: var(--ink-3);\" class=\"code\">SKU: ${p.system_sku || '",
+    "corrupted": "')\"><i class=\"fa-solid fa-edit\"></i> แก้ไค17</button>`;",
+    "reconstructed": "<div style=\"font-size: 9px; color: var(--ink-3);\" class=\"code\">SKU: ${p.system_sku || '"
+  },
+  {
+    "index": 144,
+    "mojibake": ": `<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px;\" onclick=\"openProductQuickEditModal('",
+    "corrupted": "')\"><i class=\"fa-solid fa-link\"></i> ผูกบาร์โค้ดสแกค17</button>`",
+    "reconstructed": ": `<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px;\" onclick=\"openProductQuickEditModal('"
+  },
+  {
+    "index": 145,
+    "mojibake": "<td><code class=\"code\">${c.barcode || '",
+    "corrupted": "'s orders",
+    "reconstructed": "<td><code class=\"code\">${c.barcode || '"
+  },
+  {
+    "index": 146,
+    "mojibake": "// Determine Zone Owner Driver based on order'",
+    "corrupted": "'s zone as default",
+    "reconstructed": "// Determine Zone Owner Driver based on order'"
+  },
+  {
+    "index": 147,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 148,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 149,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 150,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 151,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 152,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 153,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 154,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 155,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 156,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 157,
+    "mojibake": "${e.diff_reason ? `",
+    "corrupted": "",
+    "reconstructed": "${e.diff_reason ? `"
+  },
+  {
+    "index": 158,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 159,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 160,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 161,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 162,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 163,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 164,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 165,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 166,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 167,
+    "mojibake": "<!-- Reorder Chevrons (touch fallback) -",
+    "corrupted": "",
+    "reconstructed": "<!-- Reorder Chevrons (touch fallback) -"
+  },
+  {
+    "index": 168,
+    "mojibake": "${idx > 0 ? `",
+    "corrupted": "",
+    "reconstructed": "${idx > 0 ? `"
+  },
+  {
+    "index": 169,
+    "mojibake": "<!-- Reorder Chevrons (touch fallback) -",
+    "corrupted": "",
+    "reconstructed": "<!-- Reorder Chevrons (touch fallback) -"
+  },
+  {
+    "index": 170,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 171,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 172,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 173,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 174,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 175,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 176,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 177,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 178,
+    "mojibake": "${isPending ? `",
+    "corrupted": "",
+    "reconstructed": "${isPending ? `"
+  },
+  {
+    "index": 179,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 180,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 181,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 182,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 183,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 184,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 185,
+    "mojibake": "",
+    "corrupted": "",
+    "reconstructed": ""
+  },
+  {
+    "index": 186,
+    "mojibake": "\"${r.item_condition || '喔涏竵喔曕复'}\"",
+    "corrupted": "\"${r.item_condition || 'ปกติ'}\"",
+    "reconstructed": "\"${r.item_condition || 'ปกติ'}\""
+  },
+  {
+    "index": 187,
+    "mojibake": "${mins}:${secs.toString().padStart(2, \"0\")} 喔權覆喔椸傅",
+    "corrupted": "${mins}:${secs.toString().padStart(2, \"0\")} นาที",
+    "reconstructed": "${mins}:${secs.toString().padStart(2, \"0\")} นาที"
+  },
+  {
+    "index": 188,
+    "mojibake": "${pendingReturns.length} 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "${pendingReturns.length} รายการ",
+    "reconstructed": "${pendingReturns.length} รายการ"
+  },
+  {
+    "index": 189,
+    "mojibake": "${state.activePodPhotos.slips.length} 喔�弗喔脆笡",
+    "corrupted": "${state.activePodPhotos.slips.length} ค17ิป",
+    "reconstructed": "${state.activePodPhotos.slips.length} ค1�7��ิป"
+  },
+  {
+    "index": 190,
+    "mojibake": "${suspicious.length} 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "${suspicious.length} รายการ",
+    "reconstructed": "${suspicious.length} รายการ"
+  },
+  {
+    "index": 191,
+    "mojibake": "${unassigned.length} 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "${unassigned.length} รายการ",
+    "reconstructed": "${unassigned.length} รายการ"
+  },
+  {
+    "index": 192,
+    "mojibake": "${unreserved.length} 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "${unreserved.length} รายการ",
+    "reconstructed": "${unreserved.length} รายการ"
+  },
+  {
+    "index": 193,
+    "mojibake": "0 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "0 รายการ",
+    "reconstructed": "0 รายการ"
+  },
+  {
+    "index": 194,
+    "mojibake": "showNotification(`",
+    "corrupted": "`;",
+    "reconstructed": "showNotification(`"
+  },
+  {
+    "index": 195,
+    "mojibake": "<b>${WAREHOUSE_HUB.name}</b><br>喔炧复喔佮副喔斷竸喔ム副喔�: 18.562, 99.041",
+    "corrupted": "<b>${WAREHOUSE_HUB.name}</b><br>พิกัดคลัค17: 18.562, 99.041",
+    "reconstructed": "<b>${WAREHOUSE_HUB.name}</b><br>พิกัดคลัค1�7: 18.562, 99.041"
+  },
+  {
+    "index": 196,
+    "mojibake": "<button class=\"btn btn--primary btn--block btn--sm\" style=\"margin-top: 10px; font-size: 12px;\" onclick=\"acceptClusterGroup('${key}', event)\"><i class=\"fa-solid fa-layer-group\"></i> 喔堗腑喔囙笚喔编箟喔囙笀喔膏笖喔�箞喔� (${count} 喔�腑喙€喔斷腑喔｀箤)</button>",
+    "corrupted": "<button class=\"btn btn--primary btn--block btn--sm\" style=\"margin-top: 10px; font-size: 12px;\" onclick=\"acceptClusterGroup('${key}', event)\"><i class=\"fa-solid fa-layer-group\"></i> จองทั้งจุดค17ค17 (${count} ค17๢ดอร์)</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--block btn--sm\" style=\"margin-top: 10px; font-size: 12px;\" onclick=\"acceptClusterGroup('${key}', event)\"><i class=\"fa-solid fa-layer-group\"></i> จองทั้งจุดค1�7��ค1�7 (${count} ค1�7��๢�ดอร์)</button>"
+  },
+  {
+    "index": 197,
+    "mojibake": "<button class=\"btn btn--primary btn--sm\" onclick=\"acceptClusterGroup('${key}', event)\">喔堗腑喔囙笀喔膏笖喔權傅喙� (${clusterCount})</button>",
+    "corrupted": "<button class=\"btn btn--primary btn--sm\" onclick=\"acceptClusterGroup('${key}', event)\">จองจุดนีไ17 (${clusterCount})</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--sm\" onclick=\"acceptClusterGroup('${key}', event)\">จองจุดนีไ1�7 (${clusterCount})</button>"
+  },
+  {
+    "index": 198,
+    "mojibake": "<button class=\"btn btn--primary btn--sm\" onclick=\"acceptOrder('${order.id}', event)\">喔堗腑喔囙笀喔膏笖喔權傅喙�</button>",
+    "corrupted": "<button class=\"btn btn--primary btn--sm\" onclick=\"acceptOrder('${order.id}', event)\">จองจุดนีไ17</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--sm\" onclick=\"acceptOrder('${order.id}', event)\">จองจุดนีไ1�7</button>"
+  },
+  {
+    "index": 199,
+    "mojibake": "<button class=\"btn btn--primary btn--sm\" onclick=\"setTargetStop('${order.id}', event)\"><i class=\"fa-solid fa-location-arrow\"></i> 喙勦笡喔堗父喔斷笝喔掂箟喔曕箞喔�</button>",
+    "corrupted": "<button class=\"btn btn--primary btn--sm\" onclick=\"setTargetStop('${order.id}', event)\"><i class=\"fa-solid fa-location-arrow\"></i> ไปจุดนี้ต่ค17</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--sm\" onclick=\"setTargetStop('${order.id}', event)\"><i class=\"fa-solid fa-location-arrow\"></i> ไปจุดนี้ต่ค1�7</button>"
+  },
+  {
+    "index": 200,
+    "mojibake": "<button class=\"btn btn--primary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px;\" onclick=\"acceptOrder('${o.id}', event)\">喔堗腑喔囙竾喔侧笝喔權傅喙�</button>",
+    "corrupted": "<button class=\"btn btn--primary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px;\" onclick=\"acceptOrder('${o.id}', event)\">จองงานนีไ17</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px;\" onclick=\"acceptOrder('${o.id}', event)\">จองงานนีไ1�7</button>"
+  },
+  {
+    "index": 201,
+    "mojibake": "<button class=\"btn btn--primary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px;\" onclick=\"setTargetStop('${o.id}', event)\"><i class=\"fa-solid fa-location-arrow\" style=\"margin-right: 4px;\"></i> 喙勦笡喔堗父喔斷笝喔掂箟喔曕箞喔�</button>",
+    "corrupted": "<button class=\"btn btn--primary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px;\" onclick=\"setTargetStop('${o.id}', event)\"><i class=\"fa-solid fa-location-arrow\" style=\"margin-right: 4px;\"></i> ไปจุดนี้ต่ค17</button>",
+    "reconstructed": "<button class=\"btn btn--primary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px;\" onclick=\"setTargetStop('${o.id}', event)\"><i class=\"fa-solid fa-location-arrow\" style=\"margin-right: 4px;\"></i> ไปจุดนี้ต่ค1�7</button>"
+  },
+  {
+    "index": 202,
+    "mojibake": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; cursor: pointer; border-color: var(--st-available); color: var(--st-available);\" onclick=\"claimUrgentSpecialOrder('${order.id}', event)\"><i class=\"fa-solid fa-bolt\" style=\"color: var(--st-attention);\"></i> 鈿� 喔斷付喔囙竾喔侧笝喔斷箞喔о笝喔權傅喙�</button>",
+    "corrupted": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; cursor: pointer; border-color: var(--st-available); color: var(--st-available);\" onclick=\"claimUrgentSpecialOrder('${order.id}', event)\"><i class=\"fa-solid fa-bolt\" style=\"color: var(--st-attention);\"></i> ⚄17 ดึงงานด่วนนีไ17</button>",
+    "reconstructed": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; cursor: pointer; border-color: var(--st-available); color: var(--st-available);\" onclick=\"claimUrgentSpecialOrder('${order.id}', event)\"><i class=\"fa-solid fa-bolt\" style=\"color: var(--st-attention);\"></i> ⚄1�7 ดึงงานด่วนนีไ1�7</button>"
+  },
+  {
+    "index": 203,
+    "mojibake": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px; border-color: var(--st-available); color: var(--st-available);\" onclick=\"claimUrgentSpecialOrder('${o.id}', event)\"><i class=\"fa-solid fa-bolt\" style=\"color: var(--st-attention);\"></i> 鈿� 喔斷付喔囙竾喔侧笝喔斷箞喔о笝</button>",
+    "corrupted": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px; border-color: var(--st-available); color: var(--st-available);\" onclick=\"claimUrgentSpecialOrder('${o.id}', event)\"><i class=\"fa-solid fa-bolt\" style=\"color: var(--st-attention);\"></i> ⚄17 ดึงงานด่วน</button>",
+    "reconstructed": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px; border-color: var(--st-available); color: var(--st-available);\" onclick=\"claimUrgentSpecialOrder('${o.id}', event)\"><i class=\"fa-solid fa-bolt\" style=\"color: var(--st-attention);\"></i> ⚄1�7 ดึงงานด่วน</button>"
+  },
+  {
+    "index": 204,
+    "mojibake": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px; border-color: var(--st-available);\" onclick=\"openCrossZoneRequestModal('${o.id}', event)\"><i class=\"fa-solid fa-paper-plane\" style=\"color: var(--st-available); margin-right: 4px;\"></i> 喔傕腑喔�箞喔囙競喙夃覆喔∴箓喔嬥笝</button>",
+    "corrupted": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px; border-color: var(--st-available);\" onclick=\"openCrossZoneRequestModal('${o.id}', event)\"><i class=\"fa-solid fa-paper-plane\" style=\"color: var(--st-available); margin-right: 4px;\"></i> ขอค17งข้ามโซน</button>",
+    "reconstructed": "<button class=\"btn btn--secondary btn--sm\" style=\"font-size: 11px; padding: 0 8px; min-height: 26px; border-color: var(--st-available);\" onclick=\"openCrossZoneRequestModal('${o.id}', event)\"><i class=\"fa-solid fa-paper-plane\" style=\"color: var(--st-available); margin-right: 4px;\"></i> ขอค1�7��งข้ามโซน</button>"
+  },
+  {
+    "index": 205,
+    "mojibake": "<button type=\"button\" class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px; height: 20px; min-height: 20px;\" onclick=\"closePodModal(); openProductQuickEditModal('${pm.row_id}')\"><i class=\"fa-solid fa-edit\"></i> 喙佮竵喙夃箘喔�</button>",
+    "corrupted": "<button type=\"button\" class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px; height: 20px; min-height: 20px;\" onclick=\"closePodModal(); openProductQuickEditModal('${pm.row_id}')\"><i class=\"fa-solid fa-edit\"></i> แก้ไค17</button>",
+    "reconstructed": "<button type=\"button\" class=\"btn btn--secondary btn--sm\" style=\"font-size: 10px; padding: 2px 6px; height: 20px; min-height: 20px;\" onclick=\"closePodModal(); openProductQuickEditModal('${pm.row_id}')\"><i class=\"fa-solid fa-edit\"></i> แก้ไค1�7</button>"
+  },
+  {
+    "index": 206,
+    "mojibake": "<div style=\"color: var(--ink-3); font-style: italic;\">...喙佮弗喔班腑喔掂竵 ${count - 3} 喔｀覆喔⑧竵喔侧福</div>",
+    "corrupted": "<div style=\"color: var(--ink-3); font-style: italic;\">...และอีก ${count - 3} รายการ</div>",
+    "reconstructed": "<div style=\"color: var(--ink-3); font-style: italic;\">...และอีก ${count - 3} รายการ</div>"
+  },
+  {
+    "index": 207,
+    "mojibake": "<div style=\"color: var(--ink-3); text-align: center; padding: 6px;\">喙勦浮喙堗浮喔掂競喙夃腑喔∴腹喔ム福喔侧涪喔佮覆喔｀釜喔脆笝喔勦箟喔侧箖喔� SKU Details</div>",
+    "corrupted": "<div style=\"color: var(--ink-3); text-align: center; padding: 6px;\">ไม่มีข้อมูลรายการสินค้าใค17 SKU Details</div>",
+    "reconstructed": "<div style=\"color: var(--ink-3); text-align: center; padding: 6px;\">ไม่มีข้อมูลรายการสินค้าใค1�7 SKU Details</div>"
+  },
+  {
+    "index": 208,
+    "mojibake": "<div style=\"color: var(--ink-3); text-align: center; padding: 8px;\">喙勦浮喙堗浮喔掂競喙夃腑喔∴腹喔ム福喔侧涪喔佮覆喔｀釜喔脆笝喔勦箟喔侧箖喔� SKU Details</div>",
+    "corrupted": "<div style=\"color: var(--ink-3); text-align: center; padding: 8px;\">ไม่มีข้อมูลรายการสินค้าใค17 SKU Details</div>",
+    "reconstructed": "<div style=\"color: var(--ink-3); text-align: center; padding: 8px;\">ไม่มีข้อมูลรายการสินค้าใค1�7 SKU Details</div>"
+  },
+  {
+    "index": 209,
+    "mojibake": "<div style=\"text-align: center; padding: 20px; color: var(--ink-3); font-size: 13px;\">喙勦浮喙堗笧喔氞腑喔�箑喔斷腑喔｀箤喔椸傅喙堗笗喔｀竾喔佮副喔氞箑喔囙阜喙堗腑喔權箘喔�</div>",
+    "corrupted": "<div style=\"text-align: center; padding: 20px; color: var(--ink-3); font-size: 13px;\">ไม่พบอค17ดอร์ที่ตรงกับเงื่อนไค17</div>",
+    "reconstructed": "<div style=\"text-align: center; padding: 20px; color: var(--ink-3); font-size: 13px;\">ไม่พบอค1�7��ดอร์ที่ตรงกับเงื่อนไค1�7</div>"
+  },
+  {
+    "index": 210,
+    "mojibake": "<div>鈥� <b>${o ? o.customer : id}</b> (${id})</div>",
+    "corrupted": "<div> 17 <b>${o ? o.customer : id}</b> (${id})</div>",
+    "reconstructed": "<div> 1�7 <b>${o ? o.customer : id}</b> (${id})</div>"
+  },
+  {
+    "index": 211,
+    "mojibake": "<i class=\"fa-solid fa-circle-check\" style=\"font-size: 16px;\"></i> 喔炧福喙夃腑喔∴腑喔�竵喔｀笘 鈥� 喔椸父喔佮笀喔膏笖喔∴傅喔涏弗喔侧涪喔椸覆喔囙箑喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "<i class=\"fa-solid fa-circle-check\" style=\"font-size: 16px;\"></i> พร้อมอค17รถ  17 ทุกจุดมีปลายทางเรียบร้ค17แล้ว",
+    "reconstructed": "<i class=\"fa-solid fa-circle-check\" style=\"font-size: 16px;\"></i> พร้อมอค1�7��รถ  1�7 ทุกจุดมีปลายทางเรียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 212,
+    "mojibake": "<i class=\"fa-solid fa-flag\" style=\"color: var(--ink-3);\" title=\"喙勦浮喙堗浮喔掂笧喔脆竵喔编笖\"></i>",
+    "corrupted": "<i class=\"fa-solid fa-flag\" style=\"color: var(--ink-3);\" title=\"ไม่มีพิกัด\"></i>",
+    "reconstructed": "<i class=\"fa-solid fa-flag\" style=\"color: var(--ink-3);\" title=\"ไม่มีพิกัด\"></i>"
+  },
+  {
+    "index": 213,
+    "mojibake": "<i class=\"fa-solid fa-flag\" style=\"color: var(--st-attention);\" title=\"喔炧复喔佮副喔斷笝喙堗覆喔�竾喔�副喔�\"></i>",
+    "corrupted": "<i class=\"fa-solid fa-flag\" style=\"color: var(--st-attention);\" title=\"พิกัดน่าค17ค17ค17\"></i>",
+    "reconstructed": "<i class=\"fa-solid fa-flag\" style=\"color: var(--st-attention);\" title=\"พิกัดน่าค1�7��ค1�7��ค1�7\"></i>"
+  },
+  {
+    "index": 214,
+    "mojibake": "<i class=\"fa-solid fa-flag\" style=\"color: var(--st-failed);\" title=\"喙勦浮喙堗浮喔掂箓喔嬥笝 (UNASSIGNED)\"></i>",
+    "corrupted": "<i class=\"fa-solid fa-flag\" style=\"color: var(--st-failed);\" title=\"ไม่มีโซน (UNASSIGNED)\"></i>",
+    "reconstructed": "<i class=\"fa-solid fa-flag\" style=\"color: var(--st-failed);\" title=\"ไม่มีโซน (UNASSIGNED)\"></i>"
+  },
+  {
+    "index": 215,
+    "mojibake": "<i class=\"fa-solid fa-triangle-exclamation\" style=\"font-size: 16px;\"></i> 喔曕箟喔�竾喙€喔勦弗喔掂涪喔｀箤喔佮箞喔�笝喔｀笘喔�腑喔�: <b>${unassignedOrders.length}</b> 喔堗父喔斷箘喔∴箞喔∴傅喙傕笅喔� 路 <b>${suspiciousOrders.length}</b> 喔堗父喔斷笧喔脆竵喔编笖喔權箞喔侧釜喔囙釜喔编涪 路 <b>${unreservedOrders.length}</b> 喔堗父喔斷涪喔编竾喙勦浮喙堗浮喔掂竸喔權笀喔�竾",
+    "corrupted": "<i class=\"fa-solid fa-triangle-exclamation\" style=\"font-size: 16px;\"></i> ต้ค17๢คลียร์ก่ค17รถค17ค17: <b>${unassignedOrders.length}</b> จุดไม่มีโซค17 · <b>${suspiciousOrders.length}</b> จุดพิกัดน่าสงสัย · <b>${unreservedOrders.length}</b> จุดยังไม่มีคนจค17",
+    "reconstructed": "<i class=\"fa-solid fa-triangle-exclamation\" style=\"font-size: 16px;\"></i> ต้ค1�7��๢�คลียร์ก่ค1�7��รถค1�7��ค1�7: <b>${unassignedOrders.length}</b> จุดไม่มีโซค1�7 · <b>${suspiciousOrders.length}</b> จุดพิกัดน่าสงสัย · <b>${unreservedOrders.length}</b> จุดยังไม่มีคนจค1�7��"
+  },
+  {
+    "index": 216,
+    "mojibake": "<i style=\"color: var(--ink-3);\"> (喔�浮喔侧涪喙€喔�笗喔�: ${log.note})</i>",
+    "corrupted": "<i style=\"color: var(--ink-3);\"> (ค17าย๢ค17ค17: ${log.note})</i>",
+    "reconstructed": "<i style=\"color: var(--ink-3);\"> (ค1�7��าย๢�ค1�7��ค1�7: ${log.note})</i>"
+  },
+  {
+    "index": 217,
+    "mojibake": "<option value=\"${d}\" ${isSelected}>${thaiLabel} (${dateCounts[d]} 喔�腑喙€喔斷腑喔｀箤)</option>",
+    "corrupted": "<option value=\"${d}\" ${isSelected}>${thaiLabel} (${dateCounts[d]} ค17๢ดอร์)</option>",
+    "reconstructed": "<option value=\"${d}\" ${isSelected}>${thaiLabel} (${dateCounts[d]} ค1�7��๢�ดอร์)</option>"
+  },
+  {
+    "index": 218,
+    "mojibake": "<option value=\"all\">喔椸父喔佮抚喔编笝喔堗副喔斷釜喙堗竾 (${state.allOrders.length.toLocaleString()} 喔�腑喙€喔斷腑喔｀箤)</option>",
+    "corrupted": "<option value=\"all\">ทุกวันจัดส่ง (${state.allOrders.length.toLocaleString()} ค17๢ดอร์)</option>",
+    "reconstructed": "<option value=\"all\">ทุกวันจัดส่ง (${state.allOrders.length.toLocaleString()} ค1�7��๢�ดอร์)</option>"
+  },
+  {
+    "index": 219,
+    "mojibake": "<span class=\"chip chip--available\" style=\"font-size: 10px; padding: 1px 6px;\">喙傕笅喔權笁喔编笝</span>",
+    "corrupted": "<span class=\"chip chip--available\" style=\"font-size: 10px; padding: 1px 6px;\">โซนฉัน</span>",
+    "reconstructed": "<span class=\"chip chip--available\" style=\"font-size: 10px; padding: 1px 6px;\">โซนฉัน</span>"
+  },
+  {
+    "index": 220,
+    "mojibake": "<span class=\"chip chip--available\">喙傕笅喔權笁喔编笝</span>",
+    "corrupted": "<span class=\"chip chip--available\">โซนฉัน</span>",
+    "reconstructed": "<span class=\"chip chip--available\">โซนฉัน</span>"
+  },
+  {
+    "index": 221,
+    "mojibake": "<span class=\"chip chip--done\" style=\"font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-circle-check\"></i> 喔�赋喙€喔｀箛喔�</span>",
+    "corrupted": "<span class=\"chip chip--done\" style=\"font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-circle-check\"></i> ค17๢ร็ค17</span>",
+    "reconstructed": "<span class=\"chip chip--done\" style=\"font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-circle-check\"></i> ค1�7��๢�ร็ค1�7</span>"
+  },
+  {
+    "index": 222,
+    "mojibake": "<span class=\"chip chip--done\"><i class=\"fa-solid fa-circle-check\"></i> 喔�箞喔囙釜喔赤箑喔｀箛喔�</span>",
+    "corrupted": "<span class=\"chip chip--done\"><i class=\"fa-solid fa-circle-check\"></i> ค17งสำเร็ค17</span>",
+    "reconstructed": "<span class=\"chip chip--done\"><i class=\"fa-solid fa-circle-check\"></i> ค1�7��งสำเร็ค1�7</span>"
+  },
+  {
+    "index": 223,
+    "mojibake": "<span class=\"chip chip--done\">喔�箞喔囙釜喔赤箑喔｀箛喔�</span>",
+    "corrupted": "<span class=\"chip chip--done\">ค17งสำเร็ค17</span>",
+    "reconstructed": "<span class=\"chip chip--done\">ค1�7��งสำเร็ค1�7</span>"
+  },
+  {
+    "index": 224,
+    "mojibake": "<span class=\"chip chip--failed\" style=\"font-size: 10px; padding: 1px 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border-radius: 99px;\"><i class=\"fa-solid fa-triangle-exclamation\"></i> 喔傕腑喔囙斧喔權副喔佮笧喔脆箑喔ㄠ俯: ${(orderWeightG/1000).toFixed(1)} 喔佮竵. (喔∴傅喔勦笝喔娻箞喔о涪喔⑧竵)</span>",
+    "corrupted": "<span class=\"chip chip--failed\" style=\"font-size: 10px; padding: 1px 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border-radius: 99px;\"><i class=\"fa-solid fa-triangle-exclamation\"></i> ของหนักพิเศษ: ${(orderWeightG/1000).toFixed(1)} กก. (มีคนช่วยยก)</span>",
+    "reconstructed": "<span class=\"chip chip--failed\" style=\"font-size: 10px; padding: 1px 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; border-radius: 99px;\"><i class=\"fa-solid fa-triangle-exclamation\"></i> ของหนักพิเศษ: ${(orderWeightG/1000).toFixed(1)} กก. (มีคนช่วยยก)</span>"
+  },
+  {
+    "index": 225,
+    "mojibake": "<span class=\"chip chip--failed\" style=\"font-size: 10px; padding: 1px 6px;\">喙勦浮喙堗釜喔赤箑喔｀箛喔�</span>",
+    "corrupted": "<span class=\"chip chip--failed\" style=\"font-size: 10px; padding: 1px 6px;\">ไม่สำเร็ค17</span>",
+    "reconstructed": "<span class=\"chip chip--failed\" style=\"font-size: 10px; padding: 1px 6px;\">ไม่สำเร็ค1�7</span>"
+  },
+  {
+    "index": 226,
+    "mojibake": "<span class=\"chip chip--failed\"><i class=\"fa-solid fa-triangle-exclamation\"></i> 喙勦浮喙堗釜喔赤箑喔｀箛喔�</span>",
+    "corrupted": "<span class=\"chip chip--failed\"><i class=\"fa-solid fa-triangle-exclamation\"></i> ไม่สำเร็ค17</span>",
+    "reconstructed": "<span class=\"chip chip--failed\"><i class=\"fa-solid fa-triangle-exclamation\"></i> ไม่สำเร็ค1�7</span>"
+  },
+  {
+    "index": 227,
+    "mojibake": "<span class=\"chip chip--failed\">喙勦浮喙堗釜喔赤箑喔｀箛喔�</span>",
+    "corrupted": "<span class=\"chip chip--failed\">ไม่สำเร็ค17</span>",
+    "reconstructed": "<span class=\"chip chip--failed\">ไม่สำเร็ค1�7</span>"
+  },
+  {
+    "index": 228,
+    "mojibake": "<span class=\"chip chip--mine\" style=\"font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-truck\"></i> 喔堗腑喔囙箒喔ム箟喔�</span>",
+    "corrupted": "<span class=\"chip chip--mine\" style=\"font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-truck\"></i> จองแล้ค17</span>",
+    "reconstructed": "<span class=\"chip chip--mine\" style=\"font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-truck\"></i> จองแล้ค1�7</span>"
+  },
+  {
+    "index": 229,
+    "mojibake": "<span class=\"chip chip--mine\"><i class=\"fa-solid fa-truck\"></i> 喔堗腑喔囙箒喔ム箟喔�</span>",
+    "corrupted": "<span class=\"chip chip--mine\"><i class=\"fa-solid fa-truck\"></i> จองแล้ค17</span>",
+    "reconstructed": "<span class=\"chip chip--mine\"><i class=\"fa-solid fa-truck\"></i> จองแล้ค1�7</span>"
+  },
+  {
+    "index": 230,
+    "mojibake": "<span class=\"chip chip--mine\">喔堗腑喔囙箒喔ム箟喔�</span>",
+    "corrupted": "<span class=\"chip chip--mine\">จองแล้ค17</span>",
+    "reconstructed": "<span class=\"chip chip--mine\">จองแล้ค1�7</span>"
+  },
+  {
+    "index": 231,
+    "mojibake": "<span class=\"chip\" style=\"background: #8E8E93; color: #fff; font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-user-lock\"></i> 喔堗腑喔囙箓喔斷涪 ${o.assignedDriverId}</span>",
+    "corrupted": "<span class=\"chip\" style=\"background: #8E8E93; color: #fff; font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-user-lock\"></i> จองโดย ${o.assignedDriverId}</span>",
+    "reconstructed": "<span class=\"chip\" style=\"background: #8E8E93; color: #fff; font-size: 10px; padding: 1px 6px;\"><i class=\"fa-solid fa-user-lock\"></i> จองโดย ${o.assignedDriverId}</span>"
+  },
+  {
+    "index": 232,
+    "mojibake": "<span class=\"chip\" style=\"background: #8E8E93; color: #fff;\"><i class=\"fa-solid fa-user-lock\"></i> 喔堗腑喔囙箓喔斷涪 ${order.assignedDriverId}</span>",
+    "corrupted": "<span class=\"chip\" style=\"background: #8E8E93; color: #fff;\"><i class=\"fa-solid fa-user-lock\"></i> จองโดย ${order.assignedDriverId}</span>",
+    "reconstructed": "<span class=\"chip\" style=\"background: #8E8E93; color: #fff;\"><i class=\"fa-solid fa-user-lock\"></i> จองโดย ${order.assignedDriverId}</span>"
+  },
+  {
+    "index": 233,
+    "mojibake": "<span class=\"chip\" style=\"font-size: 10px; padding: 1px 6px;\">喔權腑喔佮箓喔嬥笝</span>",
+    "corrupted": "<span class=\"chip\" style=\"font-size: 10px; padding: 1px 6px;\">นอกโซน</span>",
+    "reconstructed": "<span class=\"chip\" style=\"font-size: 10px; padding: 1px 6px;\">นอกโซน</span>"
+  },
+  {
+    "index": 234,
+    "mojibake": "<span class=\"chip\">喔權腑喔佮箓喔嬥笝</span>",
+    "corrupted": "<span class=\"chip\">นอกโซน</span>",
+    "reconstructed": "<span class=\"chip\">นอกโซน</span>"
+  },
+  {
+    "index": 235,
+    "mojibake": "<span style=\"color: var(--ink-3);\"><i class=\"fa-solid fa-shield-cat\"></i> 喔涏复喔斷釜喔脆笚喔樴复喙� GPS (喔�覆喔∴覆喔｀笘喔佮笖喔涏复喔斷竾喔侧笝喙勦笖喙夃笗喔侧浮喔涏竵喔曕复)</span>",
+    "corrupted": "<span style=\"color: var(--ink-3);\"><i class=\"fa-solid fa-shield-cat\"></i> ปิดสิทธิไ17 GPS (ค17มารถกดปิดงานได้ตามปกติ)</span>",
+    "reconstructed": "<span style=\"color: var(--ink-3);\"><i class=\"fa-solid fa-shield-cat\"></i> ปิดสิทธิไ1�7 GPS (ค1�7��มารถกดปิดงานได้ตามปกติ)</span>"
+  },
+  {
+    "index": 236,
+    "mojibake": "<span style=\"color: var(--ink-3);\">喔⑧副喔囙箘喔∴箞喔∴傅喔涏福喔班抚喔编笗喔脆竵喔侧福喔｀副喔氞浮喔�笟喙€喔囙复喔權箖喔權福喔班笟喔�</span>",
+    "corrupted": "<span style=\"color: var(--ink-3);\">ยังไม่มีประวัติการรับมค17๢งินในระบค17</span>",
+    "reconstructed": "<span style=\"color: var(--ink-3);\">ยังไม่มีประวัติการรับมค1�7��๢�งินในระบค1�7</span>"
+  },
+  {
+    "index": 237,
+    "mojibake": "<span style=\"color: var(--st-attention); font-weight: 600;\"><i class=\"fa-solid fa-triangle-exclamation\"></i> 喔｀赴喔⑧赴喔椸覆喔囙斧喙堗覆喔囙笀喔侧竵喔炧复喔佮副喔斷弗喔灌竵喔勦箟喔� ${distMeters.toFixed(0)}m (喙€喔佮复喔� 300m - 喔曕复喔斷笜喔囙箑喔曕阜喔�笝)</span>",
+    "corrupted": "<span style=\"color: var(--st-attention); font-weight: 600;\"><i class=\"fa-solid fa-triangle-exclamation\"></i> ระยะทางห่างจากพิกัดลูกค้ค17 ${distMeters.toFixed(0)}m (๢กิค17 300m - ติดธงเตืค17)</span>",
+    "reconstructed": "<span style=\"color: var(--st-attention); font-weight: 600;\"><i class=\"fa-solid fa-triangle-exclamation\"></i> ระยะทางห่างจากพิกัดลูกค้ค1�7 ${distMeters.toFixed(0)}m (๢�กิค1�7 300m - ติดธงเตืค1�7��)</span>"
+  },
+  {
+    "index": 238,
+    "mojibake": "<span style=\"color: var(--st-done); font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> 喔�涪喔灌箞喔曕福喔囙笀喔膏笖喔�箞喔囙笧喔�笖喔� (喔�箞喔侧竾 ${distMeters.toFixed(0)}m)</span>",
+    "corrupted": "<span style=\"color: var(--st-done); font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ค17ู่ตรงจุดค17งพค17ค17 (ค17าง ${distMeters.toFixed(0)}m)</span>",
+    "reconstructed": "<span style=\"color: var(--st-done); font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ค1�7��ู่ตรงจุดค1�7��งพค1�7��ค1�7 (ค1�7��าง ${distMeters.toFixed(0)}m)</span>"
+  },
+  {
+    "index": 239,
+    "mojibake": "<span style=\"font-size: 11px; color: var(--ink-3);\">喔⑧副喔囙箘喔∴箞喔∴傅喔｀腹喔涏箒喔權笟喙冟笝喔�腑喙€喔斷腑喔｀箤喔權傅喙�</span>",
+    "corrupted": "<span style=\"font-size: 11px; color: var(--ink-3);\">ยังไม่มีรูปแนบในค17๢ดอร์นีไ17</span>",
+    "reconstructed": "<span style=\"font-size: 11px; color: var(--ink-3);\">ยังไม่มีรูปแนบในค1�7��๢�ดอร์นีไ1�7</span>"
+  },
+  {
+    "index": 240,
+    "mojibake": "<span style=\"font-size: 11px; color: var(--st-done); font-weight: 500;\"><i class=\"fa-solid fa-check\"></i> 喔�赋喙€喔｀箛喔� ${order.isGpsWarning ? '(喙€喔曕阜喔�笝 GPS >300m)' : ''}</span>",
+    "corrupted": "<span style=\"font-size: 11px; color: var(--st-done); font-weight: 500;\"><i class=\"fa-solid fa-check\"></i> ค17๢ร็ค17 ${order.isGpsWarning ? '(๢ตืค17 GPS >300m)' : ''}</span>",
+    "reconstructed": "<span style=\"font-size: 11px; color: var(--st-done); font-weight: 500;\"><i class=\"fa-solid fa-check\"></i> ค1�7��๢�ร็ค1�7 ${order.isGpsWarning ? '(๢�ตืค1�7�� GPS >300m)' : ''}</span>"
+  },
+  {
+    "index": 241,
+    "mojibake": "<span style=\"font-size: 11px; color: var(--st-done); font-weight: 600;\"><i class=\"fa-solid fa-check\"></i> 喙€喔｀傅喔⑧笟喔｀箟喔�涪</span>",
+    "corrupted": "<span style=\"font-size: 11px; color: var(--st-done); font-weight: 600;\"><i class=\"fa-solid fa-check\"></i> ๢รียบร้ค17</span>",
+    "reconstructed": "<span style=\"font-size: 11px; color: var(--st-done); font-weight: 600;\"><i class=\"fa-solid fa-check\"></i> ๢�รียบร้ค1�7��</span>"
+  },
+  {
+    "index": 242,
+    "mojibake": "<span style=\"font-size: 11px; color: var(--st-failed);\">${order.failReason || '喙勦浮喙堗釜喔赤箑喔｀箛喔�'}</span>",
+    "corrupted": "<span style=\"font-size: 11px; color: var(--st-failed);\">${order.failReason || 'ไม่สำเร็ค17'}</span>",
+    "reconstructed": "<span style=\"font-size: 11px; color: var(--st-failed);\">${order.failReason || 'ไม่สำเร็ค1�7'}</span>"
+  },
+  {
+    "index": 243,
+    "mojibake": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--ink-3);\">喔⑧副喔囙箘喔∴箞喔∴傅喔涏福喔班抚喔编笗喔脆竵喔侧福喙佮竵喙夃箘喔傕斧喔∴父喔斷笧喔脆竵喔编笖</td></tr>",
+    "corrupted": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--ink-3);\">ยังไม่มีประวัติการแก้ไขหมุดพิกัด</td></tr>",
+    "reconstructed": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--ink-3);\">ยังไม่มีประวัติการแก้ไขหมุดพิกัด</td></tr>"
+  },
+  {
+    "index": 244,
+    "mojibake": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> 喙€喔勦弗喔掂涪喔｀箤喙€喔｀傅喔⑧笟喔｀箟喔�涪 喔椸父喔佮腑喔�箑喔斷腑喔｀箤喙冟笝喙傕笅喔權浮喔掂竸喔權競喔编笟喔堗腑喔囙竾喔侧笝喙佮弗喙夃抚</td></tr>",
+    "corrupted": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢คลียร์๢รียบร้ค17 ทุกอค17ดอร์ในโซนมีคนขับจองงานแล้ว</td></tr>",
+    "reconstructed": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢�คลียร์๢�รียบร้ค1�7�� ทุกอค1�7��ดอร์ในโซนมีคนขับจองงานแล้ว</td></tr>"
+  },
+  {
+    "index": 245,
+    "mojibake": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> 喙€喔勦弗喔掂涪喔｀箤喙€喔｀傅喔⑧笟喔｀箟喔�涪 喔炧复喔佮副喔斷笘喔灌竵喔曕箟喔�竾喔曕覆喔∴競喔�笟喙€喔傕笗喔氞福喔脆竵喔侧福喔椸副喙夃竾喔�浮喔�</td></tr>",
+    "corrupted": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢คลียร์๢รียบร้ค17 พิกัดถูกต้ค17ตามขค17๢ขตบริการทั้งค17ค17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢�คลียร์๢�รียบร้ค1�7�� พิกัดถูกต้ค1�7��ตามขค1�7��๢�ขตบริการทั้งค1�7��ค1�7</td></tr>"
+  },
+  {
+    "index": 246,
+    "mojibake": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> 喙€喔勦弗喔掂涪喔｀箤喙€喔｀傅喔⑧笟喔｀箟喔�涪 喔�腑喙€喔斷腑喔｀箤喔椸父喔佮笗喔编抚喔∴傅喔炧复喔佮副喔� Lat, Lng 喔勦福喔氞笘喙夃抚喔�</td></tr>",
+    "corrupted": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢คลียร์๢รียบร้ค17 ค17๢ดอร์ทุกตัวมีพิกัค17 Lat, Lng ครบถ้วค17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢�คลียร์๢�รียบร้ค1�7�� ค1�7��๢�ดอร์ทุกตัวมีพิกัค1�7 Lat, Lng ครบถ้วค1�7</td></tr>"
+  },
+  {
+    "index": 247,
+    "mojibake": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> 喙€喔勦弗喔掂涪喔｀箤喙€喔｀傅喔⑧笟喔｀箟喔�涪 喙勦浮喙堗浮喔掂腑喔�箑喔斷腑喔｀箤喔勦箟喔侧竾喙冟笝喔栢副喔� UNASSIGNED</td></tr>",
+    "corrupted": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢คลียร์๢รียบร้ค17 ไม่มีอค17ดอร์ค้างในถัค17 UNASSIGNED</td></tr>",
+    "reconstructed": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done); padding: 12px; font-weight: 600;\"><i class=\"fa-solid fa-circle-check\"></i> ๢�คลียร์๢�รียบร้ค1�7�� ไม่มีอค1�7��ดอร์ค้างในถัค1�7 UNASSIGNED</td></tr>"
+  },
+  {
+    "index": 248,
+    "mojibake": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done);\">喙勦浮喙堗浮喔掂腑喔�箑喔斷腑喔｀箤喔勦箟喔侧竾喙冟笝喔栢副喔� UNASSIGNED 喔椸父喔佮笀喔膏笖喔栢腹喔佮笀喔编笖喙€喔傕箟喔侧箓喔嬥笝喙€喔｀傅喔⑧笟喔｀箟喔�涪</td></tr>",
+    "corrupted": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done);\">ไม่มีอค17ดอร์ค้างในถัค17 UNASSIGNED ทุกจุดถูกจัด๢ข้าโซน๢รียบร้ค17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"4\" style=\"text-align: center; color: var(--st-done);\">ไม่มีอค1�7��ดอร์ค้างในถัค1�7 UNASSIGNED ทุกจุดถูกจัด๢�ข้าโซน๢�รียบร้ค1�7��</td></tr>"
+  },
+  {
+    "index": 249,
+    "mojibake": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">喔⑧副喔囙箘喔∴箞喔∴傅喔佮覆喔｀笟喔编笝喔椸付喔佮福喔侧涪喔堗箞喔侧涪喔傕笝喔�箞喔囙箖喔權抚喔编笝喔權傅喙�</td></tr>",
+    "corrupted": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ยังไม่มีการบันทึกรายจ่ายขนค17งในวันนีไ17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ยังไม่มีการบันทึกรายจ่ายขนค1�7��งในวันนีไ1�7</td></tr>"
+  },
+  {
+    "index": 250,
+    "mojibake": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">喙勦浮喙堗浮喔掂福喔侧涪喔佮覆喔｀競喔�竾喔�箞喔囙箘喔∴箞喔�赋喙€喔｀箛喔堗竸喙夃覆喔囙箖喔權福喔班笟喔�</td></tr>",
+    "corrupted": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ไม่มีรายการขค17ค17งไม่ค17๢ร็จค้างในระบค17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ไม่มีรายการขค1�7��ค1�7��งไม่ค1�7��๢�ร็จค้างในระบค1�7</td></tr>"
+  },
+  {
+    "index": 251,
+    "mojibake": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">喙勦浮喙堗浮喔掂竸喔赤競喔�箖喔權斧喔∴抚喔斷斧喔∴腹喙堗竸喔о覆喔∴箑喔�傅喙堗涪喔囙笝喔掂箟</td></tr>",
+    "corrupted": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ไม่มีคำขค17นหมวดหมู่ความเค17่ยงนี้</td></tr>",
+    "reconstructed": "<tr><td colspan=\"7\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ไม่มีคำขค1�7��นหมวดหมู่ความเค1�7��่ยงนี้</td></tr>"
+  },
+  {
+    "index": 252,
+    "mojibake": "<tr><td colspan=\"8\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">喙勦浮喙堗笧喔氞競喙夃腑喔∴腹喔ム福喙夃覆喔權竸喙夃覆喔曕覆喔∴箑喔囙阜喙堗腑喔權箘喔�</td></tr>",
+    "corrupted": "<tr><td colspan=\"8\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ไม่พบข้อมูลร้านค้าตามเงื่อนไค17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"8\" style=\"text-align: center; color: var(--ink-3); padding: 20px;\">ไม่พบข้อมูลร้านค้าตามเงื่อนไค1�7</td></tr>"
+  },
+  {
+    "index": 253,
+    "mojibake": "<tr><td colspan=\"9\" style=\"text-align: center; padding: 30px; color: var(--ink-3); font-size: 13px;\"><i class=\"fa-solid fa-box-open\" style=\"font-size: 24px; margin-bottom: 6px;\"></i><br>喙勦浮喙堗笧喔氞腑喔�箑喔斷腑喔｀箤喔椸傅喙堗笗喔｀竾喔佮副喔氞箑喔囙阜喙堗腑喔權箘喔傕笗喔编抚喔佮福喔�竾</td></tr>",
+    "corrupted": "<tr><td colspan=\"9\" style=\"text-align: center; padding: 30px; color: var(--ink-3); font-size: 13px;\"><i class=\"fa-solid fa-box-open\" style=\"font-size: 24px; margin-bottom: 6px;\"></i><br>ไม่พบอค17ดอร์ที่ตรงกับเงื่อนไขตัวกรค17</td></tr>",
+    "reconstructed": "<tr><td colspan=\"9\" style=\"text-align: center; padding: 30px; color: var(--ink-3); font-size: 13px;\"><i class=\"fa-solid fa-box-open\" style=\"font-size: 24px; margin-bottom: 6px;\"></i><br>ไม่พบอค1�7��ดอร์ที่ตรงกับเงื่อนไขตัวกรค1�7��</td></tr>"
+  },
+  {
+    "index": 254,
+    "mojibake": "COD 喔�${order.price.toLocaleString()}",
+    "corrupted": "COD ค17${order.price.toLocaleString()}",
+    "reconstructed": "COD ค1�7${order.price.toLocaleString()}"
+  },
+  {
+    "index": 255,
+    "mojibake": "喔о副喔權笚喔掂箞 ${day} ${monthName} ${thaiYear}",
+    "corrupted": "วันที่ ${day} ${monthName} ${thaiYear}",
+    "reconstructed": "วันที่ ${day} ${monthName} ${thaiYear}"
+  },
+  {
+    "index": 256,
+    "mojibake": "喔о副喔權釜喙堗竾喙€喔斷复喔∴笀喔侧竵 Unii: ${order.timeWindow}",
+    "corrupted": "วันส่ง๢ดิมจาก Unii: ${order.timeWindow}",
+    "reconstructed": "วันส่ง๢�ดิมจาก Unii: ${order.timeWindow}"
+  },
+  {
+    "index": 257,
+    "mojibake": "喔∴腑喔氞斧喔∴覆喔⑧箓喔嬥笝喔�腑喙€喔斷腑喔｀箤 ${order.id} 喙€喔傕箟喔侧釜喔灌箞 ${newZone} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "มอบหมายโซนค17๢ดอร์ ${order.id} ๢ข้าสู่ ${newZone} ๢รียบร้ค17แล้ว",
+    "reconstructed": "มอบหมายโซนค1�7��๢�ดอร์ ${order.id} ๢�ข้าสู่ ${newZone} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 258,
+    "mojibake": "喔∴腑喔氞斧喔∴覆喔⑧腑喔�箑喔斷腑喔｀箤 ${order.id} 喙冟斧喙� ${driver.name} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "มอบหมายอค17ดอร์ ${order.id} ใหไ17 ${driver.name} ๢รียบร้ค17แล้ว",
+    "reconstructed": "มอบหมายอค1�7��ดอร์ ${order.id} ใหไ1�7 ${driver.name} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 259,
+    "mojibake": "喔⑧复喔權笖喔掂笗喙夃腑喔權福喔编笟 ${state.currentUser.name} (喔�复喔椸笜喔脆箤: ${state.currentUser.role})",
+    "corrupted": "ยินดีต้อนรับ ${state.currentUser.name} (ค17ทธิ์: ${state.currentUser.role})",
+    "reconstructed": "ยินดีต้อนรับ ${state.currentUser.name} (ค1�7��ทธิ์: ${state.currentUser.role})"
+  },
+  {
+    "index": 260,
+    "mojibake": "喔⑧竵喙€喔ム复喔佮笀喔编笖喔�箞喔囙腑喔�箑喔斷腑喔｀箤 ${activeAc2OrderId} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ยก๢ลิกจัดค17งอค17ดอร์ ${activeAc2OrderId} ๢รียบร้ค17แล้ว",
+    "reconstructed": "ยก๢�ลิกจัดค1�7��งอค1�7��ดอร์ ${activeAc2OrderId} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 261,
+    "mojibake": "喔⑧箟喔侧涪喔�腑喙€喔斷腑喔｀箤 ${order.id} 喙€喔傕箟喔侧釜喔灌箞 ${newZone} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ย้ายค17๢ดอร์ ${order.id} ๢ข้าสู่ ${newZone} ๢รียบร้ค17แล้ว",
+    "reconstructed": "ย้ายค1�7��๢�ดอร์ ${order.id} ๢�ข้าสู่ ${newZone} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 262,
+    "mojibake": "喔⑧阜喔權涪喔编笝喔�笝喔膏浮喔编笗喔脆竸喔赤競喔�釜喙堗竾喔傕箟喔侧浮喙傕笅喔權笚喔掂箞喔｀腑喔�笝喔膏浮喔编笗喔脆笚喔编箟喔囙斧喔∴笖 ${pendingList.length} 喔｀覆喔⑧竵喔侧福? (喔佮福喔撪傅喔勦笝喔傕副喔氞弗喔�/喔佮福喔班笀喔侧涪喔囙覆喔權弗喙夃笝喙傕笅喔�)",
+    "corrupted": "ยืนยันค17ุมัติคำขค17่งข้ามโซนที่รอค17ุมัติทั้งหมด ${pendingList.length} รายการ? (กรณีคนขับลค17/กระจายงานล้นโซค17)",
+    "reconstructed": "ยืนยันค1�7��ุมัติคำขค1�7��่งข้ามโซนที่รอค1�7��ุมัติทั้งหมด ${pendingList.length} รายการ? (กรณีคนขับลค1�7/กระจายงานล้นโซค1�7)"
+  },
+  {
+    "index": 263,
+    "mojibake": "喔勦副喔斷弗喔�竵喙€喔ム競喔�腑喙€喔斷腑喔｀箤 ${activeAc2OrderId} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "คัดลค17๢ลขค17๢ดอร์ ${activeAc2OrderId} ๢รียบร้ค17แล้ว",
+    "reconstructed": "คัดลค1�7��๢�ลขค1�7��๢�ดอร์ ${activeAc2OrderId} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 264,
+    "mojibake": "喔勦笝喔傕副喔�: ${state.activeDriver.name}",
+    "corrupted": "คนขัค17: ${state.activeDriver.name}",
+    "reconstructed": "คนขัค1�7: ${state.activeDriver.name}"
+  },
+  {
+    "index": 265,
+    "mojibake": "喔堗腑喔囙笚喔编箟喔囙笀喔膏笖喔�箞喔� (${count} 喔�腑喙€喔斷腑喔｀箤) 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚! (喔｀斧喔编釜喔勦笝喔�箞喔� Column N: ${sampleRouteCode})",
+    "corrupted": "จองทั้งจุดค17ค17 (${count} ค17๢ดอร์) ๢รียบร้ค17แล้ว! (รหัสคนค17ค17 Column N: ${sampleRouteCode})",
+    "reconstructed": "จองทั้งจุดค1�7��ค1�7 (${count} ค1�7��๢�ดอร์) ๢�รียบร้ค1�7��แล้ว! (รหัสคนค1�7��ค1�7 Column N: ${sampleRouteCode})"
+  },
+  {
+    "index": 266,
+    "mojibake": "喔堗腑喔囙腑喔�箑喔斷腑喔｀箤 ${order.id} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚! (喔｀斧喔编釜喔勦笝喔�箞喔� Column N: ${routeCode})",
+    "corrupted": "จองอค17ดอร์ ${order.id} ๢รียบร้ค17แล้ว! (รหัสคนค17ค17 Column N: ${routeCode})",
+    "reconstructed": "จองอค1�7��ดอร์ ${order.id} ๢�รียบร้ค1�7��แล้ว! (รหัสคนค1�7��ค1�7 Column N: ${routeCode})"
+  },
+  {
+    "index": 267,
+    "mojibake": "喔斷覆喔о笝喙屶箓喔�弗喔斷箘喔熰弗喙� ${filename} 喔�赋喔�福喔编笟喔�箞喔囙笟喔编笉喔娻傅喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ดาวน์โค17ดไฟลไ17 ${filename} ค17ค17ับค17งบัญชี๢รียบร้ค17แล้ว",
+    "reconstructed": "ดาวน์โค1�7��ดไฟลไ1�7 ${filename} ค1�7��ค1�7��ับค1�7��งบัญชี๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 268,
+    "mojibake": "喔斷赋喙€喔權复喔權竵喔侧福喔佮弗喔膏箞喔� ${selectedIds.length} 喔｀覆喔⑧竵喔侧福 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ดำ๢นินการกลุ่ค17 ${selectedIds.length} รายการ ๢รียบร้ค17แล้ว",
+    "reconstructed": "ดำ๢�นินการกลุ่ค1�7 ${selectedIds.length} รายการ ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 269,
+    "mojibake": "喔曕福喔о笀喔｀副喔氞競喔�竾喔勦阜喔權箑喔傕箟喔侧竸喔ム副喔囙腑喔�箑喔斷腑喔｀箤 ${ret.order_no} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 (喔�笭喔侧笧: ${condition})",
+    "corrupted": "ตรวจรับขค17คืนเข้าคลังอค17ดอร์ ${ret.order_no} ๢รียบร้ค17แล้ว (ค17าพ: ${condition})",
+    "reconstructed": "ตรวจรับขค1�7��คืนเข้าคลังอค1�7��ดอร์ ${ret.order_no} ๢�รียบร้ค1�7��แล้ว (ค1�7��าพ: ${condition})"
+  },
+  {
+    "index": 270,
+    "mojibake": "喔氞副喔權笚喔多竵喔⑧竵喙€喔ム复喔�/喔�箞喔囙箘喔∴箞喔�赋喙€喔｀箛喔�: ${order.id}",
+    "corrupted": "บันทึกยก๢ลิค17/ค17งไม่ค17๢ร็ค17: ${order.id}",
+    "reconstructed": "บันทึกยก๢�ลิค1�7/ค1�7��งไม่ค1�7��๢�ร็ค1�7: ${order.id}"
+  },
+  {
+    "index": 271,
+    "mojibake": "喔氞副喔權笚喔多竵喔傕箟喔�浮喔灌弗喔堗副喔斷釜喙堗竾喔�腑喙€喔斷腑喔｀箤 ${orderId} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "บันทึกข้ค17ูลจัดส่งค17๢ดอร์ ${orderId} ๢รียบร้ค17แล้ว",
+    "reconstructed": "บันทึกข้ค1�7��ูลจัดส่งค1�7��๢�ดอร์ ${orderId} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 272,
+    "mojibake": "喔氞副喔權笚喔多竵喔傕箟喔�浮喔灌弗喔椸赴喙€喔氞傅喔⑧笝喔｀箟喔侧笝喔勦箟喔� ${name} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "บันทึกข้ค17ูลทะ๢บียนร้านค้ค17 ${name} ๢รียบร้ค17แล้ว",
+    "reconstructed": "บันทึกข้ค1�7��ูลทะ๢�บียนร้านค้ค1�7 ${name} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 273,
+    "mojibake": "喔氞副喔權笚喔多竵喔曕赋喙佮斧喔權箞喔囙斧喔∴父喔斷箖喔�浮喙堗釜喔赤斧喔｀副喔� ${state.m5SelectedOrder.customer} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "บันทึกตำแหน่งหมุดใค17่สำหรัค17 ${state.m5SelectedOrder.customer} ๢รียบร้ค17แล้ว",
+    "reconstructed": "บันทึกตำแหน่งหมุดใค1�7��่สำหรัค1�7 ${state.m5SelectedOrder.customer} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 274,
+    "mojibake": "喔氞副喔權笚喔多竵喔｀副喔氞浮喔�笟喙€喔囙复喔權竸喔權競喔编笟 ${driverId} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 (喔�箞喔о笝喔曕箞喔侧竾: 喔�${diff.toFixed(2)})",
+    "corrupted": "บันทึกรับมค17๢งินคนขับ ${driverId} ๢รียบร้ค17แล้ว (ค17วนต่าง: ค17${diff.toFixed(2)})",
+    "reconstructed": "บันทึกรับมค1�7��๢�งินคนขับ ${driverId} ๢�รียบร้ค1�7��แล้ว (ค1�7��วนต่าง: ค1�7${diff.toFixed(2)})"
+  },
+  {
+    "index": 275,
+    "mojibake": "喔氞副喔權笚喔多竵喔｀覆喔⑧笀喙堗覆喔� ${typeLabels[type]} 喔堗赋喔權抚喔� 喔�${amount.toFixed(2)} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "บันทึกรายจ่าค17 ${typeLabels[type]} จำนวค17 ค17${amount.toFixed(2)} ๢รียบร้ค17แล้ว",
+    "reconstructed": "บันทึกรายจ่าค1�7 ${typeLabels[type]} จำนวค1�7 ค1�7${amount.toFixed(2)} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 276,
+    "mojibake": "喔涏复喔斷竾喔侧笝喔堗副喔斷釜喙堗竾喔�赋喙€喔｀箛喔� ${order.id} (喙佮笝喔氞福喔灌笡喔�复喔權竸喙夃覆 ${rec.proof_photos.length} 喔｀腹喔�, 喔�弗喔脆笡喙傕腑喔權箑喔囙复喔� ${rec.slip_photos.length} 喔�弗喔脆笡)",
+    "corrupted": "ปิดงานจัดส่งค17๢ร็ค17 ${order.id} (แนบรูปค17นค้า ${rec.proof_photos.length} รูค17, ค17ิปโอนเงิค17 ${rec.slip_photos.length} ค17ิป)",
+    "reconstructed": "ปิดงานจัดส่งค1�7��๢�ร็ค1�7 ${order.id} (แนบรูปค1�7��นค้า ${rec.proof_photos.length} รูค1�7, ค1�7��ิปโอนเงิค1�7 ${rec.slip_photos.length} ค1�7��ิป)"
+  },
+  {
+    "index": 277,
+    "mojibake": "喔涏复喔斷竾喔侧笝喔堗副喔斷釜喙堗竾喔�赋喙€喔｀箛喔� (喔�复喔權竸喙夃覆 ${rec.proof_photos.length} 喔｀腹喔�, 喔�弗喔脆笡 ${rec.slip_photos.length} 喔｀腹喔�)",
+    "corrupted": "ปิดงานจัดส่งค17๢ร็ค17 (ค17นค้า ${rec.proof_photos.length} รูค17, ค17ิป ${rec.slip_photos.length} รูค17)",
+    "reconstructed": "ปิดงานจัดส่งค1�7��๢�ร็ค1�7 (ค1�7��นค้า ${rec.proof_photos.length} รูค1�7, ค1�7��ิป ${rec.slip_photos.length} รูค1�7)"
+  },
+  {
+    "index": 278,
+    "mojibake": "喔涏复喔� ${lunch}",
+    "corrupted": "ปิค17 ${lunch}",
+    "reconstructed": "ปิค1�7 ${lunch}"
+  },
+  {
+    "index": 279,
+    "mojibake": "喔涏弗喔斷竵喔侧福喔堗腑喔囙竸喔權競喔编笟喔�腑喙€喔斷腑喔｀箤 ${activeAc2OrderId} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ปลดการจองคนขับค17๢ดอร์ ${activeAc2OrderId} ๢รียบร้ค17แล้ว",
+    "reconstructed": "ปลดการจองคนขับค1�7��๢�ดอร์ ${activeAc2OrderId} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 280,
+    "mojibake": "喔涏笍喔脆箑喔�笜喔勦赋喔傕腑喙佮竵喙夃箘喔� ${req.row_id} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ปฏิเค17คำขอแก้ไค17 ${req.row_id} ๢รียบร้ค17แล้ว",
+    "reconstructed": "ปฏิเค1�7��คำขอแก้ไค1�7 ${req.row_id} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 281,
+    "mojibake": "喔炧笝喔编竵喔囙覆喔� ${driverId} 喔∴傅喔�箞喔о笝喔曕箞喔侧竾 喔�${diff.toFixed(2)} 鈥� 喔氞副喔囙竸喔编笟喔｀赴喔氞父喙€喔�笗喔膏笢喔ム竵喙堗腑喔權笟喔编笝喔椸付喔佮福喔编笟喔∴腑喔氞箑喔囙复喔� (喙€喔娻箞喔� 喔椸腑喔權笢喔脆笖 / 喔ム腹喔佮竸喙夃覆喔傕腑喔堗箞喔侧涪喔炧福喔膏箞喔囙笝喔掂箟)",
+    "corrupted": "พนักงาค17 ${driverId} มีค17วนต่าง ค17${diff.toFixed(2)}  17 บังคับระบุ๢ค17ุผลก่อนบันทึกรับมอบเงิค17 (๢ช่ค17 ทอนผิด / ลูกค้าขอจ่ายพรุ่งนี้)",
+    "reconstructed": "พนักงาค1�7 ${driverId} มีค1�7��วนต่าง ค1�7${diff.toFixed(2)}  1�7 บังคับระบุ๢�ค1�7��ุผลก่อนบันทึกรับมอบเงิค1�7 (๢�ช่ค1�7 ทอนผิด / ลูกค้าขอจ่ายพรุ่งนี้)"
+  },
+  {
+    "index": 282,
+    "mojibake": "喔｀覆喔⑧弗喔班箑喔�傅喔⑧笖喔�腑喙€喔斷腑喔｀箤喔傕腑喔� ${driverId} (${orders.length} 喔堗父喔�):\\n\\n",
+    "corrupted": "รายละเค17ยดค17๢ดอร์ขอค17 ${driverId} (${orders.length} จุค17):\\n\\n",
+    "reconstructed": "รายละเค1�7��ยดค1�7��๢�ดอร์ขอค1�7 ${driverId} (${orders.length} จุค1�7):\n\n"
+  },
+  {
+    "index": 283,
+    "mojibake": "喔｀覆喔⑧竵喔侧福喔椸傅喙堗箑喔ム阜喔�竵喔椸副喙夃竾喔�浮喔� ${count} 喔｀覆喔⑧竵喔侧福:",
+    "corrupted": "รายการที่เลืค17ทั้งค17ค17 ${count} รายการ:",
+    "reconstructed": "รายการที่เลืค1�7��ทั้งค1�7��ค1�7 ${count} รายการ:"
+  },
+  {
+    "index": 284,
+    "mojibake": "喔�${codSum.toLocaleString()}",
+    "corrupted": "ค17${codSum.toLocaleString()}",
+    "reconstructed": "ค1�7${codSum.toLocaleString()}"
+  },
+  {
+    "index": 285,
+    "mojibake": "喔�${collectedCod.toLocaleString()}",
+    "corrupted": "ค17${collectedCod.toLocaleString()}",
+    "reconstructed": "ค1�7${collectedCod.toLocaleString()}"
+  },
+  {
+    "index": 286,
+    "mojibake": "喔�${diff.toLocaleString(undefined, {minimumFractionDigits:2})}",
+    "corrupted": "ค17${diff.toLocaleString(undefined, {minimumFractionDigits:2})}",
+    "reconstructed": "ค1�7${diff.toLocaleString(undefined, {minimumFractionDigits:2})}"
+  },
+  {
+    "index": 287,
+    "mojibake": "喔�${order.price.toLocaleString()}",
+    "corrupted": "ค17${order.price.toLocaleString()}",
+    "reconstructed": "ค1�7${order.price.toLocaleString()}"
+  },
+  {
+    "index": 288,
+    "mojibake": "喔�${order.price.toLocaleString(undefined, {minimumFractionDigits:2})}",
+    "corrupted": "ค17${order.price.toLocaleString(undefined, {minimumFractionDigits:2})}",
+    "reconstructed": "ค1�7${order.price.toLocaleString(undefined, {minimumFractionDigits:2})}"
+  },
+  {
+    "index": 289,
+    "mojibake": "喔�${totalCodSum.toLocaleString(undefined, {minimumFractionDigits:0})}",
+    "corrupted": "ค17${totalCodSum.toLocaleString(undefined, {minimumFractionDigits:0})}",
+    "reconstructed": "ค1�7${totalCodSum.toLocaleString(undefined, {minimumFractionDigits:0})}"
+  },
+  {
+    "index": 290,
+    "mojibake": "喔�傅喔歺${v}",
+    "corrupted": "ค17บx${v}",
+    "reconstructed": "ค1�7��บx${v}"
+  },
+  {
+    "index": 291,
+    "mojibake": "喔�弗喔编笟喔ム赋喔斷副喔氞箑喔�箟喔權笚喔侧竾喙€喔涏箛喔� #${toIdx + 1} (${moved.customer}) 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ค17ับลำดับเค17นทาง๢ป็ค17 #${toIdx + 1} (${moved.customer}) ๢รียบร้ค17แล้ว",
+    "reconstructed": "ค1�7��ับลำดับเค1�7��นทาง๢�ป็ค1�7 #${toIdx + 1} (${moved.customer}) ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 292,
+    "mojibake": "喔�弗喔编笟喔勦笝喔傕副喔氞箑喔涏箛喔� ${state.activeDriver.name} (${state.activeDriver.zone}) 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ค17ับคนขับเป็ค17 ${state.activeDriver.name} (${state.activeDriver.zone}) ๢รียบร้ค17แล้ว",
+    "reconstructed": "ค1�7��ับคนขับเป็ค1�7 ${state.activeDriver.name} (${state.activeDriver.zone}) ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 293,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆竸喔赤競喔� ${req.field} 喔傕腑喔囙釜喔脆笝喔勦箟喔� ${req.row_id} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ค17ุมัติคำขค17 ${req.field} ของสินค้ค17 ${req.row_id} ๢รียบร้ค17แล้ว",
+    "reconstructed": "ค1�7��ุมัติคำขค1�7 ${req.field} ของสินค้ค1�7 ${req.row_id} ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 294,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆竸喔赤競喔�笀喔侧竵 Parser 喔椸副喙夃竾喔�浮喔� ${pendingList.length} 喔｀覆喔⑧竵喔侧福喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ค17ุมัติคำขค17าก Parser ทั้งค17ค17 ${pendingList.length} รายการ๢รียบร้ค17แล้ว",
+    "reconstructed": "ค1�7��ุมัติคำขค1�7��าก Parser ทั้งค1�7��ค1�7 ${pendingList.length} รายการ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 295,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆竸喔赤競喔�釜喙堗竾喔傕箟喔侧浮喙傕笅喔權笚喔编箟喔囙斧喔∴笖 ${pendingList.length} 喔｀覆喔⑧竵喔侧福喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "ค17ุมัติคำขค17่งข้ามโซนทั้งหมด ${pendingList.length} รายการ๢รียบร้ค17แล้ว",
+    "reconstructed": "ค1�7��ุมัติคำขค1�7��่งข้ามโซนทั้งหมด ${pendingList.length} รายการ๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 296,
+    "mojibake": "喔�笝喔膏浮喔编笗喔脆竸喔赤競喔�釜喙堗竾喔傕箟喔侧浮喙傕笅喔權腑喔�箑喔斷腑喔｀箤 ${req.order_no} 喙冟斧喙� ${req.driver_name} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 (喙佮笀喙夃竾喙€喔曕阜喔�笝喔佮弗喔编笟喔�覆喔勦笝喔傕副喔氞箖喔� 20 喔о复)",
+    "corrupted": "ค17ุมัติคำขค17่งข้ามโซนอค17ดอร์ ${req.order_no} ใหไ17 ${req.driver_name} ๢รียบร้ค17แล้ว (แจ้ง๢ตืค17กลับค17คนขับใค17 20 วิ)",
+    "reconstructed": "ค1�7��ุมัติคำขค1�7��่งข้ามโซนอค1�7��ดอร์ ${req.order_no} ใหไ1�7 ${req.driver_name} ๢�รียบร้ค1�7��แล้ว (แจ้ง๢�ตืค1�7��กลับค1�7��คนขับใค1�7 20 วิ)"
+  },
+  {
+    "index": 297,
+    "mojibake": "喔�箞喔囙竸喔赤競喔�競喙夃覆喔∴箓喔嬥笝喙勦笡喔�覆 ${zoneOwner.name} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 (喔｀腑喙€喔堗箟喔侧競喔�竾喙傕笅喔權腑喔權父喔∴副喔曕复)",
+    "corrupted": "ค17งคำขค17้ามโซนไปค17 ${zoneOwner.name} ๢รียบร้ค17แล้ว (รอ๢จ้าขค17โซนอนุมัติ)",
+    "reconstructed": "ค1�7��งคำขค1�7��้ามโซนไปค1�7�� ${zoneOwner.name} ๢�รียบร้ค1�7��แล้ว (รอ๢�จ้าขค1�7��โซนอนุมัติ)"
+  },
+  {
+    "index": 298,
+    "mojibake": "喙€喔ム阜喔�竵喔�涪喔灌箞 ${count} 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "๢ลืค17ค17ู่ ${count} รายการ",
+    "reconstructed": "๢�ลืค1�7��ค1�7��ู่ ${count} รายการ"
+  },
+  {
+    "index": 299,
+    "mojibake": "喙€喔佮箛喔氞箑喔囙复喔� 喔�${collectedCod.toLocaleString(undefined, {minimumFractionDigits:0})} 喔堗覆喔� 喔�${totalCodTarget.toLocaleString(undefined, {minimumFractionDigits:0})}",
+    "corrupted": "๢ก็บเงิค17 ค17${collectedCod.toLocaleString(undefined, {minimumFractionDigits:0})} จาค17 ค17${totalCodTarget.toLocaleString(undefined, {minimumFractionDigits:0})}",
+    "reconstructed": "๢�ก็บเงิค1�7 ค1�7${collectedCod.toLocaleString(undefined, {minimumFractionDigits:0})} จาค1�7 ค1�7${totalCodTarget.toLocaleString(undefined, {minimumFractionDigits:0})}"
+  },
+  {
+    "index": 300,
+    "mojibake": "喙€喔涏弗喔掂箞喔⑧笝喔堗父喔斷釜喙堗竾喙€喔涏箟喔侧斧喔∴覆喔⑧箑喔涏箛喔� \"${targetOrder ? targetOrder.customer : orderId}\" 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 (\"喔佮赋喔ム副喔囙箘喔�\")",
+    "corrupted": "๢ปลี่ยนจุดส่ง๢ป้าหมายเป็ค17 \"${targetOrder ? targetOrder.customer : orderId}\" ๢รียบร้ค17แล้ว (\"กำลังไค17\")",
+    "reconstructed": "๢�ปลี่ยนจุดส่ง๢�ป้าหมายเป็ค1�7 \"${targetOrder ? targetOrder.customer : orderId}\" ๢�รียบร้ค1�7��แล้ว (\"กำลังไค1�7\")"
+  },
+  {
+    "index": 301,
+    "mojibake": "喙佮涪喔佮腑喔�箑喔斷腑喔｀箤 ${activeAc2OrderId} 喔�腑喔佮笀喔侧竵喔堗父喔斷福喔о浮喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚",
+    "corrupted": "แยกอค17ดอร์ ${activeAc2OrderId} ค17กจากจุดรวม๢รียบร้ค17แล้ว",
+    "reconstructed": "แยกอค1�7��ดอร์ ${activeAc2OrderId} ค1�7��กจากจุดรวม๢�รียบร้ค1�7��แล้ว"
+  },
+  {
+    "index": 302,
+    "mojibake": "喙佮笧喔�/喔佮弗喙堗腑喔噚${v}",
+    "corrupted": "แพค17/กล่องx${v}",
+    "reconstructed": "แพค1�7/กล่องx${v}"
+  },
+  {
+    "index": 303,
+    "mojibake": "喙佮釜喔斷竾 ${filtered.length} 喔｀覆喔⑧竵喔侧福",
+    "corrupted": "แสดง ${filtered.length} รายการ",
+    "reconstructed": "แสดง ${filtered.length} รายการ"
+  },
+  {
+    "index": 304,
+    "mojibake": "喙傕笚喔｀竵喙堗腑喔� ${callMins} 喔�.",
+    "corrupted": "โทรก่อค17 ${callMins} ค17.",
+    "reconstructed": "โทรก่อค1�7 ${callMins} ค1�7."
+  },
+  {
+    "index": 305,
+    "mojibake": "喙勦浮喙堗腑喔權父喔∴副喔曕复喔勦赋喔傕腑喔�箞喔囙競喙夃覆喔∴箓喔嬥笝 ${req.order_no} (喙€喔�笗喔膏笢喔�: ${reason})",
+    "corrupted": "ไม่อนุมัติคำขอค17งข้ามโซน ${req.order_no} (๢ค17ุผค17: ${reason})",
+    "reconstructed": "ไม่อนุมัติคำขอค1�7��งข้ามโซน ${req.order_no} (๢�ค1�7��ุผค1�7: ${reason})"
+  },
+  {
+    "index": 306,
+    "mojibake": "鈿狅笍 喔⑧阜喔權涪喔编笝喔佮覆喔｀腑喔權父喔∴副喔曕复喔佮覆喔｀箒喔佮箟喙勦競喔｀赴喔斷副喔氞釜喔灌竾 (喔勦抚喔侧浮喙€喔�傅喙堗涪喔囙釜喔灌竾)\\n\\n喔佮覆喔｀箑喔涏弗喔掂箞喔⑧笝喔傕箟喔�浮喔灌弗喔權傅喙夃浮喔掂笢喔ム竵喔｀赴喔椸笟喙傕笖喔⑧笗喔｀竾喔曕箞喔�福喔班笟喔氞笟喔侧福喙屶箓喔勦箟喔� 喔�笗喙娻腑喔� 喙佮弗喔班竵喔侧福喔勦赋喔權抚喔撪竸喔о覆喔∴笀喔膏福喔栢笀喔编笖喔�箞喔嘰n\\n喔⑧阜喔權涪喔编笝喔權赋喙€喔傕箟喔侧福喔班笟喔氞笂喔掂笗喔�弗喔编竵?",
+    "corrupted": "⚠️ ยืนยันการอนุมัติการแก้ไขระดับสูง (ความ๢ค17่ยงสูง)\\n\\nการเปลี่ยนข้ค17ูลนี้มีผลกระทบโดยตรงต่ค17ะบบบาร์โค้ค17 ค17๊อค17 และการคำนวณความจุรถจัดค17ง\\n\\nยืนยันนำ๢ข้าระบบชีตค17ัก?",
+    "reconstructed": "⚠️ ยืนยันการอนุมัติการแก้ไขระดับสูง (ความ๢�ค1�7��่ยงสูง)\n\nการเปลี่ยนข้ค1�7��ูลนี้มีผลกระทบโดยตรงต่ค1�7��ะบบบาร์โค้ค1�7 ค1�7��๊อค1�7 และการคำนวณความจุรถจัดค1�7��ง\\n\nยืนยันนำ๢�ข้าระบบชีตค1�7��ัก?"
+  },
+  {
+    "index": 307,
+    "mojibake": "鈿� [喔椸傅喔∴笧喔脆箑喔ㄠ俯喔斷箞喔о笝] 喔⑧阜喔權涪喔编笝喔斷付喔囙竾喔侧笝喔�腑喙€喔斷腑喔｀箤 ${order.id} (${order.customer})\\n喔堗覆喔佮竸喔權競喔编笟喙€喔斷复喔� (${previousDriver}) 喔∴覆喔堗副喔斷釜喙堗竾喔斷箟喔о涪喔椸傅喔∴笧喔脆箑喔ㄠ俯喔椸副喔權笚喔�?\\n\\n(喔｀赴喔氞笟喔堗赴喙€喔涏弗喔掂箞喔⑧笝喔勦笝喔�箞喔囙箒喔ム赴喔傕箟喔侧浮喔傕副喙夃笝喔曕腑喔權竵喔侧福喔傕腑喔�笝喔膏浮喔编笗喔脆箖喔�箟喔�副喔曕箓喔權浮喔编笗喔�)",
+    "corrupted": "⚄17 [ทีมพิเศษด่วน] ยืนยันดึงงานค17๢ดอร์ ${order.id} (${order.customer})\\nจากคนขับ๢ดิค17 (${previousDriver}) มาจัดส่งด้วยทีมพิเศษทันทค17?\\n\\n(ระบบจะ๢ปลี่ยนคนค17งและข้ามขั้นตอนการขอค17ุมัติใค17ค17ตโนมัตค17)",
+    "reconstructed": "⚄1�7 [ทีมพิเศษด่วน] ยืนยันดึงงานค1�7��๢�ดอร์ ${order.id} (${order.customer})\nจากคนขับ๢�ดิค1�7 (${previousDriver}) มาจัดส่งด้วยทีมพิเศษทันทค1�7?\n\n(ระบบจะ๢�ปลี่ยนคนค1�7��งและข้ามขั้นตอนการขอค1�7��ุมัติใค1�7��ค1�7��ตโนมัตค1�7)"
+  },
+  {
+    "index": 308,
+    "mojibake": "鈿� 喔椸傅喔∴笧喔脆箑喔ㄠ俯喔斷付喔囙竾喔侧笝喔斷箞喔о笝 ${order.id} 喔∴覆喔堗副喔斷釜喙堗竾喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚! (喔｀斧喔编釜喔勦笝喔�箞喔�: ${routeCode})",
+    "corrupted": "⚄17 ทีมพิเศษดึงงานด่วน ${order.id} มาจัดส่ง๢รียบร้ค17แล้ว! (รหัสคนค17ค17: ${routeCode})",
+    "reconstructed": "⚄1�7 ทีมพิเศษดึงงานด่วน ${order.id} มาจัดส่ง๢�รียบร้ค1�7��แล้ว! (รหัสคนค1�7��ค1�7: ${routeCode})"
+  },
+  {
+    "index": 309,
+    "mojibake": "鉁� 喔�笝喔膏浮喔编笗喔脆竵喔侧福喔�箞喔囙競喙夃覆喔∴箓喔嬥笝喙€喔｀傅喔⑧笟喔｀箟喔�涪 喔�腑喙€喔斷腑喔｀箤 ${order.id} 喔栢腹喔佮涪喙夃覆喔⑧箑喔傕箟喔侧釜喔灌箞喔｀覆喔⑧竵喔侧福喔囙覆喔權笀喔�竾喔傕腑喔囙竸喔膏笓喙佮弗喙夃抚",
+    "corrupted": "✄17 ค17ุมัติการค17งข้ามโซน๢รียบร้ค17 ค17๢ดอร์ ${order.id} ถูกย้ายเข้าสู่รายการงานจค17ของคุณแล้ว",
+    "reconstructed": "✄1�7 ค1�7��ุมัติการค1�7��งข้ามโซน๢�รียบร้ค1�7�� ค1�7��๢�ดอร์ ${order.id} ถูกย้ายเข้าสู่รายการงานจค1�7��ของคุณแล้ว"
+  },
+  {
+    "index": 310,
+    "mojibake": "馃敀 喔涏复喔斷涪喔�笖喔涏福喔班笀喔赤抚喔编笝喔椸傅喙� ${todayStr} 喙€喔｀傅喔⑧笟喔｀箟喔�涪喙佮弗喙夃抚 喔傕箟喔�浮喔灌弗喔炧福喙夃腑喔∴釜喙堗竾喙冟斧喙夃笟喔编笉喔娻傅",
+    "corrupted": "🔒 ปิดยค17ประจำวันทีไ17 ${todayStr} ๢รียบร้ค17แล้ว ข้ค17ูลพร้อมส่งให้บัญชี",
+    "reconstructed": "🔒 ปิดยค1�7��ประจำวันทีไ1�7 ${todayStr} ๢�รียบร้ค1�7��แล้ว ข้ค1�7��ูลพร้อมส่งให้บัญชี"
+  }
+]

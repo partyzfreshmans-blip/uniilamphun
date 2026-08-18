@@ -1,0 +1,19 @@
+{
+  "name": "u-flow-backend",
+  "version": "1.0.0",
+  "description": "U-Flow Serverless Backend",
+  "main": "api/driver/day.js",
+  "scripts": {
+    "start": "node server.js",
+    "sync": "node sync-from-csv.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "googleapis": "^126.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "playwright": "^1.62.1",
+    "polygon-clipping": "^0.15.7"
+  }
+}

@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Unii Mart 584 — Driver Route App</title>
+  <meta name="description" content="ระบบจัดการเส้นทางส่งสินค้าสำหรับพนักงานขับรถ Unii Mart 584">
+  
+  <!-- Google Fonts: IBM Plex Sans Thai & IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Custom Design Tokens & Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Print Header (Visible only when printing admin delivery manifest A1) -->
+  <div class="print-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h1 style="margin: 0; font-size: 20px;">Unii Mart 584 — ใบรายการส่งสินค้าประจำวัน</h1>
+        <p style="margin: 4px 0 0 0; color: #555;">วันที่: <span id="print-date"></span> | พนักงาน: <span id="print-driver-name">สมชาย จัดส่ง</span> (<span id="print-driver-code">DRV-A01</span>)</p>
+      </div>
+      <div style="text-align: right;">
+        <p style="margin: 0; font-weight: bold;">โซนรับผิดชอบ: <span id="print-zone-name">Zone A — เมืองลำพูน</span></p>
+        <p style="margin: 4px 0 0 0;">ยอดรวม COD ทั้งหมด: <span id="print-total-cod" class="num">฿0</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Responsive Shell -->
+  <div class="shell" id="view-driver">
+    
+    <!-- Application Header -->
+    <header class="app-header">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Unii Mart 584" class="brand-logo">
+        <div class="brand-text">
+          <div class="brand-title">Unii Mart 584</div>
+          <div class="brand-sub">Driver Route Navigation</div>
+        </div>
+      </div>
+
+      <div class="driver-profile">
+        <a href="/supervisor" class="btn btn--primary btn--sm btn-hdr-sup" id="btn-open-supervisor-portal" style="background: var(--ink); color: #fff; border-color: var(--ink); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="เข้าสู่ระบบหัวหน้าคลัง">
+          <i class="fa-solid fa-user-gear" style="color: var(--st-available);"></i> <span class="hdr-btn-label">หัวหน้าคลัง</span>
+        </a>
+        <button class="btn btn--secondary btn--sm btn-hdr-print" onclick="window.print()" title="พิมพ์ใบงาน">
+          <i class="fa-solid fa-print"></i> <span class="hdr-btn-label">พิมพ์ใบงาน</span>
+        </button>
+        <div class="driver-info-wrap" style="display: flex; align-items: center; gap: var(--sp-2); cursor: pointer;" id="btn-open-driver-auth" title="คลิกเพื่อสลับคนขับ">
+          <div class="driver-avatar" id="header-driver-avatar">A01</div>
+          <div class="driver-name-zone" style="display: flex; flex-direction: column;">
+            <span style="font-weight: 600; font-size: 13px;" id="header-driver-name">สมชาย จัดส่ง</span>
+            <span class="chip chip--available" style="padding: 1px 6px; font-size: 10px;" id="header-driver-zone">Zone A — เมืองลำพูน</span>
+          </div>
+        </div>
+        <button class="btn btn--secondary btn--sm btn-hdr-logout" style="color: var(--st-failed); border-color: #fecaca; margin-left: 2px;" onclick="logoutDriver()" title="ออกจากระบบ">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Panel 1: Orders List & Filters (Bottom sheet on Mobile, Left Panel on Desktop) -->
+      <section class="sheet" id="bottom-sheet">
+        <!-- Mobile Bottom Sheet Handle -->
+        <div class="sheet-handle" id="sheet-handle" style="position: relative;">
+          <div class="sheet-handle-bar"></div>
+          <button class="sheet-expand-btn" id="btn-sheet-expand" title="ขยาย/ย่อรายการออเดอร์" aria-label="ขยาย/ย่อ">
+            <i class="fa-solid fa-chevron-up" id="sheet-expand-icon"></i>
+          </button>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div style="display: flex; gap: var(--sp-2);">
+            <div class="search-box" style="flex: 1; position: relative;">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-input" class="search-input" placeholder="ค้นหารหัส (UM-), ชื่อลูกค้า หรือ เบอร์โทร..." style="padding-right: 28px;">
+              <button type="button" id="btn-clear-search" class="search-clear-btn" style="display: none;" title="ล้างข้อความค้นหา">
+                <i class="fa-solid fa-circle-xmark"></i>
+              </button>
+            </div>
+            <select id="date-select" class="search-input" style="width: 135px; padding: 0 8px; cursor: pointer;">
+              <!-- Options auto-populated via JS -->
+            </select>
+          </div>
+
+          <!-- Quick Action Bar: Sort by distance & Claim All in Zone -->
+          <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+            <button class="btn btn--secondary btn--sm" id="btn-sort-distance" style="flex: 1; font-size: 11.5px; height: 32px; white-space: nowrap;" title="เรียงตามระยะทางจากตำแหน่งคนขับ">
+              <i class="fa-solid fa-arrow-down-short-wide"></i> เรียงตามระยะทาง
+            </button>
+            <button class="btn btn--primary btn--sm" id="btn-claim-all-available" style="flex: 1; font-size: 11.5px; height: 32px; white-space: nowrap; background: #2563eb; border-color: #2563eb;" title="จองรับงานทั้งหมดในโซนนี้">
+              <i class="fa-solid fa-truck-fast"></i> จองทั้งหมด (<span id="claim-all-count">0</span>)
+            </button>
+          </div>
+
+          <!-- Status Tabs (NOTE: Out-of-zone tab is REMOVED per specification) -->
+          <div class="status-tabs">
+            <button class="tab-btn is-active" data-status="all">
+              ทั้งหมด <span class="chip" id="count-all">0</span>
+            </button>
+            <button class="tab-btn" data-status="available">
+              <span class="legend-dot is-available"></span> โซนฉัน <span class="chip chip--available" id="count-available">0</span>
+            </button>
+            <button class="tab-btn" data-status="mine">
+              <span class="legend-dot is-mine"></span> จองแล้ว <span class="chip chip--mine" id="count-mine">0</span>
+            </button>
+            <button class="tab-btn" data-status="done">
+              <span class="legend-dot is-done"></span> ส่งสำเร็จ <span class="chip chip--done" id="count-done">0</span>
+            </button>
+            <button class="tab-btn" data-status="failed">
+              <span class="legend-dot is-failed"></span> ส่งไม่สำเร็จ <span class="chip chip--failed" id="count-failed">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Orders Container -->
+        <div class="orders-list" id="orders-container">
+          <!-- Dynamic order cards inserted via JavaScript -->
+        </div>
+      </section>
+
+      <!-- Panel 2: Interactive Map -->
+      <section class="map-container">
+        <div id="map"></div>
+
+        <!-- Map Floating Controls -->
+        <div class="map-floating-controls">
+          <button class="map-control-btn use-my-location" id="btn-my-location" title="ตำแหน่ง GPS ของฉัน">
+            <i class="fa-solid fa-crosshairs" style="color: var(--st-available);"></i>
+          </button>
+          <button class="map-control-btn" id="btn-recenter-map" title="รีเซ็ตมุมมองแผนที่">
+            <i class="fa-solid fa-compress" style="color: var(--ink);"></i>
+          </button>
+          <button class="map-control-btn" id="btn-toggle-zones" title="ซ่อน/แสดงขอบเขต GeoJSON โซน">
+            <i class="fa-solid fa-layer-group" style="color: var(--ink-2);"></i>
+          </button>
+        </div>
+
+        <!-- Map Legend Overlay -->
+        <div style="position: absolute; bottom: 16px; left: 16px; z-index: 500; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); border-radius: 8px; padding: 8px 12px; border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-size: 11px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="legend-dot is-available"></span> โซนฉัน
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="legend-dot is-mine"></span> จองแล้ว
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="legend-dot is-done"></span> ส่งสำเร็จ
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="legend-dot is-failed"></span> ส่งไม่สำเร็จ
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="legend-dot is-attention"></span> เตือน GPS >300m
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="legend-dot is-out"></span> นอกโซน (กดไม่ได้)
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Panel 3: Desktop Right Sidebar Stats & Order Sequence (Driver Choice) -->
+    <aside class="right-panel">
+      
+      <!-- Zone & Active Driver Selector -->
+      <div class="panel-section">
+        <div class="panel-title">
+          <span>บริบทโซนปัจจุบัน</span>
+          <span class="chip chip--available" id="side-driver-status">คนขับ: สมชาย</span>
+        </div>
+        <div class="stat-box" style="background: var(--st-available-bg); border-color: var(--st-available-line);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 600; color: var(--st-available); font-size: 14px;" id="side-zone-title">Zone A — เมืองลำพูน</span>
+            <i class="fa-solid fa-draw-polygon" style="color: var(--st-available);"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Delivery Performance Stats -->
+      <div class="panel-section">
+        <div class="panel-title">สรุปผลงานวันนี้</div>
+        <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="stat-box">
+            <div class="stat-val num" id="stat-completed-count">0/0</div>
+            <div class="stat-lbl">ส่งสำเร็จแล้ว</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val num" id="stat-cod-amount">฿0</div>
+            <div class="stat-lbl">ยอดเงิน COD ที่เก็บได้</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Selection List for Active Driver -->
+      <div class="panel-section" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="panel-title">
+          <span>ออเดอร์ที่จองไว้แล้ว</span>
+          <span class="chip chip--mine" id="side-mine-count">0 งาน</span>
+        </div>
+        
+        <div id="route-sequence-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: var(--sp-2); max-height: 280px; padding-right: 4px;">
+          <!-- Active orders list populated via JS -->
+        </div>
+      </div>
+    </aside>
+
+  </div> <!-- End #view-driver -->
+
+  <!-- ==================== ADMIN CONTROL CENTER VIEW (#view-admin) ==================== -->
+  <div id="view-admin" class="admin-layout" style="display: none;">
+    
+    <!-- Supervisor Sidebar 240px Dark Theme -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <img src="assets/logo.png" alt="Unii Mart 584" class="admin-brand-logo">
+        <div>
+          <div class="admin-brand-title">Supervisor Portal</div>
+          <div class="admin-brand-sub">ระบบควบคุมหัวหน้าคลัง</div>
+        </div>
+      </div>
+
+      <nav class="admin-nav" style="display: flex; flex-direction: column; gap: 4px;">
+        <button class="admin-nav-item is-active" data-admin-page="s1" onclick="switchAdminPage('s1')">
+          <span><i class="fa-solid fa-chart-line" style="margin-right: 8px; width: 16px;"></i> ภาพรวมวันนี้</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s1" onclick="switchAdminPage('s1'); showNotification('กำลังแสดงหน้ารายการออเดอร์', 'available');">
+          <span><i class="fa-solid fa-list-check" style="margin-right: 8px; width: 16px;"></i> ออเดอร์</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s2" onclick="switchAdminPage('s2')">
+          <span><i class="fa-solid fa-circle-exclamation" style="margin-right: 8px; width: 16px;"></i> รออนุมัติ</span>
+          <span class="admin-badge" id="s2-pending-badge" style="background: var(--st-failed);">3</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s3" onclick="switchAdminPage('s3')">
+          <span><i class="fa-solid fa-money-bill-wave" style="margin-right: 8px; width: 16px;"></i> ตรวจเงิน COD</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s4" onclick="switchAdminPage('s4')">
+          <span><i class="fa-solid fa-rotate-left" style="margin-right: 8px; width: 16px;"></i> ของกลับเข้าคลัง</span>
+          <span class="admin-badge" id="s4-pending-badge" style="background: var(--st-attention); display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; border-radius: 50%; color: white; font-size: 10px; font-weight: 700;">2</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s1" onclick="switchAdminPage('s1'); showNotification('หน้าจัดการข้อมูลร้านค้า (อยู่ระหว่างพัฒนาระบบ)', 'available');">
+          <span><i class="fa-solid fa-store" style="margin-right: 8px; width: 16px;"></i> ร้านค้า</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s8" onclick="switchAdminPage('s8')">
+          <span><i class="fa-solid fa-box" style="margin-right: 8px; width: 16px;"></i> สินค้า</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s1" onclick="switchAdminPage('s1'); showNotification('หน้าควบคุมโซนแผนที่ (อยู่ระหว่างพัฒนาระบบ)', 'available');">
+          <span><i class="fa-solid fa-map-location-dot" style="margin-right: 8px; width: 16px;"></i> โซน</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s1" onclick="switchAdminPage('s1'); showNotification('หน้าบริหารคนขับรถจัดส่ง (อยู่ระหว่างพัฒนาระบบ)', 'available');">
+          <span><i class="fa-solid fa-user-tie" style="margin-right: 8px; width: 16px;"></i> คนขับ</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s5" onclick="switchAdminPage('s5')">
+          <span><i class="fa-solid fa-gas-pump" style="margin-right: 8px; width: 16px;"></i> ค่าใช้จ่ายขนส่ง</span>
+        </button>
+
+        <button class="admin-nav-item" data-admin-page="s6" onclick="switchAdminPage('s6')">
+          <span><i class="fa-solid fa-file-export" style="margin-right: 8px; width: 16px;"></i> รายงาน</span>
+        </button>
+      </nav>
+
+      <div style="padding: 12px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 8px;">
+        <button class="admin-nav-item" style="background: transparent; color: rgba(255,255,255,0.7); text-align: left; padding: 6px 12px; width: 100%; border: none; font-size: 13px;" onclick="switchAdminPage('s8')">
+          <span><i class="fa-solid fa-gear" style="margin-right: 8px; width: 16px;"></i> ตั้งค่า</span>
+        </button>
+        <button class="admin-nav-item" style="background: transparent; color: var(--st-failed); text-align: left; padding: 6px 12px; width: 100%; border: none; font-size: 13px;" onclick="switchView('driver')">
+          <span><i class="fa-solid fa-right-from-bracket" style="margin-right: 8px; width: 16px;"></i> ออกจากระบบ</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Admin Main Canvas -->
+    <main class="admin-canvas">
+
+      <!-- Admin Top Header -->
+      <header class="admin-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <h2 class="admin-title" id="admin-page-title">S1. หน้าแรกหัวหน้า (Supervisor Dashboard)</h2>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="btn btn--secondary btn--sm" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> พิมพ์รายงานสรุป
+          </button>
+          <div style="font-size: 13px; color: var(--ink-2);">
+            ผู้ใช้งาน: <b style="color: var(--st-mine);" id="supervisor-user-label">SUP-01 (หัวหน้าคลัง)</b>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE S1: ภาพรวมวันนี้ (Control Center) -->
+      <div id="admin-page-s1" class="admin-page-content" style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- 4 Urgent Control Center Stat Cards Grid -->
+        <div class="admin-stat-grid">
+          
+          <!-- Card 1: รออนุมัติข้ามโซน -->
+          <div class="admin-stat-card" id="s1-card-crosszone" style="transition: all 0.3s ease;">
+            <div class="admin-stat-label" style="font-weight: 700; color: var(--ink-2); display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-circle-exclamation"></i> รออนุมัติข้ามโซน
+            </div>
+            <div class="admin-stat-value num" id="s1-stat-cz-count" style="color: var(--ink); margin-top: 6px;">0 คำขอ</div>
+            <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px; font-weight: 500;" id="s1-stat-cz-timer">ไม่มีคำค้างรอ</div>
+          </div>
+          
+          <!-- Card 2: จุดส่งวันนี้ -->
+          <div class="admin-stat-card" id="s1-card-stops" style="transition: all 0.3s ease;">
+            <div class="admin-stat-label" style="font-weight: 700; color: var(--ink-2); display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-map-pin"></i> จุดส่งวันนี้
+            </div>
+            <div class="admin-stat-value num" id="s1-stat-stops-ratio" style="color: var(--ink); margin-top: 6px;">0 / 0 จุด</div>
+            <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px; font-weight: 500;" id="s1-stat-stops-progress">ส่งสำเร็จแล้ว 0%</div>
+          </div>
+          
+          <!-- Card 3: ยอดเงิน COD -->
+          <div class="admin-stat-card" id="s1-card-cod" style="transition: all 0.3s ease;">
+            <div class="admin-stat-label" style="font-weight: 700; color: var(--ink-2); display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-money-bill-wave"></i> ยอดเงิน COD วันนี้
+            </div>
+            <div class="admin-stat-value num" id="s1-stat-cod-ratio" style="color: var(--st-available); margin-top: 6px; font-size: 20px;">ควรเก็บ ฿0</div>
+            <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px; font-weight: 500;" id="s1-stat-cod-sub">รับมอบแล้ว ฿0</div>
+          </div>
+          
+          <!-- Card 4: ต้องเคลียร์ -->
+          <div class="admin-stat-card" id="s1-card-clearance" style="transition: all 0.3s ease; border-left: 4px solid var(--st-done);">
+            <div class="admin-stat-label" style="font-weight: 700; color: var(--ink-2); display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-circle-check"></i> ต้องเคลียร์ด่วน
+            </div>
+            <div class="admin-stat-value num" id="s1-stat-clear-count" style="color: var(--st-done); margin-top: 6px;">0 รายการ</div>
+            <div style="font-size: 11px; color: var(--st-done); font-weight: 500;" id="s1-stat-clear-status">✓ เคลียร์ครบเรียบร้อย</div>
+          </div>
+          
+        </div>
+
+        <!-- Main Dashboard Panel Layout (Map and Driver Progress Panel) -->
+        <div style="display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 20px; min-height: 480px;" id="s1-main-layout">
+          
+          <!-- Map Section -->
+          <div class="admin-card" style="display: flex; flex-direction: column; gap: 12px; height: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+              <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-map" style="color: var(--st-available);"></i> แผนที่จุดส่งวันนี้
+              </h3>
+              <!-- Map Filters -->
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; font-size: 11px;">
+                <select id="cc-filter-zone" style="padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); background: var(--card); font-size: 11px; font-weight: 600;">
+                  <option value="all">ทุกโซน</option>
+                  <option value="Zone A — เมืองลำพูน">Zone A เมืองลำพูน</option>
+                  <option value="Zone B — สารภี/เชียงใหม่">Zone B สารภี/เชียงใหม่</option>
+                  <option value="Zone C — ป่าซาง">Zone C ป่าซาง</option>
+                </select>
+                <select id="cc-filter-driver" style="padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); background: var(--card); font-size: 11px; font-weight: 600;">
+                  <option value="all">ทุกคนขับ</option>
+                  <option value="DRV-A01">สมชาย (A01)</option>
+                  <option value="DRV-B02">วิชัย (B02)</option>
+                  <option value="DRV-C03">สมศักดิ์ (C03)</option>
+                  <option value="DRV-S04">สุรชัย (S04)</option>
+                </select>
+                <select id="cc-filter-status" style="padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line); background: var(--card); font-size: 11px; font-weight: 600;">
+                  <option value="all">ทุกสถานะ</option>
+                  <option value="available">ว่าง (ยังไม่จอง)</option>
+                  <option value="mine">จองแล้ว</option>
+                  <option value="done">ส่งสำเร็จ</option>
+                  <option value="failed">ส่งไม่สำเร็จ</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Leaflet Map Container for Control Center -->
+            <div id="control-center-map" style="flex: 1; min-height: 380px; border-radius: 8px; border: 1px solid var(--line); z-index: 10;"></div>
+            
+            <!-- Map Legend -->
+            <div style="font-size: 10px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding-top: 4px; color: var(--ink-2); border-top: 1px solid var(--line);">
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 8px; height: 8px; background: var(--st-available); border-radius: 50%;"></span> ว่าง</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 8px; height: 8px; background: var(--st-mine); border-radius: 50%;"></span> จองแล้ว</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 8px; height: 8px; background: var(--st-done); border-radius: 50%;"></span> สำเร็จ</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 8px; height: 8px; background: var(--st-failed); border-radius: 50%;"></span> ไม่สำเร็จ</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 8px; height: 8px; background: var(--st-attention); border-radius: 50%;"></span> เตือน GPS >300ม.</span>
+            </div>
+          </div>
+
+          <!-- Driver Progress Column -->
+          <div class="admin-card" style="display: flex; flex-direction: column; gap: 12px; height: 100%;">
+            <div style="border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+              <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-truck" style="color: var(--st-mine);"></i> ความคืบหน้ารายคนขับ
+              </h3>
+            </div>
+            
+            <div id="cc-driver-progress-list" style="display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1;">
+              <!-- Driver list generated dynamically via JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Action Items Table (Placeholder as requested for Phase 1 review) -->
+        <div class="admin-card" id="s1-action-items-placeholder" style="border-left: 4px solid var(--st-attention);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+            <h3 style="margin: 0; font-size: 14px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-list-check" style="color: var(--st-attention);"></i> ตารางเรื่องต้องจัดการ (Action Items)
+            </h3>
+            <span class="chip chip--attention" style="font-size: 10px;" id="s1-action-items-count-badge">รอการสแกนและตรวจสอบของหัวหน้า</span>
+          </div>
+          <div style="text-align: center; padding: 20px; color: var(--ink-3); font-size: 12px;">
+            <i class="fa-solid fa-hourglass-half" style="font-size: 24px; margin-bottom: 6px; color: var(--st-attention);"></i>
+            <div>ระบบเตรียมตารางวิเคราะห์ความเสี่ยงและการอนุมัติข้ามโซน / บาร์โค้ด / ยอดส่วนต่าง COD หลังผ่านการประเมินภาพรวมด้านบน</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE S2: อนุมัติส่งข้ามโซน -->
+      <div id="admin-page-s2" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Header Bar for S2 -->
+        <div class="admin-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">
+              <i class="fa-solid fa-paper-plane" style="color: var(--st-available); margin-right: 6px;"></i> รายการขอส่งข้ามโซนจากคนขับ (<span id="s2-pending-count">0</span> รายการ)
+            </h3>
+            <div style="font-size: 12px; color: var(--ink-2); margin-top: 2px;">คนขับกำลังรอคำตัดสินหน้างาน ตัดสินใจใน 5 วินาทีเพื่อไม่ให้คนขับเสียเวลา</div>
+          </div>
+          <button class="btn btn--secondary btn--sm" style="border-color: var(--st-available); font-weight: 600;" onclick="approveAllCrossZoneRequests()">
+            <i class="fa-solid fa-check-double" style="color: var(--st-available);"></i> อนุมัติทั้งหมด (กรณีคนขับลา/งานล้น)
+          </button>
+        </div>
+
+        <!-- Cross-zone Requests List -->
+        <div id="s2-crosszone-requests-list" style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Request cards rendered dynamically via JS -->
+        </div>
+
+      <!-- PAGE S3: ตรวจเงิน COD & ปิดยอดรายวัน -->
+      <div id="admin-page-s3" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Header & Day Close Status Card -->
+        <div class="admin-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">
+                <i class="fa-solid fa-money-bill-wave" style="color: var(--st-available); margin-right: 6px;"></i> ตรวจนับเงินสด COD และปิดยอดรายวัน
+              </h3>
+              <span id="s3-dayclose-status-chip" class="chip chip--available" style="font-size: 11px;">เปิดรับมอบเงินประจำวัน</span>
+            </div>
+            <div style="font-size: 12px; color: var(--ink-2); margin-top: 2px;">
+              บันทึกเงินเป็น Append-Only Ledger ห้ามเขียนทับ เมื่อปิดยอดแล้วข้อมูลจะถูกล็อกเพื่อส่งต่อบัญชี
+            </div>
+          </div>
+          <button class="btn btn--confirm" id="btn-s3-close-day" onclick="executeDailyClose()" style="font-weight: 700;">
+            <i class="fa-solid fa-lock"></i> 🔒 ปิดยอดวันนี้ (Day Close)
+          </button>
+        </div>
+
+        <!-- Level 1 Table: สรุปเงิน COD รายคนขับ -->
+        <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h3 style="margin: 0; font-size: 14px; font-weight: 700; color: var(--ink);">
+              ระดับที่ 1 — ตารางสรุปการรับมอบเงินสด COD รายคนขับ
+            </h3>
+            <span style="font-size: 11px; color: var(--ink-3);">คลิกชื่อคนขับเพื่อดูรายละเอียดรายออเดอร์</span>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>พนักงานขับรถ</th>
+                  <th>ส่งสำเร็จ</th>
+                  <th>ควรเก็บสด (Unii)</th>
+                  <th>คนขับแจ้ง (POD)</th>
+                  <th>หัวหน้านับได้จริง (฿)</th>
+                  <th>ส่วนต่าง</th>
+                  <th>เหตุผลส่วนต่าง (ถ้ามี)</th>
+                  <th>สถานะ</th>
+                  <th style="text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="s3-cod-drivers-tbody">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Ledger Audit Log Preview -->
+        <div class="admin-card">
+          <h3 style="margin: 0 0 10px 0; font-size: 14px; font-weight: 700; color: var(--ink);">
+            <i class="fa-solid fa-clock-rotate-left" style="color: var(--st-mine);"></i> ประวัติการบันทึกเงิน (Append-Only Ledger Audit Log)
+          </h3>
+          <div id="s3-ledger-log-list" style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-family: var(--font-mono); background: var(--page); padding: 10px; border-radius: 6px; border: 1px solid var(--line); max-height: 140px; overflow-y: auto;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE S4: รับของคืนเข้าคลัง -->
+      <div id="admin-page-s4" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Red Warning for Items On Truck > 1 Day -->
+        <div id="s4-overdue-warning-banner" class="admin-alert-banner is-failed" style="display: flex; align-items: center; gap: 12px; background: var(--st-failed-bg); border-color: var(--st-failed-line);">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 20px; color: var(--st-failed);"></i>
+          <div>
+            <div style="font-size: 14px; font-weight: 700; color: var(--ink);" id="s4-warning-title">คำเตือน: มีสินค้าส่งไม่สำเร็จค้างบนรถเกิน 1 วัน</div>
+            <div style="font-size: 12px; color: var(--ink-2);" id="s4-warning-detail">โปรดตรวจสอบและรับของคืนเข้าคลังทันทีเพื่อป้องกันสินค้าสูญหายหรือสต๊อกเพี้ยน</div>
+          </div>
+        </div>
+
+        <!-- Returns List Card -->
+        <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink);">
+              <i class="fa-solid fa-boxes-packing" style="color: var(--st-failed);"></i> รายการจุดส่งไม่สำเร็จ (รอตรวจรับคืนเข้าคลัง)
+            </h3>
+            <span class="chip chip--failed" id="s4-pending-count-chip">2 รายการ</span>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>เลขออเดอร์ / ร้านค้า</th>
+                  <th>คนขับ</th>
+                  <th>เหตุผลที่ส่งไม่สำเร็จ</th>
+                  <th>ค้างบนรถ</th>
+                  <th>สภาพของเมื่อรับคืน</th>
+                  <th>จำนวนขาด/เสียหาย</th>
+                  <th style="text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="s4-returns-tbody">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE S5: รายจ่ายจากการขนส่ง -->
+      <div id="admin-page-s5" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Transport Analytics Header -->
+        <div class="admin-stat-grid">
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">ต้นทุนเฉลี่ยต่อจุดส่ง</div>
+            <div class="admin-stat-value num" style="color: var(--st-available);">฿18.50 / จุด</div>
+            <div style="font-size: 11px; color: var(--ink-3);">คำนวณจากค่าน้ำมัน+ค่าแรง</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">ต้นทุนต่อบาทที่ส่งได้</div>
+            <div class="admin-stat-value num" style="color: var(--ink);">฿0.04 / บาท</div>
+            <div style="font-size: 11px; color: var(--ink-3);">เทียบกับยอดขายรวม</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">เทียบเดือนนี้ vs เดือนก่อน</div>
+            <div class="admin-stat-value num" style="color: var(--st-done);">-5.2%</div>
+            <div style="font-size: 11px; color: var(--st-done);">✓ ประหยัดขึ้น 5.2%</div>
+          </div>
+        </div>
+
+        <!-- Add Expense Form & Log Table Grid -->
+        <div class="admin-section" style="display: grid; grid-template-columns: 340px 1fr; gap: 20px;">
+          
+          <!-- Expense Form -->
+          <div class="admin-card">
+            <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700; color: var(--ink);">
+              <i class="fa-solid fa-plus-circle" style="color: var(--st-available);"></i> บันทึกรายจ่ายขนส่ง
+            </h3>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
+              <div>
+                <label style="font-weight: 600; color: var(--ink-2);">พนักงานขับรถ:</label>
+                <select id="s5-input-driver" class="admin-filter-select" style="width: 100%; margin-top: 4px;">
+                  <option value="DRV-A01">สมชาย จัดส่ง (Zone A)</option>
+                  <option value="DRV-B02">วิชัย ขับเร็ว (Zone B)</option>
+                  <option value="DRV-C03">สมศักดิ์ สุขใจ (Zone C)</option>
+                  <option value="DRV-S04">สุรชัย สายด่วน (ทีมพิเศษ)</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-weight: 600; color: var(--ink-2);">ประเภทค่าใช้จ่าย:</label>
+                <select id="s5-input-type" class="admin-filter-select" style="width: 100%; margin-top: 4px;">
+                  <option value="fuel">⛽ ค่าน้ำมัน</option>
+                  <option value="wage">👷 ค่าเที่ยว / ค่าแรง</option>
+                  <option value="toll">🛣️ ค่าทางด่วน / ค่าจอด</option>
+                  <option value="maintenance">🔧 ค่าซ่อมบำรุงรถ</option>
+                </select>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <label style="font-weight: 600; color: var(--ink-2);">จำนวนเงิน (บาท):</label>
+                  <input type="number" id="s5-input-amount" class="admin-filter-input" placeholder="0.00" style="width: 100%; margin-top: 4px;">
+                </div>
+                <div>
+                  <label style="font-weight: 600; color: var(--ink-2);">เลขไมล์ (กม.):</label>
+                  <input type="number" id="s5-input-mileage" class="admin-filter-input" placeholder="124500" style="width: 100%; margin-top: 4px;">
+                </div>
+              </div>
+
+              <div>
+                <label style="font-weight: 600; color: var(--ink-2);">หมายเหตุ:</label>
+                <input type="text" id="s5-input-notes" class="admin-filter-input" placeholder="ระบุรายละเอียด..." style="width: 100%; margin-top: 4px;">
+              </div>
+
+              <button class="btn btn--primary btn--block" onclick="submitTransportExpense()" style="margin-top: 6px; font-weight: 700;">
+                บันทึกรายจ่าย
+              </button>
+            </div>
+          </div>
+
+          <!-- Expense Log Table -->
+          <div class="admin-card">
+            <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700; color: var(--ink);">
+              ประวัติการบันทึกรายจ่ายประจำวัน
+            </h3>
+
+            <div class="admin-table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>วันที่</th>
+                    <th>คนขับ</th>
+                    <th>ประเภท</th>
+                    <th>จำนวนเงิน</th>
+                    <th>เลขไมล์</th>
+                    <th>หมายเหตุ</th>
+                    <th>ผู้บันทึก</th>
+                  </tr>
+                </thead>
+                <tbody id="s5-expense-tbody">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PAGE S6: ส่งออกให้บัญชี -->
+      <div id="admin-page-s6" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Header & Lock Policy Info -->
+        <div class="admin-card" style="background: var(--page); border: 1px solid var(--line);">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-file-export" style="font-size: 24px; color: var(--st-available);"></i>
+            <div>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">ส่งออกชุดข้อมูลสำหรับทีมบัญชี (Accounting Exports)</h3>
+              <div style="font-size: 12px; color: var(--ink-2); margin-top: 2px;">
+                🔒 **ข้อกำหนดบัญชี:** ส่งออกได้เฉพาะวันที่ปิดยอดแล้วเท่านั้น ป้องกันการนำข้อมูลที่ยังไม่ปิดรอบไปบันทึก
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Accounting Export Cards Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          
+          <!-- Dataset 1: Successful Revenue -->
+          <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-receipt" style="color: var(--st-done);"></i> ชุดที่ 1 — รายการส่งสำเร็จ (บันทึกรายได้)
+              </div>
+              <div style="font-size: 12px; color: var(--ink-2); margin-top: 4px;">
+                ข้อมูลรายการส่งสำเร็จ แยกตามวิธีชำระเงิน, เลขออเดอร์ Unii, เบอร์โทร, ยอดขายสด/โอน, ระยะห่าง GPS
+              </div>
+            </div>
+            <button class="btn btn--primary btn--sm" onclick="exportAccountingCSV('dataset1')" style="font-weight: 600;">
+              <i class="fa-solid fa-download"></i> ดาวน์โหลด CSV ชุดที่ 1
+            </button>
+          </div>
+
+          <!-- Dataset 2: Warehouse Returns -->
+          <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-boxes-packing" style="color: var(--st-failed);"></i> ชุดที่ 2 — ของกลับเข้าคลัง (กระทบสต๊อก)
+              </div>
+              <div style="font-size: 12px; color: var(--ink-2); margin-top: 4px;">
+                ข้อมูลสินค้าส่งไม่สำเร็จที่รับคืนเข้าคลัง พร้อมเหตุผล, ผู้รับคืน, สภาพสินค้า และรายการขาดหาย
+              </div>
+            </div>
+            <button class="btn btn--secondary btn--sm" onclick="exportAccountingCSV('dataset2')" style="font-weight: 600; border-color: var(--st-failed); color: var(--st-failed);">
+              <i class="fa-solid fa-download"></i> ดาวน์โหลด CSV ชุดที่ 2
+            </button>
+          </div>
+
+          <!-- Dataset 3: Transport Expenses -->
+          <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-gas-pump" style="color: var(--st-available);"></i> ชุดที่ 3 — รายจ่ายการขนส่ง
+              </div>
+              <div style="font-size: 12px; color: var(--ink-2); margin-top: 4px;">
+                สรุปค่าน้ำมัน, ค่าแรง/ค่าเที่ยว, ค่าทางด่วน, ค่าซ่อมบำรุง แยกตามคนขับและวันที่
+              </div>
+            </div>
+            <button class="btn btn--secondary btn--sm" onclick="exportAccountingCSV('dataset3')" style="font-weight: 600;">
+              <i class="fa-solid fa-download"></i> ดาวน์โหลด CSV ชุดที่ 3
+            </button>
+          </div>
+
+          <!-- Dataset 4: Daily Close Ledger -->
+          <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-lock" style="color: var(--st-mine);"></i> ชุดที่ 4 — สรุปการปิดยอดรายวัน (Ledger)
+              </div>
+              <div style="font-size: 12px; color: var(--ink-2); margin-top: 4px;">
+                ยอดสดควรเก็บ vs คนขับแจ้ง vs หัวหน้านับได้จริง, ส่วนต่าง และเหตุผลพร้อมชื่อผู้รับมอบ
+              </div>
+            </div>
+            <button class="btn btn--secondary btn--sm" onclick="exportAccountingCSV('dataset4')" style="font-weight: 600; border-color: var(--st-mine); color: var(--st-mine);">
+              <i class="fa-solid fa-download"></i> ดาวน์โหลด CSV ชุดที่ 4
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+      
+      </div>
+
+      <!-- PAGE S7: อนุมัติข้อมูลสินค้า (Product Approval Center) -->
+      <div id="admin-page-s7" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Header area -->
+        <div class="admin-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">
+              <i class="fa-solid fa-square-check" style="color: var(--st-available); margin-right: 6px;"></i> คิวอนุมัติข้อมูลสินค้า (Product Data Approval Queue)
+            </h3>
+            <div style="font-size: 12px; color: var(--ink-2); margin-top: 2px;">
+              อนุมัติการแก้ไขบาร์โค้ดจริง, จำนวนต่อหน่วย, น้ำหนัก และข้อมูลทางกายภาพของสินค้า
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn--secondary btn--sm" onclick="approveAllParserPendingRequests()" style="border-color: var(--st-available); color: var(--st-available); font-weight: 600;">
+              <i class="fa-solid fa-magic"></i> อนุมัติข้อมูลจาก Parser ทั้งหมด
+            </button>
+          </div>
+        </div>
+
+        <!-- Risk Level Selection Tabs -->
+        <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-2);">
+          <button class="tab-btn is-active" id="s7-tab-high" onclick="switchS7ApprovalRiskTab('high')" style="font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--line);">
+            ⚠️ ความเสี่ยงสูง (บาร์โค้ด/น้ำหนัก/จำนวน) <span class="badge" id="s7-badge-high" style="background: var(--st-failed); color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px; margin-left: 4px;">0</span>
+          </button>
+          <button class="tab-btn" id="s7-tab-medium" onclick="switchS7ApprovalRiskTab('medium')" style="font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--line);">
+            🔍 ความเสี่ยงกลาง (ชื่อ/หน่วย/ขนาด) <span class="badge" id="s7-badge-medium" style="background: var(--st-attention); color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px; margin-left: 4px;">0</span>
+          </button>
+          <button class="tab-btn" id="s7-tab-audit" onclick="switchS7ApprovalRiskTab('audit')" style="font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--line);">
+            📜 ประวัติการแก้ไขทั้งหมด (Audit Logs)
+          </button>
+        </div>
+
+        <!-- Main Approval Table / Card List -->
+        <div class="admin-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ร้านค้า / สินค้า</th>
+                  <th>ฟิลด์ที่แก้ไข</th>
+                  <th style="color: var(--st-failed);">ค่าเดิม</th>
+                  <th style="color: var(--st-done);">ค่าเสนอใหม่</th>
+                  <th>ผู้ขอ / แหล่งที่มา</th>
+                  <th>เวลาขอคำร้อง</th>
+                  <th style="text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="s7-approval-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE S8: แดชบอร์ดสินค้า & ความจุ (Product Quality & Capacity Dashboard) -->
+      <div id="admin-page-s8" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- Metrics Summary Grid -->
+        <div class="admin-stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">ความครอบคลุมข้อมูลออเดอร์</div>
+            <div class="admin-stat-value num" id="s8-stat-coverage" style="color: var(--st-available);">0%</div>
+            <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px;" id="s8-stat-coverage-sub">คำนวณจากน้ำหนัก/ขนาดสินค้าในออเดอร์</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">SKU ที่บันทึกข้อมูลแล้ว</div>
+            <div class="admin-stat-value num" id="s8-stat-complete-skus" style="color: var(--st-done);">0 / 0 SKU</div>
+            <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px;">เทียบกับ SKU ทั้งหมด 2,342 รายการ</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">รายการข้อมูลผิดปกติ (Conflict)</div>
+            <div class="admin-stat-value num" id="s8-stat-conflicts" style="color: var(--st-failed);">0 จุด</div>
+            <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px;" id="s8-stat-conflicts-sub">Check digit ผิด หรือบาร์โค้ดซ้ำ</div>
+          </div>
+        </div>
+
+        <!-- Main section layout -->
+        <div style="display: grid; grid-template-columns: 1fr 360px; gap: 20px; flex-wrap: wrap;">
+          
+          <!-- Column 1: Priority Edit List & Conflict Details -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- Product Search Catalog & Barcode Scanner Simulator Widget -->
+            <div class="admin-card" style="display: flex; flex-direction: column; gap: 12px; border-left: 4px solid var(--st-available);">
+              <div style="font-weight: 700; font-size: 15px; color: var(--ink); display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-search" style="color: var(--st-available);"></i> ค้นหาสินค้า / จำลองการสแกนบาร์โค้ดหน้าคลัง (Receiving & Search)
+              </div>
+              
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <div style="flex: 2; min-width: 240px; position: relative;">
+                  <i class="fa-solid fa-barcode" style="position: absolute; left: 10px; top: 11px; color: var(--ink-3);"></i>
+                  <input type="text" id="s8-search-catalog" class="admin-filter-input" placeholder="พิมพ์ชื่อสินค้า, SKU, บาร์โค้ดหลัก หรือสแกนเพื่อตรวจสอบ..." style="width: 100%; padding-left: 30px;" oninput="searchProductCatalog()">
+                </div>
+                <button class="btn btn--primary btn--sm" onclick="simulateBarcodeScan()" style="font-weight: 600;">
+                  <i class="fa-solid fa-qrcode"></i> จำลองสแกนบาร์โค้ด
+                </button>
+              </div>
+              
+              <!-- Scan mismatch alert banner -->
+              <div id="s8-scan-mismatch-banner" style="display: none; background: var(--st-failed-bg); border: 1px solid var(--st-failed-line); padding: 8px 12px; border-radius: 6px; font-size: 11px; color: var(--st-failed); align-items: center; justify-content: space-between;">
+                <span>⚠️ <b>สแกนไม่เจอสินค้า!</b> บาร์โค้ด <code id="s8-scan-mismatch-bc"></code> ยังไม่ได้ผูกในระบบ ค้นหาสินค้าด้านล่างเพื่อผูกบาร์โค้ดนี้ทันที</span>
+                <button class="btn btn--secondary btn--sm" style="font-size: 10px; padding: 2px 8px;" onclick="closeScanMismatchBanner()">ปิด</button>
+              </div>
+
+              <!-- Search Results list -->
+              <div id="s8-search-results" style="max-height: 200px; overflow-y: auto; display: none; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px;">
+                <!-- Matches rendered dynamically -->
+              </div>
+            </div>
+            <div class="admin-card">
+              <h3 style="margin: 0 0 12px 0; font-size: 15px; color: var(--ink);">🚨 สินค้าขายดีที่ขาดข้อมูลน้ำหนัก (เรียงตามจำนวนสั่งซื้อ)</h3>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ชื่อสินค้า / SKU</th>
+                      <th style="text-align: right;">จำนวนออเดอร์วันนี้</th>
+                      <th style="text-align: center;">สถานะข้อมูล</th>
+                      <th style="text-align: center;">จัดการ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="s8-dashboard-priority-tbody">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Barcode Conflict/Format Issues List -->
+            <div class="admin-card">
+              <h3 style="margin: 0 0 12px 0; font-size: 15px; color: var(--ink);"><i class="fa-solid fa-triangle-exclamation" style="color: var(--st-failed);"></i> บาร์โค้ดที่ผิดรูปแบบ / ซ้ำ / ตกหล่น</h3>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>RowID / สินค้า</th>
+                      <th>บาร์โค้ดที่บันทึก</th>
+                      <th>ประเภทปัญหา</th>
+                      <th style="text-align: center;">แก้ไข</th>
+                    </tr>
+                  </thead>
+                  <tbody id="s8-dashboard-conflicts-tbody">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Truck Load Weight & Volume Constraints Simulator -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="admin-card" style="background: var(--page); border: 1px solid var(--line);">
+              <h3 style="margin: 0 0 12px 0; font-size: 15px; color: var(--ink);"><i class="fa-solid fa-truck-ramp-box" style="color: var(--st-available);"></i> คำนวณความจุและน้ำหนักของคนขับ</h3>
+              <div style="display: flex; flex-direction: column; gap: 14px;" id="s8-capacity-drivers-list">
+                <!-- Rendered dynamically per driver -->
+              </div>
+            </div>
+
+            <!-- Config Truck Limits -->
+            <div class="admin-card">
+              <h3 style="margin: 0 0 12px 0; font-size: 13px; color: var(--ink);">⚙️ ตั้งค่าขีดจำกัดความจุรถขนส่ง (Truck Config)</h3>
+              <div style="display: flex; flex-direction: column; gap: 10px; font-size: 11px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span>พิกัดน้ำหนักรถสูงสุด:</span>
+                  <input type="number" id="cfg-max-weight" class="admin-filter-input" style="width: 80px; text-align: right;" value="150000" onchange="saveTruckConfig()"> กรัม (150 กก.)
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span>พิกัดปริมาตรสูงสุด:</span>
+                  <input type="number" id="cfg-max-volume" class="admin-filter-input" style="width: 80px; text-align: right;" value="800000" onchange="saveTruckConfig()"> ลบ.ซม. (800 ลิตร)
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PAGE A1 (LEGACY): แผงควบคุมแอดมินเดิม -->
+      <div id="admin-page-a1" class="admin-page-content" style="display: none; flex-direction: column; gap: 20px;">
+        
+        <!-- 4 Core Stat Cards -->
+        <div class="admin-stat-grid">
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">จุดส่งทั้งหมดวันนี้</div>
+            <div class="admin-stat-value num" id="a1-stat-total">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">จองแล้ว</div>
+            <div class="admin-stat-value num" style="color: var(--st-mine);" id="a1-stat-reserved">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">ส่งสำเร็จแล้ว</div>
+            <div class="admin-stat-value num" style="color: var(--st-done);" id="a1-stat-done">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-label">ยอดเงิน COD ที่ต้องเก็บ</div>
+            <div class="admin-stat-value num" style="color: var(--st-available);" id="a1-stat-cod">฿0</div>
+          </div>
+        </div>
+
+        <!-- Section: Driver Workload Progress Table & Mini Map -->
+        <div class="admin-section" style="display: grid; grid-template-columns: 1fr 380px; gap: 20px;">
+          
+          <!-- Driver Workload Progress Table -->
+          <div class="admin-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink);">ตารางภาระงานคนขับ (เรียงจากภาระงานมากไปน้อย)</h3>
+            </div>
+
+            <div class="admin-table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>คนขับ</th>
+                    <th>โซนที่ถือ</th>
+                    <th>จองแล้ว</th>
+                    <th>ส่งสำเร็จ</th>
+                    <th>ยอดเก็บ COD</th>
+                    <th>ความคืบหน้า (Progress)</th>
+                  </tr>
+                </thead>
+                <tbody id="a1-driver-workload-tbody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Today's Mini Map -->
+          <div class="admin-card" style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink);">แผนที่ย่อสรุปพิกัดวันนี้</h3>
+            </div>
+            <div id="admin-a1-map" style="height: 320px; width: 100%; border-radius: 8px; border: 1px solid var(--line);"></div>
+        <!-- AC-1 Main Control Board: Sticky Filter Bar & Master Table -->
+        <div class="admin-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; margin-top: 10px;">
+          
+          <!-- Sticky Top Filter Bar -->
+          <div class="admin-filter-bar">
+            <div class="admin-filter-row">
+              <!-- Single Search Input -->
+              <div style="position: relative; flex: 1; min-width: 220px;">
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 10px; top: 11px; color: var(--ink-3); font-size: 12px;"></i>
+                <input type="text" id="ac1-search-input" class="admin-filter-input" placeholder="ค้นหาเลขออเดอร์ (6 ตัวท้าย), ชื่อร้าน, เบอร์โทร..." style="padding-left: 30px; width: 100%;" oninput="renderAdminA1Table()">
+              </div>
+
+              <!-- Date Filter -->
+              <select id="ac1-date-select" class="admin-filter-select" onchange="renderAdminA1Table()">
+                <option value="all">ทุกช่วงวันส่ง</option>
+                <option value="8/12/2026">วันนี้ (12 ส.ค.)</option>
+                <option value="8/13/2026" selected>วันนี้ + พรุ่งนี้ (13 ส.ค.)</option>
+                <option value="8/14/2026">14 ส.ค. 2569</option>
+              </select>
+
+              <!-- Zone Filter -->
+              <select id="ac1-zone-select" class="admin-filter-select" onchange="renderAdminA1Table()">
+                <option value="all">ทุกโซนการจัดส่ง</option>
+                <option value="Zone A — เมืองลำพูน">Zone A — เมืองลำพูน</option>
+                <option value="Zone B — สารภี/เชียงใหม่">Zone B — สารภี/เชียงใหม่</option>
+                <option value="Zone C — ป่าซาง">Zone C — ป่าซาง</option>
+                <option value="UNASSIGNED">UNASSIGNED (ไม่มีโซน)</option>
+              </select>
+
+              <!-- Driver Filter -->
+              <select id="ac1-driver-select" class="admin-filter-select" onchange="renderAdminA1Table()">
+                <option value="all">คนขับทั้งหมด</option>
+                <option value="DRV-A01">สมชาย จัดส่ง (A01)</option>
+                <option value="DRV-B02">วิชัย ขับเร็ว (B02)</option>
+                <option value="DRV-C03">สมศักดิ์ สุขใจ (C03)</option>
+                <option value="unassigned">ยังไม่มีคนจอง</option>
+              </select>
+
+              <!-- Status Filter -->
+              <select id="ac1-status-select" class="admin-filter-select" onchange="renderAdminA1Table()">
+                <option value="all">ทุกสถานะ</option>
+                <option value="available">โซนฉัน (พร้อมจอง)</option>
+                <option value="mine">จองแล้ว (อยู่ระหว่างส่ง)</option>
+                <option value="done">ส่งสำเร็จแล้ว</option>
+                <option value="failed">ไม่สำเร็จ</option>
+                <option value="out">นอกโซน</option>
+                <option value="hold">พักไว้ก่อน (Hold)</option>
+              </select>
+            </div>
+
+            <div class="admin-filter-row" style="justify-content: space-between;">
+              <!-- Problem Flag Filter Chips -->
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="font-size: 11px; font-weight: 600; color: var(--ink-2);">ธงปัญหา:</span>
+                <button class="problem-chip-btn is-active" data-flag="all" onclick="filterAdminFlag('all')">ทั้งหมด</button>
+                <button class="problem-chip-btn" data-flag="no_zone" onclick="filterAdminFlag('no_zone')">🚩 ไม่มีโซน</button>
+                <button class="problem-chip-btn" data-flag="suspicious" onclick="filterAdminFlag('suspicious')">🚩 พิกัดน่าสงสัย</button>
+                <button class="problem-chip-btn" data-flag="no_coords" onclick="filterAdminFlag('no_coords')">🚩 ไม่มีพิกัด</button>
+                <button class="problem-chip-btn" data-flag="overdue" onclick="filterAdminFlag('overdue')">🚩 เลยเวลา</button>
+              </div>
+
+              <!-- Counter & Clear Filters Button -->
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 12px; color: var(--ink-2);" id="ac1-result-count">แสดง 0 รายการ</span>
+                <button class="btn btn--secondary btn--sm" onclick="resetAdminFilters()" style="padding: 0 8px; font-size: 11px;"><i class="fa-solid fa-rotate-left"></i> ล้างตัวกรอง</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Desktop Table -->
+          <div class="admin-table-container admin-table-desktop">
+            <table class="admin-table" id="ac1-orders-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;"><input type="checkbox" id="ac1-master-checkbox" onchange="toggleAllAdminCheckboxes(this)"></th>
+                  <th style="width: 45px; text-align: center;">ธง</th>
+                  <th style="cursor: pointer;" onclick="sortAdminTable('customer')">ร้านค้า / ออเดอร์ <i class="fa-solid fa-sort"></i></th>
+                  <th style="cursor: pointer;" onclick="sortAdminTable('delivery_date')">วันจัดส่ง <i class="fa-solid fa-sort"></i></th>
+                  <th style="cursor: pointer;" onclick="sortAdminTable('zone')">โซน <i class="fa-solid fa-sort"></i></th>
+                  <th style="cursor: pointer;" onclick="sortAdminTable('driver')">คนขับ <i class="fa-solid fa-sort"></i></th>
+                  <th style="cursor: pointer;" onclick="sortAdminTable('status')">สถานะ <i class="fa-solid fa-sort"></i></th>
+                  <th style="text-align: right; cursor: pointer;" onclick="sortAdminTable('price')">ยอด COD <i class="fa-solid fa-sort"></i></th>
+                  <th style="width: 50px; text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="ac1-orders-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile Cards Container (≤768px) -->
+          <div class="admin-cards-mobile" id="ac1-orders-mobile" style="padding: 12px;">
+            <!-- Rendered dynamically -->
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PAGE A2: รายการต้องเคลียร์ -->
+      <div id="admin-page-a2" class="admin-page-content" style="display: none; padding: 20px 24px; flex-direction: column; gap: 16px;">
+        
+        <!-- 4 Collapsible Priority Sections -->
+        <div class="admin-card" style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">A2. รายการต้องเคลียร์ก่อนออกรถ</h3>
+              <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--ink-2);">จัดการจุดที่ไม่มีโซน พิกัดน่าสงสัย หรือยังไม่มีคนจอง</p>
+            </div>
+          </div>
+
+          <!-- Section 1: ไม่มีโซน (UNASSIGNED) -->
+          <div style="border: 1px solid var(--line); border-radius: 8px; overflow: hidden;">
+            <div class="collapsible-header" onclick="toggleSection('sec-no-zone')">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="legend-dot is-failed"></span>
+                <span>1. ไม่มีโซน (UNASSIGNED) — พิกัดไม่ตกใน GeoJSON โซนใดเลย</span>
+              </div>
+              <span class="chip chip--failed" id="cnt-no-zone">0 รายการ</span>
+            </div>
+            <div id="sec-no-zone" style="padding: 12px; display: block;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ร้านค้า / ออเดอร์</th>
+                    <th>พิกัด Lat, Lng</th>
+                    <th>ยอด COD</th>
+                    <th>มอบหมายคนขับ / เคลียร์โซน</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-no-zone"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 2: พิกัดน่าสงสัย -->
+          <div style="border: 1px solid var(--line); border-radius: 8px; overflow: hidden;">
+            <div class="collapsible-header" onclick="toggleSection('sec-suspicious')">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="legend-dot is-attention"></span>
+                <span>2. พิกัดน่าสงสัย — หลุดกรอบโซนหลัก (Lat < 17.9 หรือ Lng > 99.6)</span>
+              </div>
+              <span class="chip chip--attention" id="cnt-suspicious">0 รายการ</span>
+            </div>
+            <div id="sec-suspicious" style="padding: 12px; display: block;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ร้านค้า / ออเดอร์</th>
+                    <th>พิกัดดิบ & ระยะจากคลัง</th>
+                    <th>ยอด COD</th>
+                    <th>การแก้ไข</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-suspicious"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 3: ไม่มีพิกัด -->
+          <div style="border: 1px solid var(--line); border-radius: 8px; overflow: hidden;">
+            <div class="collapsible-header" onclick="toggleSection('sec-no-coords')">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="legend-dot is-out"></span>
+                <span>3. ไม่มีพิกัด — ช่องพิกัดว่างเปล่าหรือไม่ใช่ตัวเลข</span>
+              </div>
+              <span class="chip" id="cnt-no-coords">0 รายการ</span>
+            </div>
+            <div id="sec-no-coords" style="padding: 12px; display: block;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ร้านค้า / ออเดอร์</th>
+                    <th>ที่อยู่จัดส่ง</th>
+                    <th>ยอด COD</th>
+                    <th>แก้ไขหมุด M5</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-no-coords"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Section 4: ยังไม่มีคนจอง -->
+          <div style="border: 1px solid var(--line); border-radius: 8px; overflow: hidden;">
+            <div class="collapsible-header" onclick="toggleSection('sec-unreserved')">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="legend-dot is-available"></span>
+                <span>4. ยังไม่มีคนจอง — ออเดอร์ในโซนที่ยังไม่มีคนขับรับงาน</span>
+              </div>
+              <span class="chip chip--available" id="cnt-unreserved">0 รายการ</span>
+            </div>
+            <div id="sec-unreserved" style="padding: 12px; display: block;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ร้านค้า / ออเดอร์</th>
+                    <th>โซน GeoJSON</th>
+                    <th>ยอด COD</th>
+                    <th>มอบหมายคนขับ</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-unreserved"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      <!-- PAGE A4: ทะเบียนร้านค้า (_CUSTOMERS) -->
+      <div id="admin-page-a4" class="admin-page-content" style="display: none; padding: 20px 24px; flex-direction: column; gap: 16px;">
+        <div class="admin-card" style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">A4. ทะเบียนร้านค้าและข้อกำหนดเฉพาะ (_CUSTOMERS)</h3>
+              <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--ink-2);">บันทึกเงื่อนไขเวลาส่ง ข้อจำกัดรถ/ทางเข้า และการโอนเงิน คีย์ตามเบอร์โทรศัพท์ลูกค้า</p>
+            </div>
+            <button class="btn btn--primary btn--sm" onclick="openCustomerEditModal()"><i class="fa-solid fa-plus"></i> เพิ่มทะเบียนร้านค้าใหม่</button>
+          </div>
+
+          <!-- Top Filters Bar for Customers -->
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; background: var(--page); padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line);">
+            <input type="text" id="ac3-search-input" class="admin-filter-input" placeholder="ค้นหาชื่อร้านค้า หรือเบอร์โทร..." style="flex: 1; min-width: 200px;" oninput="renderCustomerRosterTable()">
+            <select id="ac3-zone-select" class="admin-filter-select" onchange="renderCustomerRosterTable()">
+              <option value="all">ทุกโซน</option>
+              <option value="Zone A — เมืองลำพูน">Zone A — เมืองลำพูน</option>
+              <option value="Zone B — สารภี/เชียงใหม่">Zone B — สารภี/เชียงใหม่</option>
+              <option value="Zone C — ป่าซาง">Zone C — ป่าซาง</option>
+            </select>
+            <select id="ac3-status-select" class="admin-filter-select" onchange="renderCustomerRosterTable()">
+              <option value="all">ทุกสถานะข้อมูล</option>
+              <option value="complete">ข้อมูลครบถ้วน</option>
+              <option value="incomplete">ยังไม่มีข้อมูลข้อกำหนด</option>
+            </select>
+          </div>
+
+          <!-- Customers Roster Table -->
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ชื่อร้านค้า / เจ้าของ</th>
+                  <th>เบอร์โทรศัพท์</th>
+                  <th>โซนจัดส่ง</th>
+                  <th>ข้อกำหนด (Chips)</th>
+                  <th>ออเดอร์ย้อนหลัง</th>
+                  <th>ส่งล่าสุด</th>
+                  <th>สถานะข้อมูล</th>
+                  <th style="text-align: center;">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="ac3-customers-tbody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div> <!-- End #view-admin -->
+
+  <!-- Modal: Driver Auth / Login Gate (M1) -->
+  <div class="modal-overlay" id="modal-driver-auth" style="z-index: 9999; backdrop-filter: blur(8px); background: rgba(15, 23, 42, 0.75);">
+    <div class="modal-content" style="max-width: 440px; padding: 32px 28px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1);">
+      
+      <div style="text-align: center; margin-bottom: 6px;">
+        <div style="width: 58px; height: 58px; border-radius: 16px; background: #eff6ff; color: var(--st-mine); display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; border: 1px solid #bfdbfe; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <h2 style="margin: 0; font-size: 19px; font-weight: 800; color: var(--ink);">เข้าสู่ระบบคนขับส่งของ</h2>
+        <div style="font-size: 13px; color: var(--ink-2); margin-top: 4px;">Unii Mart 584 Driver Navigation Portal</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 12px;">
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 6px;">
+            1. เลือกพนักงานขับรถ:
+          </label>
+          <select id="auth-driver-select" class="search-input" style="height: 46px; font-size: 13px; font-weight: 600; width: 100%; border-radius: 10px; cursor: pointer;">
+            <!-- Dynamic Driver Options -->
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 6px;">
+            2. ป้อนรหัส PIN 4 หลัก:
+          </label>
+          <input type="password" id="auth-pin-input" class="search-input code" placeholder="••••" maxlength="4" autocomplete="off" style="font-size: 24px; text-align: center; letter-spacing: 0.4em; height: 50px; font-weight: 800; width: 100%; border-radius: 10px;">
+          <div id="auth-error-msg" style="color: var(--st-failed); font-size: 12px; font-weight: 600; margin-top: 6px; display: none; text-align: center;">
+            <i class="fa-solid fa-triangle-exclamation"></i> รหัส PIN ไม่ถูกต้อง โปรดลองอีกครั้ง
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 18px;">
+        <button class="btn btn--primary" style="width: 100%; height: 46px; font-size: 14px; font-weight: 700; border-radius: 10px;" id="btn-submit-driver-auth">
+          <i class="fa-solid fa-right-to-bracket"></i> ยืนยันเข้าสู่ระบบ
+        </button>
+        <button class="btn btn--secondary" id="btn-cancel-driver-auth" style="width: 100%; height: 38px; font-size: 12px; display: none;" onclick="closeDriverAuthModal()">
+          ยกเลิก
+        </button>
+      </div>
+
+      <div style="font-size: 11px; color: var(--ink-3); text-align: center; margin-top: 8px;">
+        ต้องการความช่วยเหลือ? ติดต่อหัวหน้าคลัง หรือโทร 053-xxx-xxx
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reschedule Delivery (เลื่อนวันส่ง) -->
+  <div class="modal-overlay" id="modal-reschedule-order" style="z-index: 10000;" onclick="if(event.target===this)closeRescheduleModal()">
+    <div class="modal-content" style="max-width: 480px; padding: 24px; border-radius: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px;">
+        <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-calendar-days" style="color: var(--st-mine);"></i>
+          <span>เลื่อนวันจัดส่งสินค้า</span>
+        </h3>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeRescheduleModal()">&times;</button>
+      </div>
+
+      <div style="background: var(--page); padding: 12px; border-radius: 10px; margin-top: 12px; border: 1px solid var(--line);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 14px; color: var(--ink);" id="reschedule-modal-customer">ชื่อร้านค้า</span>
+          <span class="code" style="font-weight: 600; font-size: 11px; color: var(--ink-2);" id="reschedule-modal-order-id">UM-xxx</span>
+        </div>
+        <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px;" id="reschedule-modal-address">ที่อยู่ลูกค้า...</div>
+        <div style="font-size: 11px; color: var(--st-mine); font-weight: 600; margin-top: 4px;" id="reschedule-modal-current-date">วันส่งปัจจุบัน: -</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px;">
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 6px;">
+            1. เลือกวันที่ต้องการส่งใหม่: <span style="color: var(--st-failed);">*</span>
+          </label>
+          <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+            <button type="button" class="btn btn--secondary btn--sm" style="flex: 1; font-size: 11px;" onclick="setRescheduleQuickDate('tomorrow')">พรุ่งนี้</button>
+            <button type="button" class="btn btn--secondary btn--sm" style="flex: 1; font-size: 11px;" onclick="setRescheduleQuickDate('dayafter')">มะรืนนี้</button>
+            <button type="button" class="btn btn--secondary btn--sm" style="flex: 1; font-size: 11px;" onclick="setRescheduleQuickDate('nextweek')">+7 วัน</button>
+          </div>
+          <input type="date" id="reschedule-date-input" class="search-input" style="height: 42px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer;">
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 6px;">
+            2. เหตุผลในการเลื่อนส่ง: <span style="color: var(--st-failed);">*</span>
+          </label>
+          <select id="reschedule-reason-select" class="search-input" style="height: 42px; width: 100%; border-radius: 8px; margin-bottom: 6px;" onchange="toggleRescheduleOtherReason(this.value)">
+            <option value="ลูกค้าขอเลื่อนวันรับสินค้า">ลูกค้าขอเลื่อนวันรับสินค้า</option>
+            <option value="ร้านปิดทำการวันนี้">ร้านปิดทำการวันนี้</option>
+            <option value="ติดต่อลูกค้าไม่ได้">ติดต่อลูกค้าไม่ได้</option>
+            <option value="สินค้าไม่พร้อมจัดส่ง">สินค้าไม่พร้อมจัดส่ง</option>
+            <option value="other">อื่นๆ (ระบุหมายเหตุ)</option>
+          </select>
+          <input type="text" id="reschedule-note-input" class="search-input" placeholder="ระบุเหตุผลเพิ่มเติม..." style="height: 38px; width: 100%; border-radius: 8px; display: none;">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end;">
+        <button type="button" class="btn btn--secondary btn--sm" onclick="closeRescheduleModal()">ยกเลิก</button>
+        <button type="button" class="btn btn--primary btn--sm" id="btn-submit-reschedule" onclick="confirmRescheduleOrder()">
+          <i class="fa-solid fa-check"></i> ยืนยันเลื่อนส่ง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Pin Correction (M5) Search by Customer Phone Number -->
+  <div class="modal-overlay" id="modal-pin-correction">
+    <div class="modal-content" style="max-width: 600px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <h3 style="margin: 0; font-size: var(--fs-heading);">แก้ไขพิกัดหมุดลูกค้า (M5 Pin Correction)</h3>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closePinCorrectionModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <input type="text" id="m5-phone-search-input" class="search-input" placeholder="ค้นหาด้วยเบอร์โทรศัพท์ลูกค้า (เช่น 091-308-6526)...">
+        <button class="btn btn--primary btn--sm" id="btn-m5-search-phone">ค้นหา</button>
+      </div>
+
+      <div id="m5-result-panel" style="display: none; flex-direction: column; gap: 12px; background: var(--page); padding: 12px; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-weight: 600; font-size: 14px;" id="m5-cust-name">ชื่อลูกค้า</div>
+            <div style="font-size: 12px; color: var(--ink-2);" id="m5-cust-phone">091-308-6526</div>
+            <div style="font-size: 11px; color: var(--ink-3);" id="m5-cust-address">ที่อยู่ลูกค้า...</div>
+          </div>
+          <button class="btn btn--danger btn--sm" id="btn-m5-reset-orig" style="font-size: 11px;">
+            <i class="fa-solid fa-rotate-left"></i> รีเซ็ตพิกัดเดิม
+          </button>
+        </div>
+
+        <button class="btn btn--primary" id="btn-m5-current-gps" style="width: 100%; height: 38px; font-weight: 700; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-location-crosshairs"></i> 📍 ใช้ตำแหน่ง GPS ฉันตอนนี้
+        </button>
+
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-size: 11px; font-weight: 600; color: var(--ink-3);">Latitude ละติจูด:</label>
+            <input type="number" step="0.000001" id="m5-lat-input" class="search-input num" style="height: 34px;">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-size: 11px; font-weight: 600; color: var(--ink-3);">Longitude ลองจิจูด:</label>
+            <input type="number" step="0.000001" id="m5-lng-input" class="search-input num" style="height: 34px;">
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: var(--ink-3);" id="m5-audit-info">
+          พิกัดต้นฉบับจากชีท: <span class="num" id="m5-orig-coords">18.537560, 99.026246</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: var(--sp-2);">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closePinCorrectionModal()">ยกเลิก</button>
+        <button class="btn btn--confirm" style="flex: 2;" id="btn-m5-save-pin">
+          <i class="fa-solid fa-floppy-disk"></i> บันทึกตำแหน่งหมุดใหม่
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Admin Control Suite (A1–A5) -->
+  <div class="modal-overlay" id="modal-admin-suite">
+    <div class="modal-content" style="max-width: 780px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <h3 style="margin: 0; font-size: var(--fs-heading);">ระบบจัดการสำหรับหัวหน้าคลัง (Supervisor Suite)</h3>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeAdminSuiteModal()">&times;</button>
+      </div>
+
+      <!-- Admin Tabs -->
+      <div class="status-tabs">
+        <button class="tab-btn is-active" id="admin-tab-a2">A2. Unassigned & เคลียร์ออเดอร์</button>
+        <button class="tab-btn" id="admin-tab-a1">A1. รายงานจัดส่ง Manifest</button>
+        <button class="tab-btn" id="admin-tab-a3">A3. ประวัติแก้หมุด Audit Log</button>
+        <button class="tab-btn" id="admin-tab-a4">A4. ขอบเขต GeoJSON โซน</button>
+      </div>
+
+      <!-- Tab Content Panel A2: Unassigned orders clearing -->
+      <div id="admin-panel-a2" style="display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto;">
+        <div style="font-size: 13px; font-weight: 600; color: var(--st-failed);">
+          <i class="fa-solid fa-triangle-exclamation"></i> ออเดอร์นอกโซน GeoJSON (UNASSIGNED) — ซ่อนจากคนขับ หัวหน้าคลังต้องเคลียร์:
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>รหัสออเดอร์</th>
+              <th>ชื่อลูกค้า</th>
+              <th>พิกัด Lat, Lng</th>
+              <th>กำหนดจัดโซนใหม่</th>
+            </tr>
+          </thead>
+          <tbody id="admin-unassigned-tbody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab Content Panel A1: Manifest Overview -->
+      <div id="admin-panel-a1" style="display: none; flex-direction: column; gap: 12px;">
+        <div style="font-size: 13px; font-weight: 600;">สรุปยอดสั่งซื้อประจำวัน (Daily Delivery Manifest Summary)</div>
+        <div style="background: var(--page); padding: 12px; border-radius: 8px; font-size: 12px;">
+          <div>ยอดรวมทั้งหมด: <b class="num" id="admin-total-orders">0</b> ออเดอร์</div>
+          <div>ยอดเงิน COD รวม: <b class="num" id="admin-total-cod-sum">฿0</b></div>
+        </div>
+        <button class="btn btn--secondary btn--sm" onclick="window.print()"><i class="fa-solid fa-print"></i> พิมพ์ใบงาน A1</button>
+      </div>
+
+      <!-- Tab Content Panel A3: Audit Log -->
+      <div id="admin-panel-a3" style="display: none; flex-direction: column; gap: 12px; max-height: 350px; overflow-y: auto;">
+        <div style="font-size: 13px; font-weight: 600;">ประวัติการแก้ไขหมุดพิกัดลูกค้า (Pin Modification Audit Trail)</div>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>เบอร์โทร</th>
+              <th>พิกัดเดิม</th>
+              <th>พิกัดใหม่</th>
+              <th>สถานะ</th>
+            </tr>
+          </thead>
+          <tbody id="admin-audit-tbody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab Content Panel A4: GeoJSON Info -->
+      <div id="admin-panel-a4" style="display: none; flex-direction: column; gap: 12px;">
+        <div style="font-size: 13px; font-weight: 600;">ข้อมูลขอบเขต GeoJSON Polygons (Zoning Boundaries)</div>
+        <pre style="background: var(--ink); color: #80FF80; padding: 12px; border-radius: 8px; font-size: 11px; font-family: var(--font-code); max-height: 200px; overflow: auto;">
+Zone A: Mueang Lamphun (18.52 - 18.58 N, 99.00 - 99.06 E)
+Zone B: Saraphi / Mueang Chiang Mai (18.68 - 18.82 N, 98.96 - 99.06 E)
+Zone C: Pa Sang (18.42 - 18.50 N, 98.80 - 98.92 E)
+        </pre>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: var(--sp-2);">
+        <button class="btn btn--secondary" onclick="closeAdminSuiteModal()">ปิดหน้าต่างหัวหน้าคลัง</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Proof of Delivery (POD) with Driver GPS Haversine verification -->
+  <div class="modal-overlay" id="pod-modal">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <div>
+          <div style="font-size: 11px; font-weight: 600; color: var(--ink-3);" class="code" id="pod-order-id">UM-XXXX</div>
+          <div style="font-size: 16px; font-weight: 700; color: var(--ink); margin-top: 2px;"><span id="pod-customer-name" style="color: var(--st-mine);">ชื่อลูกค้า</span></div>
+          <div style="font-size: 12px; color: var(--ink-2); margin-top: 4px;" id="pod-order-address"><i class="fa-solid fa-location-dot" style="color: var(--st-available);"></i> ที่อยู่จัดส่ง...</div>
+        </div>
+        <button style="background: none; border: none; font-size: 24px; color: var(--ink-3); cursor: pointer;" onclick="closePodModal()">&times;</button>
+      </div>
+
+      <!-- Quick Actions Bar: Phone & Maps Navigation -->
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button type="button" class="btn btn--primary btn--sm" id="pod-btn-set-target" style="flex: 1;" onclick="setTargetStop(state.selectedOrderId); closePodModal();">
+          <i class="fa-solid fa-location-arrow"></i> ไปจุดนี้ต่อ
+        </button>
+        <a id="pod-order-phone-link" href="#" class="btn btn--secondary btn--sm" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <i class="fa-solid fa-phone" style="color: var(--st-available);"></i> โทรหาลูกค้า
+        </a>
+        <a id="pod-order-maps-link" href="#" target="_blank" class="btn btn--secondary btn--sm" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <i class="fa-solid fa-map-location-dot" style="color: var(--st-available);"></i> เปิดนำทาง
+        </a>
+      </div>
+
+      <!-- M3: Store Requirements Container (Amber box, hidden if no data) -->
+      <div id="pod-store-req-box" style="display: none; background: rgba(245, 158, 11, 0.08); border: 1.5px solid rgba(245, 158, 11, 0.4); border-radius: 8px; padding: 10px; flex-direction: column; gap: 6px;">
+        <div style="font-size: 12px; font-weight: 700; color: #b45309; display: flex; align-items: center; justify-content: space-between;">
+          <span><i class="fa-solid fa-store"></i> ข้อกำหนดร้านค้า</span>
+          <span id="pod-store-req-phone" style="font-size: 10px; font-family: var(--font-code); color: #b45309;"></span>
+        </div>
+        <div id="pod-store-req-content" style="font-size: 11px; color: var(--ink); line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Payment / Cash & Order Total summary -->
+      <div style="background: var(--page); border: 1px solid var(--line); padding: 10px 14px; border-radius: var(--r-card); display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 11px; color: var(--ink-3);">การชำระเงิน</span>
+          <span id="pod-payment-status-badge"></span>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 11px; color: var(--ink-3);">ยอดรวมออเดอร์</span>
+          <div style="font-size: 19px; font-weight: 800; color: var(--ink); font-family: var(--font-code);" id="pod-cod-price" class="num">฿0.00</div>
+        </div>
+      </div>
+
+      <!-- Itemized Product List (SKU Details) -->
+      <div style="background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--ink); display: flex; justify-content: space-between; align-items: center;">
+          <span><i class="fa-solid fa-boxes-packing" style="color: var(--st-available);"></i> รายการสินค้า (<span id="pod-sku-count">0</span> รายการ)</span>
+          <span style="font-size: 10px; color: var(--ink-3);">ข้อมูลจาก SKU Details</span>
+        </div>
+        <div id="pod-sku-items-list" style="max-height: 150px; overflow-y: auto; font-size: 11px; display: flex; flex-direction: column; gap: 4px;">
+          <!-- Item rows rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Driver GPS Haversine Distance Verification Status -->
+      <div style="background: var(--st-available-bg); border: 1px solid var(--st-available-line); padding: 10px; border-radius: 8px; display: flex; flex-direction: column; gap: 4px;" id="pod-gps-status-box">
+        <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--st-available);">
+          <i class="fa-solid fa-location-crosshairs"></i> พิกัด GPS คนขับขณะปิดงาน:
+        </div>
+        <div style="font-size: 12px; color: var(--ink-2);" id="pod-gps-distance-text">
+          กำลังคำนวณระยะทาง Haversine จากจุดส่งลูกค้า...
+        </div>
+      </div>
+
+      <!-- Photo proof submission (Multiple Photos & Album Upload) -->
+      <div style="background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: var(--ink-2); display: flex; justify-content: space-between; align-items: center;">
+          <span><i class="fa-solid fa-camera" style="color: var(--st-available);"></i> ถ่ายรูปหลักฐานการจัดส่ง (หลายรูปได้)</span>
+          <span style="font-size: 10px; color: var(--ink-3);" id="pod-proof-count">0 รูป</span>
+        </div>
+        <input type="file" id="pod-proof-file-input" accept="image/*" multiple style="display:none;" onchange="handleProofPhotoSelect(event)">
+        <input type="file" id="pod-proof-camera-input" accept="image/*" capture="environment" style="display:none;" onchange="handleProofPhotoSelect(event)">
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn--secondary btn--sm" style="flex: 1;" onclick="triggerProofCamera()"><i class="fa-solid fa-camera"></i> ถ่ายรูปสินค้า</button>
+          <button type="button" class="btn btn--secondary btn--sm" style="flex: 1;" onclick="triggerProofGallery()"><i class="fa-solid fa-images"></i> เลือกจากอัลบั้ม</button>
+        </div>
+        <div class="photo-thumbnail-grid" id="pod-proof-thumbnails"></div>
+      </div>
+
+      <!-- Payment Transfer Slip Upload Section -->
+      <div style="background: var(--st-available-bg); border: 1px solid var(--st-available-line); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: var(--st-available); display: flex; justify-content: space-between; align-items: center;">
+          <span><i class="fa-solid fa-file-invoice-dollar"></i> แนบ/ถ่าย สลิปโอนเงิน</span>
+          <span style="font-size: 10px; color: var(--st-available);" id="pod-slip-count">0 สลิป</span>
+        </div>
+        <input type="file" id="pod-slip-file-input" accept="image/*" multiple style="display:none;" onchange="handleSlipPhotoSelect(event)">
+        <input type="file" id="pod-slip-camera-input" accept="image/*" capture="environment" style="display:none;" onchange="handleSlipPhotoSelect(event)">
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn--secondary btn--sm" style="flex: 1; border-color: var(--st-available);" onclick="triggerSlipCamera()"><i class="fa-solid fa-camera" style="color: var(--st-available);"></i> ถ่ายรูปสลิป</button>
+          <button type="button" class="btn btn--secondary btn--sm" style="flex: 1; border-color: var(--st-available);" onclick="triggerSlipGallery()"><i class="fa-solid fa-image" style="color: var(--st-available);"></i> เลือกสลิปจากอัลบั้ม</button>
+        </div>
+        <div class="photo-thumbnail-grid" id="pod-slip-thumbnails"></div>
+      </div>
+
+      <!-- Recipient name input -->
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">ชื่อผู้รับสินค้า</label>
+        <input type="text" id="pod-recipient-input" class="search-input" placeholder="ระบุชื่อผู้รับสินค้า (เช่น เจ้าตัว / รปภ. / นิติคอนโด)">
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: var(--sp-2);">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closePodModal()">ยกเลิก</button>
+        <button class="btn btn--confirm" style="flex: 2;" id="btn-submit-pod">
+          <i class="fa-solid fa-check"></i> ยืนยันจัดส่งสำเร็จ
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); flex-wrap: wrap;">
+        <button type="button" class="btn btn--secondary btn--sm" style="font-size: 11px; color: #b45309; border-color: #fde68a; background: #fffbeb;" onclick="closePodModal(); openRescheduleModal(state.selectedOrderId, event);">
+          <i class="fa-solid fa-calendar-days"></i> ขอเลื่อนวันส่ง
+        </button>
+        <button type="button" class="btn btn--secondary btn--sm" style="font-size: 11px; color: var(--st-failed); border-color: #fecaca; background: #fff1f2;" onclick="closePodModal(); releaseOrder(state.selectedOrderId, event);">
+          <i class="fa-solid fa-arrow-rotate-left"></i> ถอนจองงานนี้
+        </button>
+        <button type="button" style="background: none; border: none; font-size: 11px; color: var(--ink-3); cursor: pointer; text-decoration: underline; margin-left: 4px;" onclick="closePodModal(); openFailModal(state.selectedOrderId);">
+          <i class="fa-solid fa-triangle-exclamation" style="color: var(--st-failed);"></i> แจ้งส่งไม่สำเร็จ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Product Quick Edit -->
+  <div class="modal-overlay" id="modal-product-quick-edit">
+    <div class="modal-content" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 12px;">
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">✏️ แก้ไขข้อมูลสินค้า (Product Edit)</h3>
+          <div style="font-size: 11px; color: var(--ink-3);" id="quick-product-row-id">RowID: SKU-XXX</div>
+        </div>
+        <button style="background: none; border: none; font-size: 24px; color: var(--ink-3); cursor: pointer;" onclick="closeProductQuickEditModal()">&times;</button>
+      </div>
+
+      <!-- Warning info banner -->
+      <div style="background: var(--st-available-bg); border: 1px solid var(--st-available-line); padding: 8px 12px; border-radius: 6px; font-size: 11px; color: var(--st-available); margin-bottom: 12px; display: flex; align-items: flex-start; gap: 8px;">
+        <i class="fa-solid fa-circle-info" style="margin-top: 2px;"></i>
+        <div>
+          <b>ระบบคิวอนุมัติจัดส่ง (Approval Protocol):</b> การแก้ไขระดับกลาง/สูง จะถูกส่งเข้าคิว <b>รออนุมัติ</b> ก่อนเขียนลงระบบจริง ส่วนแก้ไขระดับต่ำจะบันทึกทันที
+        </div>
+      </div>
+
+      <!-- Form container -->
+      <div style="display: flex; flex-direction: column; gap: 12px; font-size: 12px;">
+        <!-- Read-Only Base Info -->
+        <div style="background: var(--page); padding: 8px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px;">
+          <div><span style="color: var(--ink-3);">ชื่อสินค้าหลัก:</span> <b id="quick-product-system-name" style="color: var(--ink);">—</b></div>
+          <div style="display: flex; justify-content: space-between;">
+            <div><span style="color: var(--ink-3);">System SKU:</span> <code id="quick-product-system-sku">—</code></div>
+            <div><span style="color: var(--ink-3);">บาร์โค้ดหลัก:</span> <code id="quick-product-system-barcode">—</code></div>
+          </div>
+        </div>
+
+        <!-- Editable Inputs Section -->
+        <div style="font-weight: 700; border-bottom: 1px solid var(--line); padding-bottom: 4px; color: var(--st-available);">1. ระดับความเสี่ยงสูง (ต้องผ่านอนุมัติ 2 ชั้น)</div>
+        
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 2;">
+            <label style="font-weight: 600; color: var(--ink-2);">บาร์โค้ดจริง (Barcode Override):</label>
+            <input type="text" id="quick-input-actual-barcode" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="บาร์โค้ดสแกนหน้าร้าน...">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">จำนวนต่อหน่วย:</label>
+            <input type="number" id="quick-input-qty-per-unit" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="เช่น 12">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">น้ำหนักสุทธิ (กรัม):</label>
+            <input type="number" id="quick-input-net-weight" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="ไม่รวมบรรจุภัณฑ์">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">น้ำหนักรวม (กรัม):</label>
+            <input type="number" id="quick-input-gross-weight" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="รวมบรรจุภัณฑ์">
+          </div>
+        </div>
+
+        <div style="font-weight: 700; border-bottom: 1px solid var(--line); padding-bottom: 4px; color: var(--ink);">2. ระดับความเสี่ยงปานกลาง (ต้องผ่านอนุมัติปกติ)</div>
+        
+        <div>
+          <label style="font-weight: 600; color: var(--ink-2);">ชื่อสินค้า (ที่ต้องการแก้ไข):</label>
+          <input type="text" id="quick-input-name-override" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="ชื่อภาษาไทยเข้าใจง่าย...">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">หน่วยเรียก:</label>
+            <input type="text" id="quick-input-unit-override" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="เช่น ชิ้น / แพค / หีบ">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">ซ้อนได้กี่ชั้น (กล่อง):</label>
+            <input type="number" id="quick-input-max-stack" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="เช่น 5">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">กว้าง (ซม.):</label>
+            <input type="number" id="quick-input-width" class="admin-filter-input" style="width: 100%; margin-top: 4px;" oninput="recalculateQuickVolume()">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">ยาว (ซม.):</label>
+            <input type="number" id="quick-input-length" class="admin-filter-input" style="width: 100%; margin-top: 4px;" oninput="recalculateQuickVolume()">
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">สูง (ซม.):</label>
+            <input type="number" id="quick-input-height" class="admin-filter-input" style="width: 100%; margin-top: 4px;" oninput="recalculateQuickVolume()">
+          </div>
+          <div style="flex: 1.5;">
+            <label style="font-weight: 600; color: var(--ink-2);">ปริมาตร (ลบ.ซม.):</label>
+            <input type="text" id="quick-input-volume" class="admin-filter-input num" style="width: 100%; margin-top: 4px; background: var(--page);" readonly value="0">
+          </div>
+        </div>
+
+        <div style="font-weight: 700; border-bottom: 1px solid var(--line); padding-bottom: 4px; color: var(--st-done);">3. ระดับความเสี่ยงต่ำ (อนุมัติทันที บันทึก Log)</div>
+
+        <div style="display: flex; gap: 10px;">
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">ประเภทจัดเก็บ:</label>
+            <select id="quick-input-storage-type" class="admin-filter-select" style="width: 100%; margin-top: 4px;">
+              <option value="ปกติ">ปกติ</option>
+              <option value="เปราะบาง">เปราะบาง</option>
+              <option value="ของเหลว">ของเหลว</option>
+              <option value="หนักพิเศษ">หนักพิเศษ</option>
+              <option value="วางทับไม่ได้">วางทับไม่ได้</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label style="font-weight: 600; color: var(--ink-2);">หน่วยแม่ (RowID):</label>
+            <input type="text" id="quick-input-parent-rowid" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="เช่น SKU-545-1404">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-weight: 600; color: var(--ink-2);">หมายเหตุแก้ไข:</label>
+          <input type="text" id="quick-input-notes" class="admin-filter-input" style="width: 100%; margin-top: 4px;" placeholder="เช่น ระบุน้ำหนักคัดจากตาชั่งจริง">
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="display: flex; gap: 8px; margin-top: 16px;">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeProductQuickEditModal()">ยกเลิก</button>
+        <button class="btn btn--primary" style="flex: 2;" onclick="submitProductQuickEdit()">
+          <i class="fa-solid fa-cloud-arrow-up"></i> ส่งคำขอแก้ไขข้อมูล
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Report Delivery Failure -->
+  <div class="modal-overlay" id="failed-modal">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <div>
+          <h3 style="margin: 0; font-size: var(--fs-heading);" id="fail-order-id" class="code">UM-XXXX</h3>
+          <span style="font-size: var(--fs-detail); color: var(--st-failed);">แจ้งส่งไม่สำเร็จ</span>
+        </div>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeFailModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">เลือกสาเหตุที่ไม่สามารถจัดส่งได้:</label>
+        
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; padding: 8px; border-radius: 6px; background: var(--page);">
+          <input type="radio" name="fail-reason" value="ติดต่อผู้รับไม่ได้" checked> ติดต่อผู้รับไม่ได้ (โทรไม่ติด / ไม่รับสาย)
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; padding: 8px; border-radius: 6px; background: var(--page);">
+          <input type="radio" name="fail-reason" value="ที่อยู่ไม่ถูกต้อง/หาสถานที่ไม่พบ"> ที่อยู่ไม่ถูกต้อง / หาสถานที่ไม่พบ
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; padding: 8px; border-radius: 6px; background: var(--page);">
+          <input type="radio" name="fail-reason" value="ลูกค้าปฏิเสธการรับสินค้า"> ลูกค้าปฏิเสธการรับสินค้า
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; padding: 8px; border-radius: 6px; background: var(--page);">
+          <input type="radio" name="fail-reason" value="ลูกค้าไม่อยู่บ้าน/เลื่อนวันส่ง"> ลูกค้าไม่อยู่บ้าน / ขอเลื่อนวันส่ง
+        </label>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">บันทึกเพิ่มเติมสำหรับหัวหน้าคลัง:</label>
+        <textarea id="fail-notes-input" style="width: 100%; height: 80px; border-radius: 8px; border: 1px solid var(--line); padding: 8px; font-family: var(--font-ui); font-size: 13px;" placeholder="ระบุรายละเอียดเพิ่มเติม..."></textarea>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: var(--sp-2);">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeFailModal()">ยกเลิก</button>
+        <button class="btn btn--confirm" style="background: var(--st-failed); border-color: var(--st-failed); flex: 2;" id="btn-submit-fail">
+          บันทึกส่งไม่สำเร็จ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Cross-Zone Order Confirmation & Manual Zone Selection -->
+  <div class="modal-overlay" id="modal-cross-zone">
+    <div class="modal-content" style="max-width: 460px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-draw-polygon" style="color: var(--st-available); font-size: 20px;"></i>
+          <h3 style="margin: 0; font-size: var(--fs-heading);">ระบุ/เลือกโซนให้ออเดอร์นี้</h3>
+        </div>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeCrossZoneModal()">&times;</button>
+      </div>
+
+      <div style="background: var(--page); padding: var(--sp-3); border-radius: var(--r-card); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="code" id="cz-order-id" style="font-weight: 700; font-size: 14px;">UM-000000</span>
+          <span class="chip" id="cz-order-zone">Zone B</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; color: var(--ink);" id="cz-customer-name">ชื่อลูกค้า</div>
+        <div style="font-size: 12px; color: var(--ink-2);" id="cz-address">ที่อยู่จัดส่ง</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">เลือกโซนที่ต้องการมอบหมายให้ออเดอร์นี้:</label>
+        <select id="cz-zone-select" class="search-input" style="height: 42px; font-size: 13px; font-weight: 600; cursor: pointer;">
+          <option value="Zone A — เมืองลำพูน">Zone A — เมืองลำพูน (โซนของฉัน)</option>
+          <option value="Zone B — สารภี/เชียงใหม่">Zone B — สารภี/เชียงใหม่</option>
+          <option value="Zone C — ป่าซาง">Zone C — ป่าซาง</option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: var(--sp-2);">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeCrossZoneModal()">ยกเลิก</button>
+        <button class="btn btn--primary" style="flex: 2;" id="btn-confirm-cross-zone">
+          <i class="fa-solid fa-check"></i> ยืนยันกำหนดโซน & รับงาน
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Request Cross-Zone (ขอส่งข้ามโซน) -->
+  <div class="modal-overlay" id="modal-cross-zone-request">
+    <div class="modal-content" style="max-width: 480px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-paper-plane" style="color: var(--st-available); font-size: 18px;"></i>
+          <h3 style="margin: 0; font-size: var(--fs-heading);">ขอส่งออเดอร์ข้ามโซน</h3>
+        </div>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeCrossZoneRequestModal()">&times;</button>
+      </div>
+
+      <div style="background: var(--page); padding: var(--sp-3); border-radius: var(--r-card); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="code" id="cz-req-order-id" style="font-weight: 700; font-size: 14px;">UM-000000</span>
+          <span class="chip chip--available" id="cz-req-zone-chip">Zone B</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; color: var(--ink);" id="cz-req-customer-name">ชื่อลูกค้า</div>
+        <div style="font-size: 12px; color: var(--ink-2);" id="cz-req-address">ที่อยู่จัดส่ง</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 12px; font-weight: 600; color: var(--ink-2);">
+          เจ้าของโซนที่จะรับแจ้งเตือน: <b style="color: var(--ink);" id="cz-req-target-driver">วิชัย ขับเร็ว (Zone B Owner)</b>
+        </div>
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">ระบุเหตุผลในการขอส่งข้ามโซน:</label>
+        <textarea id="cz-req-reason-input" class="search-input" rows="3" placeholder="เช่น เส้นทางอยู่ใกล้พอดี / ร้านขอให้รีบเข้าส่ง..." style="font-family: inherit; font-size: 13px; padding: 8px;"></textarea>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: var(--sp-2);">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeCrossZoneRequestModal()">ยกเลิก</button>
+        <button class="btn btn--primary" style="flex: 2;" id="btn-submit-cross-zone-request">
+          <i class="fa-solid fa-paper-plane"></i> ส่งคำขอไปยังเจ้าของโซน
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Approval for Zone Owner Driver (การอนุมัติส่งข้ามโซน) -->
+  <div class="modal-overlay" id="modal-cross-zone-approval">
+    <div class="modal-content" style="max-width: 480px; border: 2px solid var(--st-attention-line);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-bell" style="color: var(--st-attention); font-size: 20px;"></i>
+          <h3 style="margin: 0; font-size: var(--fs-heading);">คำขอส่งข้ามโซนเข้ามาใหม่!</h3>
+        </div>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeCrossZoneApprovalModal()">&times;</button>
+      </div>
+
+      <div style="background: var(--st-attention-bg); padding: 12px; border-radius: 8px; font-size: 13px; color: var(--ink);">
+        คนขับ <b id="cz-appr-from-driver">สมชาย จัดส่ง (Zone A)</b> ขอส่งออเดอร์ในโซนของคุณ
+      </div>
+
+      <div style="background: var(--page); padding: var(--sp-3); border-radius: var(--r-card); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="code" id="cz-appr-order-id" style="font-weight: 700; font-size: 14px;">UM-000000</span>
+          <span class="num" id="cz-appr-price" style="font-weight: 700; color: var(--ink);">฿0.00</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 600; color: var(--ink);" id="cz-appr-customer-name">ชื่อลูกค้า</div>
+        <div style="font-size: 12px; color: var(--ink-2);" id="cz-appr-address">ที่อยู่จัดส่ง</div>
+        <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px;">
+          เหตุผลที่ขอ: <i id="cz-appr-reason" style="color: var(--ink-2);">"เส้นทางผ่านพอดี"</i>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: var(--sp-2);">
+        <button class="btn btn--danger" style="flex: 1;" id="btn-reject-cross-zone">
+          <i class="fa-solid fa-xmark"></i> ไม่อนุมัติ
+        </button>
+        <button class="btn btn--confirm" style="flex: 2;" id="btn-approve-cross-zone">
+          <i class="fa-solid fa-check"></i> อนุมัติให้ส่งข้ามโซน
+        </button>
+  <!-- Sticky Bottom Bulk Action Bar (AC-1) -->
+  <div id="ac1-bulk-bar" class="admin-bulk-bar" style="display: none;">
+    <div style="font-size: 13px; font-weight: 600;" id="ac1-bulk-count-text">เลือกอยู่ 0 รายการ</div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <button class="admin-bulk-btn" onclick="openBulkActionModal('reschedule')"><i class="fa-solid fa-calendar-day"></i> เลื่อนวันส่ง</button>
+      <button class="admin-bulk-btn" onclick="openBulkActionModal('driver')"><i class="fa-solid fa-user-plus"></i> มอบหมายคนขับ</button>
+      <button class="admin-bulk-btn" onclick="openBulkActionModal('zone')"><i class="fa-solid fa-map-pin"></i> กำหนดโซน</button>
+      <button class="admin-bulk-btn" onclick="openBulkActionModal('hold')"><i class="fa-solid fa-circle-pause"></i> พักไว้ก่อน</button>
+    </div>
+  </div>
+
+  <!-- Modal: Admin Auth (AC-0) -->
+  <div class="modal-overlay" id="modal-admin-auth">
+    <div class="modal-content" style="max-width: 400px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <h3 style="margin: 0; font-size: var(--fs-heading);"><i class="fa-solid fa-user-shield" style="color: var(--st-available); margin-right: 6px;"></i> เข้าสู่ระบบหัวหน้าคลัง</h3>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeAdminAuthModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">ป้อนรหัส PIN หัวหน้าคลัง (4 หลัก):</label>
+        <input type="password" id="admin-pin-input" class="search-input code" placeholder="****" maxlength="4" style="font-size: 24px; text-align: center; letter-spacing: 0.5em; height: 48px;">
+        <div id="admin-auth-error-msg" style="color: var(--st-failed); font-size: 12px; display: none;"><i class="fa-solid fa-circle-exclamation"></i> รหัส PIN หัวหน้าคลังไม่ถูกต้อง โปรดลองอีกครั้ง</div>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: 20px;">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeAdminAuthModal()">ยกเลิก</button>
+        <button class="btn btn--primary" style="flex: 2;" id="btn-submit-admin-auth" onclick="submitAdminAuth()">
+          เข้าสู่ศูนย์ควบคุม
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Bulk Action Confirmation with Mandatory Reason (AC-1) -->
+  <div class="modal-overlay" id="modal-admin-bulk-confirm">
+    <div class="modal-content" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <h3 style="margin: 0; font-size: var(--fs-heading);" id="bulk-modal-title">ยืนยันการดำเนินการกลุ่ม</h3>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeBulkActionModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+        <div style="font-size: 13px; color: var(--ink-2);" id="bulk-modal-subtitle">รายการที่เลือกทั้งหมด 0 รายการ:</div>
+
+        <!-- Preview first 3 items -->
+        <div id="bulk-preview-list" style="background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
+        </div>
+
+        <!-- Dynamic Action Form Input -->
+        <div id="bulk-action-fields"></div>
+
+        <!-- Mandatory Reason Textarea -->
+        <label style="font-size: 12px; font-weight: 600; color: var(--ink-2); margin-top: 4px;">เหตุผลในการดำเนินการ <span style="color: var(--st-failed);">(บังคับกรอก)</span>:</label>
+        <textarea id="bulk-reason-input" class="search-input" rows="3" placeholder="ระบุเหตุผลในการแก้ไข (เช่น ฝนตกหนักส่งไม่ได้, ลูกค้าแจ้งขอเปลี่ยนวันส่ง)..." style="padding: 8px 10px; font-size: 12px; height: 70px;" required></textarea>
+        <div id="bulk-error-msg" style="color: var(--st-failed); font-size: 12px; display: none;"><i class="fa-solid fa-circle-exclamation"></i> กรุณาระบุเหตุผลในการดำเนินการ</div>
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: 20px;">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeBulkActionModal()">ยกเลิก</button>
+        <button class="btn btn--primary" style="flex: 2;" onclick="executeBulkAction()">
+          ยืนยันการดำเนินการ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-over Panel: Order Detail & Overrides (AC-2) -->
+  <div class="slideover-overlay" id="admin-ac2-slideover">
+    <div class="slideover-panel">
+      <!-- Section 1: Header -->
+      <div class="slideover-header">
+        <div>
+          <div style="font-size: 18px; font-weight: 700; color: var(--ink);" id="ac2-header-title">ชื่อร้านค้า</div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+            <span class="code" id="ac2-header-order-id" style="font-size: 12px; font-weight: 700;">UM-000000</span>
+            <button class="btn btn--secondary btn--sm" style="padding: 0 6px; font-size: 10px;" onclick="copyAc2OrderId()"><i class="fa-solid fa-copy"></i> คัดลอก</button>
+            <span id="ac2-header-status-chip"></span>
+          </div>
+        </div>
+        <button style="background: none; border: none; font-size: 24px; color: var(--ink-3); cursor: pointer;" onclick="closeAdminOrderDetailPanel()">&times;</button>
+      </div>
+
+      <div class="slideover-body">
+        
+        <!-- Section 2: Locked Unii Source Data -->
+        <div class="unii-locked-box">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--ink-2); display: flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-lock" style="color: var(--st-attention);"></i> ข้อมูลจากระบบ Unii (อ่านอย่างเดียว)
+            </div>
+            <a href="https://docs.google.com/spreadsheets/d/1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U/edit?gid=0#gid=0" target="_blank" class="btn btn--secondary btn--sm" style="font-size: 11px; text-decoration: none;">
+              แก้ที่ระบบ Unii <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; margin-top: 4px;">
+            <div>ยอดขายรวม: <b class="num" id="ac2-unii-price" style="color: var(--ink);">฿0.00</b></div>
+            <div>เงื่อนไขชำระ: <b id="ac2-unii-payment">COD</b></div>
+            <div>ชื่อลูกค้า: <b id="ac2-unii-customer">ชื่อลูกค้า</b></div>
+            <div>เบอร์โทร: <b id="ac2-unii-phone">091-308-6526</b></div>
+          </div>
+
+          <div style="font-size: 11px; color: var(--ink-3); margin-top: 4px;">ที่อยู่ต้นทาง: <span id="ac2-unii-address">...</span></div>
+
+          <!-- SKU Product Items List -->
+          <div style="border-top: 1px dashed var(--line); margin-top: 8px; padding-top: 8px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--ink-2); display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span><i class="fa-solid fa-boxes-packing" style="color: var(--st-available);"></i> รายการสินค้า (<span id="ac2-sku-count">0</span> รายการ)</span>
+              <span style="font-size: 10px; color: var(--ink-3);">SKU Details</span>
+            </div>
+            <div id="ac2-sku-items-list" style="max-height: 140px; overflow-y: auto; font-size: 11px; display: flex; flex-direction: column; gap: 4px;">
+              <!-- Item rows rendered dynamically -->
+            </div>
+          </div>
+
+          <div style="font-size: 10px; color: var(--ink-3); font-style: italic; background: rgba(0,0,0,0.03); padding: 4px 8px; border-radius: 4px; margin-top: 4px;">
+            <i class="fa-solid fa-circle-info"></i> ข้อมูลส่วนนี้ sync มาจากระบบ Unii แก้ที่นี่ไม่ได้ เพราะจะถูกเขียนทับและทำให้ยอดไม่ตรงกับบัญชี
+          </div>
+        </div>
+
+        <!-- Section 3: Delivery Overrides (Editable) -->
+        <div style="display: flex; flex-direction: column; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--ink); border-bottom: 1px solid var(--line); padding-bottom: 6px;">
+            <i class="fa-solid fa-sliders" style="color: var(--st-available);"></i> ข้อมูลจัดส่ง (_ORDER_OVERRIDE แก้ไขได้)
+          </div>
+
+          <!-- Attached Proof Photos & Payment Slips (From Driver POD) -->
+          <div style="border-top: 1px dashed var(--line); padding-top: 8px; margin-top: 4px;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;">
+              <span><i class="fa-solid fa-images" style="color: var(--st-available);"></i> รูปหลักฐานจัดส่ง & สลิปโอนเงิน</span>
+            </div>
+            <div id="ac2-photos-preview-box" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span style="font-size: 11px; color: var(--ink-3);">ยังไม่มีรูปแนบในออเดอร์นี้</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">วันจัดส่ง (Delivery Date Override):</label>
+            <input type="date" id="ac2-input-date" class="admin-filter-input">
+            <span style="font-size: 11px; color: var(--ink-3);" id="ac2-orig-date-hint">วันส่งเดิมจาก Unii: 8/13/2026</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">โซนจัดส่ง (Zone Override):</label>
+            <select id="ac2-input-zone" class="admin-filter-select">
+              <option value="auto">-- ให้ระบบคำนวณอัตโนมัติจากพิกัด --</option>
+              <option value="Zone A — เมืองลำพูน">Zone A — เมืองลำพูน</option>
+              <option value="Zone B — สารภี/เชียงใหม่">Zone B — สารภี/เชียงใหม่</option>
+              <option value="Zone C — ป่าซาง">Zone C — ป่าซาง</option>
+              <option value="UNASSIGNED">UNASSIGNED (ไม่มีโซน)</option>
+            </select>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">คนขับผู้รับผิดชอบ:</label>
+              <button class="btn btn--danger btn--sm" style="font-size: 10px; padding: 0 6px;" onclick="releaseAc2Driver()"><i class="fa-solid fa-user-minus"></i> ปลดการจอง</button>
+            </div>
+            <select id="ac2-input-driver" class="admin-filter-select">
+              <option value="">-- ยังไม่มีคนจอง --</option>
+              <option value="DRV-A01">สมชาย จัดส่ง (Zone A)</option>
+              <option value="DRV-B02">วิชัย ขับเร็ว (Zone B)</option>
+              <option value="DRV-C03">สมศักดิ์ สุขใจ (Zone C)</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+              <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">ระดับความสำคัญ:</label>
+              <select id="ac2-input-priority" class="admin-filter-select" style="width: 100%;">
+                <option value="normal">ปกติ (Normal)</option>
+                <option value="high">ด่วนพิเศษ (Urgent)</option>
+              </select>
+            </div>
+            <div style="flex: 1; display: flex; align-items: flex-end;">
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" id="ac2-input-hold"> พักไว้ก่อน (Hold)
+              </label>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">ฝากบอกคนขับเฉพาะออเดอร์นี้ (Driver Note):</label>
+            <textarea id="ac2-input-note" class="admin-filter-input" rows="2" style="height: 50px; padding: 6px;" placeholder="เช่น ร้านขอส่งก่อนเที่ยง, ฝากของไว้กับรปภ."></textarea>
+          </div>
+        </div>
+
+        <!-- Section 4: Coords & Pin (No desktop current location button) -->
+        <div style="display: flex; flex-direction: column; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 13px; font-weight: 700; color: var(--ink);"><i class="fa-solid fa-map-pin" style="color: var(--st-available);"></i> พิกัดและตำแหน่งหมุด</div>
+            <button class="btn btn--secondary btn--sm" onclick="openAc2PinEditor()"><i class="fa-solid fa-pencil"></i> แก้หมุด M5</button>
+          </div>
+
+          <div id="ac2-coords-alert" style="display: none; background: var(--st-failed-bg); color: var(--st-failed); padding: 8px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;">
+            <i class="fa-solid fa-triangle-exclamation"></i> คำเตือน: พิกัดนี้หลุดกรอบโซนบริการหลัก (อยู่นอกเขต)
+          </div>
+
+          <div style="font-size: 12px; color: var(--ink-2);">
+            พิกัดปัจจุบัน: <b class="num" id="ac2-coords-val">18.53756, 99.02624</b>
+            <span style="font-size: 11px; color: var(--ink-3);" id="ac2-coords-source">(จาก Unii)</span>
+          </div>
+
+          <div id="ac2-mini-map" style="height: 140px; width: 100%; border-radius: 6px; border: 1px solid var(--line);"></div>
+        </div>
+
+        <!-- Section 5: Clustered Stop Breakdown -->
+        <div id="ac2-cluster-panel" style="display: flex; flex-direction: column; gap: 8px; background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--ink);"><i class="fa-solid fa-layer-group"></i> จุดส่งที่ถูกรวม (Location Cluster)</div>
+            <button class="btn btn--secondary btn--sm" style="font-size: 11px;" onclick="splitAc2Stop()"><i class="fa-solid fa-scissors"></i> แยกออกจากจุดนี้</button>
+          </div>
+          <div id="ac2-cluster-orders-list" style="font-size: 11px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px;"></div>
+        </div>
+
+        <!-- Section 6: Audit History & POD Timeline -->
+        <div style="display: flex; flex-direction: column; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--ink);"><i class="fa-solid fa-clock-rotate-left"></i> ประวัติการแก้ไขและไทม์ไลน์</div>
+          <div id="ac2-audit-timeline" style="font-size: 11px; color: var(--ink-2); display: flex; flex-direction: column; gap: 8px;"></div>
+        </div>
+
+        <!-- Mandatory Reason Input for AC-2 Save -->
+        <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+          <label style="font-size: 12px; font-weight: 600; color: var(--ink-2);">เหตุผลในการบันทึกการแก้ไข <span style="color: var(--st-failed);">(บังคับกรอก)</span>:</label>
+          <textarea id="ac2-reason-input" class="admin-filter-input" rows="2" style="height: 50px; padding: 6px;" placeholder="ระบุเหตุผลในการแก้ไขทุกครั้ง (เช่น ลูกค้าแจ้งผ่านเซลล์, แก้โซนเพราะระบบจัดผิด)..."></textarea>
+          <div id="ac2-error-msg" style="color: var(--st-failed); font-size: 11px; display: none;"><i class="fa-solid fa-circle-exclamation"></i> กรุณาระบุเหตุผลก่อนบันทึก</div>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="slideover-footer">
+        <button class="btn btn--danger btn--sm" style="flex: 1;" onclick="cancelAc2Delivery()"><i class="fa-solid fa-ban"></i> ยกเลิกจัดส่ง</button>
+        <button class="btn btn--primary" style="flex: 2;" onclick="saveAc2OrderOverride()"><i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูล</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal: Customer Detail & Constraint Editor (_CUSTOMERS / AC-3) -->
+  <div class="modal-overlay" id="modal-customer-detail">
+    <div class="modal-content" style="max-width: 650px; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: var(--sp-3);">
+        <h3 style="margin: 0; font-size: var(--fs-heading);" id="ac3-modal-title"><i class="fa-solid fa-store" style="color: var(--st-available); margin-right: 6px;"></i> ทะเบียนร้านค้าและข้อกำหนดเฉพาะ</h3>
+        <button style="background: none; border: none; font-size: 20px; color: var(--ink-3); cursor: pointer;" onclick="closeCustomerEditModal()">&times;</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 14px;">
+        <!-- Basic Info -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: var(--ink-2);">ชื่อร้านค้า / ลูกค้า:</label>
+            <input type="text" id="ac3-input-name" class="admin-filter-input" style="width: 100%; height: 36px;" placeholder="ชื่อร้านค้า...">
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: var(--ink-2);">เบอร์โทรศัพท์ (Primary Key):</label>
+            <input type="text" id="ac3-input-phone" class="admin-filter-input" style="width: 100%; height: 36px;" placeholder="091-xxx-xxxx">
+          </div>
+        </div>
+
+        <!-- 1. Time Constraints -->
+        <div style="background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--ink);"><i class="fa-solid fa-clock" style="color: var(--st-available);"></i> 1. เงื่อนไขเวลา (Time Constraints)</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-size: 11px;">
+            <div>
+              <label>เวลาเปิด-ปิดร้าน:</label>
+              <input type="text" id="ac3-input-opentime" class="admin-filter-input" placeholder="08:00 - 17:00" style="width: 100%; height: 32px;">
+            </div>
+            <div>
+              <label>ช่วงพักห้ามส่ง:</label>
+              <input type="text" id="ac3-input-lunch" class="admin-filter-input" placeholder="12:00 - 13:00" style="width: 100%; height: 32px;">
+            </div>
+            <div>
+              <label>วันหยุดประจำสัปดาห์:</label>
+              <input type="text" id="ac3-input-offday" class="admin-filter-input" placeholder="วันอาทิตย์" style="width: 100%; height: 32px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Access Restrictions -->
+        <div style="background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--ink);"><i class="fa-solid fa-truck-ramp-box" style="color: var(--st-attention);"></i> 2. ข้อจำกัดทางเข้า & รถส่ง (Access Restrictions)</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px;">
+            <label style="display: flex; align-items: center; gap: 6px;">
+              <input type="checkbox" id="ac3-input-narrow"> ซอยแคบ / รถ 6 ล้อเข้าไม่ได้
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px;">
+              <input type="checkbox" id="ac3-input-stairs"> ต้องขึ้นบันได / ไม่มีลิฟต์
+            </label>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px; margin-top: 4px;">
+            <div>
+              <label>จุดจอดรถส่ง:</label>
+              <input type="text" id="ac3-input-parking" class="admin-filter-input" placeholder="จอดหน้าร้าน / ข้างซอย..." style="width: 100%; height: 32px;">
+            </div>
+            <div>
+              <label>หมายเหตุเส้นทางเข้า:</label>
+              <input type="text" id="ac3-input-entrynote" class="admin-filter-input" placeholder="เข้าทางซอย 2..." style="width: 100%; height: 32px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Contact & Finance -->
+        <div style="background: var(--page); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--ink);"><i class="fa-solid fa-phone" style="color: var(--st-mine);"></i> 3. การติดต่อ & การเงิน (Contact & Financial)</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-size: 11px;">
+            <div>
+              <label>ต้องโทรก่อนกี่นาที:</label>
+              <input type="number" id="ac3-input-callmins" class="admin-filter-input" placeholder="15" style="width: 100%; height: 32px;">
+            </div>
+            <div>
+              <label>ผู้มีอำนาจเซ็นรับ:</label>
+              <input type="text" id="ac3-input-recipient" class="admin-filter-input" placeholder="คุณสมศรี..." style="width: 100%; height: 32px;">
+            </div>
+            <div>
+              <label>เบอร์โทรสำรอง:</label>
+              <input type="text" id="ac3-input-altphone" class="admin-filter-input" placeholder="081-xxx-xxxx" style="width: 100%; height: 32px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Constraint Chips Summary -->
+        <div>
+          <label style="font-size: 11px; font-weight: 600; color: var(--ink-2);">ชิปสรุปข้อกำหนด (จะแสดงบนการ์ดคนขับ):</label>
+          <div id="ac3-preview-chips" style="display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;">
+            <span class="chip chip--attention">โทรก่อน 15 น.</span>
+            <span class="chip chip--attention">ปิด 12:00-13:00</span>
+            <span class="chip chip--failed">ซอยแคบ</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display: flex; gap: var(--sp-2); margin-top: 20px;">
+        <button class="btn btn--secondary" style="flex: 1;" onclick="closeCustomerEditModal()">ยกเลิก</button>
+        <button class="btn btn--primary" style="flex: 2;" onclick="saveCustomerMasterData()">
+          <i class="fa-solid fa-floppy-disk"></i> บันทึกทะเบียนร้านค้า
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CC Driver Timeline Slide-over Drawer -->
+  <div id="cc-driver-timeline-drawer" class="drawer-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: flex-end; justify-content: flex-end;" onclick="if(event.target === this) closeDriverTimeline()">
+    <div class="drawer-content" style="width: 100%; max-width: 420px; height: 100%; background: var(--card); box-shadow: -8px 0 24px rgba(0,0,0,0.15); display: flex; flex-direction: column; animation: slideInRight 0.25s ease-out forwards;">
+      <div style="padding: 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: var(--page);">
+        <div>
+          <h3 id="timeline-driver-name" style="margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);">ไทม์ไลน์การส่งของ</h3>
+          <span id="timeline-driver-zone" style="font-size: 11px; color: var(--ink-3);">Zone A</span>
+        </div>
+        <button class="btn btn--secondary btn--sm" onclick="closeDriverTimeline()" style="font-size: 18px; font-weight: 700; line-height: 1; min-height: 32px; width: 32px; border-radius: 50%; padding: 0;">&times;</button>
+      </div>
+      <div id="timeline-events-container" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+        <!-- Timeline logs dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .drawer-overlay.is-open {
+      display: flex !important;
+    }
+  </style>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Leaflet JS CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Environment variables — ห้าม commit เด็ดขาด
+.env
+*.env.local
+*.env.*.local
+
+# Service Account keys — ห้าม commit
+*-key.json
+*service-account*.json
+*credentials*.json
+
+# Build outputs
+dist/
+build/
+.next/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs & Temp files
+*.log
+npm-debug.log*
+corrupt*.txt
+history_output.txt
+functions.txt
+corruption_steps.txt
+scratch/
+
+# Local data files
+local_assign.json
+local_pinfix.json
+local_zones.json
+local_cod.json
+local_dayclose.json
+local_crosszone_requests.json
+local_returns.json
+local_schedule.json
+local_stores.json
+local_routecodes.json
+local_order_overrides.json
