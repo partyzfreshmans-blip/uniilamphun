@@ -24,18 +24,35 @@ try {
   }
 }
 
+let memoryDriversCache = null;
+const TMP_DRIVERS_PATH = path.join('/tmp', 'local_drivers.json');
+
 function readDriversDb() {
+  if (memoryDriversCache && Array.isArray(memoryDriversCache) && memoryDriversCache.length > 0) {
+    return memoryDriversCache;
+  }
+  try {
+    if (fs.existsSync(TMP_DRIVERS_PATH)) {
+      const data = JSON.parse(fs.readFileSync(TMP_DRIVERS_PATH, 'utf8'));
+      if (Array.isArray(data.drivers) && data.drivers.length > 0) {
+        memoryDriversCache = data.drivers;
+        return data.drivers;
+      }
+    }
+  } catch (e) {}
   try {
     const cwdFile = path.join(process.cwd(), 'local_drivers.json');
     if (fs.existsSync(cwdFile)) {
       const data = JSON.parse(fs.readFileSync(cwdFile, 'utf8'));
       if (Array.isArray(data.drivers) && data.drivers.length > 0) {
+        memoryDriversCache = data.drivers;
         return data.drivers;
       }
     }
   } catch (e) {}
 
   if (embeddedDriversDb && Array.isArray(embeddedDriversDb.drivers) && embeddedDriversDb.drivers.length > 0) {
+    memoryDriversCache = embeddedDriversDb.drivers;
     return embeddedDriversDb.drivers;
   }
 
@@ -43,13 +60,14 @@ function readDriversDb() {
 }
 
 function writeDriversDb(driversList) {
+  memoryDriversCache = driversList;
   try {
     fs.writeFileSync(DRIVERS_DB_PATH, JSON.stringify({ drivers: driversList }, null, 2), 'utf8');
-    return true;
-  } catch (e) {
-    console.error('[drivers.js] Error writing local_drivers.json:', e.message);
-    return false;
-  }
+  } catch (e) {}
+  try {
+    fs.writeFileSync(TMP_DRIVERS_PATH, JSON.stringify({ drivers: driversList }, null, 2), 'utf8');
+  } catch (e) {}
+  return true;
 }
 
 function getDriverAssignedZones(driverCode) {

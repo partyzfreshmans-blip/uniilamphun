@@ -1332,11 +1332,28 @@ app.post('/api/routecode/writeback', authMiddleware, async (req, res) => {
 // =========================================
 // Zone Management Endpoints
 // =========================================
+let memoryZonesCache = null;
+const TMP_ZONES_DB = path.join('/tmp', 'local_zones.json');
+
 function readZonesDb() {
+  if (memoryZonesCache && Array.isArray(memoryZonesCache.zones) && memoryZonesCache.zones.length > 0) {
+    return memoryZonesCache;
+  }
+  try {
+    if (fs.existsSync(TMP_ZONES_DB)) {
+      const parsed = JSON.parse(fs.readFileSync(TMP_ZONES_DB, 'utf8'));
+      if (parsed && Array.isArray(parsed.zones) && parsed.zones.length > 0) {
+        memoryZonesCache = parsed;
+        return parsed;
+      }
+    }
+  } catch (e) {}
+
   try {
     if (fs.existsSync(ZONES_DB)) {
       const parsed = JSON.parse(fs.readFileSync(ZONES_DB, 'utf8'));
       if (parsed && Array.isArray(parsed.zones) && parsed.zones.length > 0) {
+        memoryZonesCache = parsed;
         return parsed;
       }
     }
@@ -1344,16 +1361,60 @@ function readZonesDb() {
     console.warn('[readZonesDb] Error reading zones:', e.message);
   }
   const { getActiveZones } = require('./api/lib/zones');
-  return getActiveZones();
+  const fallback = getActiveZones();
+  memoryZonesCache = fallback;
+  return fallback;
 }
 
 function writeZonesDb(data) {
+  memoryZonesCache = data;
   try {
     fs.writeFileSync(ZONES_DB, JSON.stringify(data, null, 2), 'utf8');
-    return true;
+  } catch (e) {}
+  try {
+    fs.writeFileSync(TMP_ZONES_DB, JSON.stringify(data, null, 2), 'utf8');
+  } catch (e) {}
+  return true;
+}
+
+// Helper to sync zone definitions to Google Sheets "Zones" tab
+async function syncZonesToGoogleSheets(zonesList) {
+  try {
+    const sheets = getSheetsClient();
+    const rows = zonesList.map((z, idx) => {
+      const coords = (z.polygon || []).map(pt => [pt[1], pt[0]]);
+      if (coords.length > 0 && (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1])) {
+        coords.push(coords[0]);
+      }
+      const geojsonStr = JSON.stringify({
+        type: "Polygon",
+        coordinates: [coords]
+      });
+      return [
+        z.id || `zone_${(z.letter || String(idx)).toLowerCase()}`,
+        z.name || `Zone ${z.letter || ''}`,
+        z.color || '#10b981',
+        Array.isArray(z.driverCodes) ? z.driverCodes.join(',') : (z.driverCode || ''),
+        String(idx),
+        'TRUE',
+        geojsonStr
+      ];
+    });
+
+    const values = [
+      ['zone_id', 'zone_name', 'color', 'vehicle', 'priority', 'active', 'polygon_geojson'],
+      ...rows
+    ];
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID_ORDERS,
+      range: 'Zones!A1:G30',
+      valueInputOption: 'USER_ENTERED',
+      resource: { values }
+    });
+    console.log('[syncZonesToGoogleSheets] Successfully synced', rows.length, 'zones to Google Sheets tab Zones');
   } catch (e) {
-    console.error('[writeZonesDb] Failed:', e.message);
-    return false;
+    console.warn('[syncZonesToGoogleSheets] Warning syncing to Sheets:', e.message);
   }
 }
 
@@ -1396,7 +1457,7 @@ app.get('/api/zones', (req, res) => {
 });
 
 // POST /api/zones/save — บันทึกรายการโซน
-app.post('/api/zones/save', authMiddleware, (req, res) => {
+app.post('/api/zones/save', authMiddleware, async (req, res) => {
   const isSup = ['supervisor','admin','administrator'].includes(req.user.role);
   if (!isSup) return res.status(403).json({ error: 'Forbidden' });
 
@@ -1429,8 +1490,7 @@ app.post('/api/zones/save', authMiddleware, (req, res) => {
     overlapZones: cleanOverlaps
   };
 
-  const ok = writeZonesDb(payload);
-  if (!ok) return res.status(500).json({ error: 'Failed to write zones data' });
+  writeZonesDb(payload);
 
   // Sync to local_drivers.json bidirectionally
   try {
@@ -1459,6 +1519,11 @@ app.post('/api/zones/save', authMiddleware, (req, res) => {
   } catch (e) {
     console.warn('[zones/save] Error syncing drivers:', e.message);
   }
+
+  // Sync to Google Sheets "Zones" tab in background
+  syncZonesToGoogleSheets([...cleanZones, ...cleanOverlaps]).catch(e => {
+    console.warn('[zones/save] Async Sheets sync error:', e.message);
+  });
 
   console.log(`[zones/save] Saved ${cleanZones.length} zones and ${cleanOverlaps.length} overlap zones`);
   res.json({ success: true, message: 'บันทึกโซนสำเร็จ', data: payload });
