@@ -2,15 +2,13 @@
  * api/lib/zones.js
  * =================
  * Zone classification and Point-in-Polygon calculation
- * Supports dynamic zones from local_zones.json + Overlap Zones (e.g., AB, ABC)
+ * Supports dynamic zones from local_zones.json + Overlap Zones (e.g., AB, AC, CD)
  */
 
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-
-const ZONES_DB_PATH = path.join(__dirname, '../../local_zones.json');
 
 const DEFAULT_GEOJSON_ZONES = {
   "Zone A — เมืองลำพูน": [
@@ -74,6 +72,81 @@ const DEFAULT_GEOJSON_ZONES = {
   ]
 };
 
+const DEFAULT_ZONE_DRIVERS = {
+  "A": ["DRV-A01", "DRV-C03"],
+  "B": ["DRV-B02"],
+  "C": ["DRV-C03"],
+  "D": ["DRV-C03"]
+};
+
+const DEFAULT_OVERLAP_ZONES = [
+  {
+    id: "overlap_ab",
+    letters: "AB",
+    letter: "AB",
+    name: "Zone AB สารภี/บ้านธิ",
+    color: "#a855f7",
+    driverCodes: ["DRV-B02"],
+    driverCode: "DRV-B02",
+    cardLimit: 30,
+    polygon: [
+      [18.62998, 98.87205],
+      [18.62054, 98.87318],
+      [18.61176, 98.89996],
+      [18.6856, 98.92467],
+      [18.68658, 98.98819],
+      [18.65991, 99.07951],
+      [18.66019, 99.16822],
+      [18.66121, 99.16878],
+      [18.6869, 99.18285],
+      [18.72723, 99.16054],
+      [18.73568, 99.12071],
+      [18.72528, 99.0802],
+      [18.72397, 98.94218],
+      [18.66023, 98.88382],
+      [18.62998, 98.87205]
+    ]
+  },
+  {
+    id: "overlap_ac",
+    letters: "AC",
+    letter: "AC",
+    name: "Zone AC",
+    color: "#34d399",
+    driverCodes: ["DRV-C03"],
+    driverCode: "DRV-C03",
+    cardLimit: 30,
+    polygon: [
+      [18.559, 98.94651],
+      [18.4503, 98.96004],
+      [18.46961, 99.04725],
+      [18.51477, 99.0287],
+      [18.55644, 98.9978],
+      [18.559, 98.94651]
+    ]
+  },
+  {
+    id: "overlap_cd",
+    letters: "CD",
+    letter: "CD",
+    name: "Zone CD",
+    color: "#fb923c",
+    driverCodes: ["DRV-C03"],
+    driverCode: "DRV-C03",
+    cardLimit: 30,
+    polygon: [
+      [18.4249, 98.93875],
+      [18.40926, 98.93944],
+      [18.39688, 98.96965],
+      [18.41658, 99.06903],
+      [18.46899, 99.0475],
+      [18.4503, 98.9621],
+      [18.43597, 98.96416],
+      [18.4249, 98.93875]
+    ]
+  }
+];
+
 let embeddedZonesDb = null;
 try {
   embeddedZonesDb = require('../../local_zones.json');
@@ -105,15 +178,20 @@ function getActiveZones() {
   // Fallback to default
   const fallbackZones = Object.entries(DEFAULT_GEOJSON_ZONES).map(([name, polygon]) => {
     const letter = name.match(/Zone ([A-Z])/i)?.[1] || 'A';
+    const drivers = DEFAULT_ZONE_DRIVERS[letter] || [];
     return {
       id: `zone_${letter.toLowerCase()}`,
       letter,
       name,
+      color: letter === 'A' ? '#10b981' : letter === 'B' ? '#8b5cf6' : letter === 'C' ? '#f59e0b' : '#06b6d4',
+      driverCodes: drivers,
+      driverCode: drivers[0] || '',
+      cardLimit: 30,
       polygon
     };
   });
 
-  return { zones: fallbackZones, overlapZones: [] };
+  return { zones: fallbackZones, overlapZones: DEFAULT_OVERLAP_ZONES };
 }
 
 function pointInPolygon(point, vs) {
@@ -167,7 +245,7 @@ function classifyOrderZone(lat, lng) {
 
   // Multiple zones match -> Overlap zone (e.g. AB, ABC) sorted alphabetically
   const combo = Array.from(new Set(matchedLetters)).sort().join('');
-  const foundOverlap = (overlapZones || []).find(oz => oz.letters === combo);
+  const foundOverlap = (overlapZones || []).find(oz => oz.letters === combo || oz.letter === combo);
   if (foundOverlap && foundOverlap.name) {
     return foundOverlap.name;
   }
