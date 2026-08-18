@@ -7726,5 +7726,10 @@ async function syncApiImport() {
   }
 }
 
-
-
+// Auto-sync in background every 5 minutes while supervisor portal is open
+setInterval(() => {
+  const token = (typeof supState !== 'undefined' && supState.token) || localStorage.getItem('uflow_sup_token') || localStorage.getItem('token');
+  if (token) {
+    syncApiImport().catch(() => {});
+  }
+}, 5 * 60 * 1000);
