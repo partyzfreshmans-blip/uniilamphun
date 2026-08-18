@@ -40,11 +40,11 @@ const ZONES_DB       = path.join(__dirname, 'local_zones.json');
 const ORDERS_DB      = path.join(__dirname, 'orders_data.json');   // TODO: replace with Sheets คำสั่งซื้อ
 const ROUTECODE_DB   = path.join(__dirname, 'local_routecodes.json'); // TODO: migrate to Sheets
 
-// Sheets config for _ASSIGN
-const SHEET_ID_ORDERS = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
-  ? process.env.SHEET_ID_ORDERS
+const rawSheetIdOrders = (process.env.SHEET_ID_ORDERS || '').trim();
+const SHEET_ID_ORDERS = (rawSheetIdOrders.length > 20 && !rawSheetIdOrders.includes('BEWpjZ'))
+  ? rawSheetIdOrders
   : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
-const SHEET_ID_PRODUCTS = process.env.SHEET_ID_PRODUCTS || '1_qE1NtIfLfa2Vn0AXFxfGoD9daZB34OtLnv08Tc-o54';
+const SHEET_ID_PRODUCTS = (process.env.SHEET_ID_PRODUCTS || '').trim() || '1_qE1NtIfLfa2Vn0AXFxfGoD9daZB34OtLnv08Tc-o54';
 const ASSIGN_SHEET     = '_ASSIGN';
 const ASSIGN_HEADERS   = [
   'order_id','status','assigned_driver','completed_at',
