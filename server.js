@@ -1335,58 +1335,16 @@ app.post('/api/routecode/writeback', authMiddleware, async (req, res) => {
 function readZonesDb() {
   try {
     if (fs.existsSync(ZONES_DB)) {
-      return JSON.parse(fs.readFileSync(ZONES_DB, 'utf8'));
+      const parsed = JSON.parse(fs.readFileSync(ZONES_DB, 'utf8'));
+      if (parsed && Array.isArray(parsed.zones) && parsed.zones.length > 0) {
+        return parsed;
+      }
     }
   } catch (e) {
     console.warn('[readZonesDb] Error reading zones:', e.message);
   }
-  return {
-    zones: [
-      {
-        id: "zone_a",
-        letter: "A",
-        name: "Zone A — เมืองลำพูน",
-        color: "#10b981",
-        driverCode: "DRV-A01",
-        cardLimit: 30,
-        polygon: [
-          [18.48, 98.95],
-          [18.66, 98.95],
-          [18.66, 99.12],
-          [18.48, 99.12]
-        ]
-      },
-      {
-        id: "zone_b",
-        letter: "B",
-        name: "Zone B — สารภี/เชียงใหม่",
-        color: "#8b5cf6",
-        driverCode: "DRV-B02",
-        cardLimit: 30,
-        polygon: [
-          [18.66, 98.90],
-          [18.85, 98.90],
-          [18.85, 99.12],
-          [18.66, 99.12]
-        ]
-      },
-      {
-        id: "zone_c",
-        letter: "C",
-        name: "Zone C — ป่าซาง",
-        color: "#f59e0b",
-        driverCode: "DRV-C03",
-        cardLimit: 30,
-        polygon: [
-          [18.35, 98.75],
-          [18.48, 98.75],
-          [18.48, 98.95],
-          [18.35, 98.95]
-        ]
-      }
-    ],
-    overlapZones: []
-  };
+  const { getActiveZones } = require('./api/lib/zones');
+  return getActiveZones();
 }
 
 function writeZonesDb(data) {
@@ -1418,13 +1376,20 @@ app.get('/api/zones', (req, res) => {
     letter: z.letter,
     name: z.name,
     color: z.color,
+    driverCode: z.driverCode || (z.driverCodes && z.driverCodes[0]) || '',
+    driverCodes: z.driverCodes || (z.driverCode ? [z.driverCode] : []),
+    cardLimit: z.cardLimit || 30,
     polygon: z.polygon
   }));
   const sanitizedOverlaps = (db.overlapZones || []).map(oz => ({
     id: oz.id,
     letter: oz.letter,
+    letters: oz.letters || oz.letter,
     name: oz.name,
     color: oz.color,
+    driverCode: oz.driverCode || (oz.driverCodes && oz.driverCodes[0]) || '',
+    driverCodes: oz.driverCodes || (oz.driverCode ? [oz.driverCode] : []),
+    cardLimit: oz.cardLimit || 30,
     polygon: oz.polygon
   }));
   res.json({ success: true, zones: sanitizedZones, overlapZones: sanitizedOverlaps });
