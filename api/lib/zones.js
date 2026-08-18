@@ -74,16 +74,32 @@ const DEFAULT_GEOJSON_ZONES = {
   ]
 };
 
+let embeddedZonesDb = null;
+try {
+  embeddedZonesDb = require('../../local_zones.json');
+} catch (e) {
+  try {
+    embeddedZonesDb = require('../local_zones.json');
+  } catch (e2) {
+    try {
+      embeddedZonesDb = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'local_zones.json'), 'utf8'));
+    } catch (e3) {}
+  }
+}
+
 function getActiveZones() {
   try {
-    if (fs.existsSync(ZONES_DB_PATH)) {
-      const data = JSON.parse(fs.readFileSync(ZONES_DB_PATH, 'utf8'));
+    const cwdFile = path.join(process.cwd(), 'local_zones.json');
+    if (fs.existsSync(cwdFile)) {
+      const data = JSON.parse(fs.readFileSync(cwdFile, 'utf8'));
       if (Array.isArray(data.zones) && data.zones.length > 0) {
         return data;
       }
     }
-  } catch (e) {
-    console.warn('[zones.js] Warning reading local_zones.json:', e.message);
+  } catch (e) {}
+
+  if (embeddedZonesDb && Array.isArray(embeddedZonesDb.zones) && embeddedZonesDb.zones.length > 0) {
+    return embeddedZonesDb;
   }
 
   // Fallback to default

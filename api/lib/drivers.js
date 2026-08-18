@@ -11,17 +11,34 @@ const DEFAULT_PROFILES = {
   "DRV-S04": { id: "DRV-S04", code: "DRV-S04", name: "สุรชัย สายด่วน (ทีมพิเศษ)", phone: "084-567-8901", role: "driver", zone: "ทุกโซน (ลอตใหญ่ / เก็บตก / VVIP)", zones: ["ทุกโซน"], avatar: "VIP", color: "#06b6d4", pin: "4444", status: "active", isSpecial: true }
 };
 
+let embeddedDriversDb = null;
+try {
+  embeddedDriversDb = require('../../local_drivers.json');
+} catch (e) {
+  try {
+    embeddedDriversDb = require('../local_drivers.json');
+  } catch (e2) {
+    try {
+      embeddedDriversDb = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'local_drivers.json'), 'utf8'));
+    } catch (e3) {}
+  }
+}
+
 function readDriversDb() {
   try {
-    if (fs.existsSync(DRIVERS_DB_PATH)) {
-      const data = JSON.parse(fs.readFileSync(DRIVERS_DB_PATH, 'utf8'));
+    const cwdFile = path.join(process.cwd(), 'local_drivers.json');
+    if (fs.existsSync(cwdFile)) {
+      const data = JSON.parse(fs.readFileSync(cwdFile, 'utf8'));
       if (Array.isArray(data.drivers) && data.drivers.length > 0) {
         return data.drivers;
       }
     }
-  } catch (e) {
-    console.warn('[drivers.js] Error reading local_drivers.json:', e.message);
+  } catch (e) {}
+
+  if (embeddedDriversDb && Array.isArray(embeddedDriversDb.drivers) && embeddedDriversDb.drivers.length > 0) {
+    return embeddedDriversDb.drivers;
   }
+
   return Object.values(DEFAULT_PROFILES);
 }
 
