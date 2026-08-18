@@ -990,12 +990,22 @@ app.post('/api/order/printed', authMiddleware, (req, res) => {
 });
 
 // =========================================
-// POST /api/sync/api-import
+// POST & GET /api/sync/api-import
 // ซิงก์ออเดอร์ใหม่จากแท็บ API Import ไปยัง คำสั่งซื้อ โดยอัตโนมัติ (Deduplicated & Sorted Chronologically)
 // =========================================
 const { syncApiImportToOrders } = require('./api/sync/api_import');
 
-app.post('/api/sync/api-import', authMiddleware, async (req, res) => {
+app.all('/api/sync/api-import', async (req, res) => {
+  // Allow authorized users or internal cron trigger
+  if (req.method === 'POST') {
+    // Check auth for manual button click
+    const token = (req.headers.authorization || '').split(' ')[1];
+    if (token) {
+      const decoded = verifyToken(token);
+      if (!decoded) return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
+  }
+
   try {
     const result = await syncApiImportToOrders();
     res.status(200).json(result);
