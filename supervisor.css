@@ -6584,3 +6584,116 @@ input:checked + .drv-slider:before {
   justify-content: flex-end;
   gap: 10px;
 }
+
+/* ==========================================
+   S1 Operational Summary Section (S3, S4, S5)
+   ========================================== */
+.sup-op-summary-section {
+  margin-top: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+
+.sup-op-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-4);
+}
+
+.sup-op-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--sp-4) var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.sup-op-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-color: var(--ink-3);
+}
+
+.sup-op-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+}
+
+.sup-op-title {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--ink-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sup-op-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1.2;
+}
+
+.sup-op-sub {
+  font-size: var(--fs-label);
+  color: var(--ink-3);
+  margin-bottom: var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sup-op-sub.is-warn {
+  color: var(--st-attention);
+  font-weight: 600;
+}
+
+.sup-op-sub.is-danger {
+  color: var(--st-failed);
+  font-weight: 600;
+}
+
+.sup-op-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 7px 12px;
+  border-radius: var(--r-button);
+  background: var(--page);
+  border: 1px solid var(--line);
+  font-size: var(--fs-detail);
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.sup-op-btn:hover {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+}
+
+.sup-op-all-clear-banner {
+  background: var(--st-available-bg);
+  border: 1px solid var(--st-available-border);
+  border-radius: var(--r-card);
+  padding: var(--sp-4) var(--sp-6);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  color: var(--st-available);
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+

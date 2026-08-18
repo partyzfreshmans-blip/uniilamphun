@@ -270,9 +270,19 @@ async function supLoadData() {
     // Build date list
     buildDateDropdown();
 
-    // Set default date (most recent)
+    // Set default date (most recent or today)
     if (supState.availableDates.length > 0 && !supState.selectedDate) {
-      supState.selectedDate = supState.availableDates[supState.availableDates.length - 1];
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const todayKey = `${dd}-${mm}-${yyyy}`;
+
+      if (supState.availableDates.includes(todayKey)) {
+        supState.selectedDate = todayKey;
+      } else {
+        supState.selectedDate = supState.availableDates[0]; // Newest date first
+      }
     }
     syncDateSelects();
 
@@ -786,6 +796,9 @@ function supRenderS1() {
 
   // --- Zone Quota Alerts (Over Quota Capacity Check) ---
   supCheckZoneQuotas();
+
+  // --- Operational Summary Cards (S3, S4, S5) ---
+  supRenderOperationalSummary();
 }
 
 function supCheckZoneQuotas() {
@@ -1011,11 +1024,24 @@ function supRenderDriverPanel() {
   const orders = supState.allOrders;
 
   DRIVER_PROFILES.forEach(driver => {
-    const driverOrders = orders.filter(o => o.assignedDriverId === driver.code);
+    const dCode = (driver.code || '').toUpperCase();
+    const dName = (driver.name || '').toLowerCase();
+    const driverOrders = orders.filter(o => {
+      const assigned = (o.assignedDriverId || o.assigned_driver || o.driver || o.carrier || '').trim().toUpperCase();
+      if (assigned === dCode) return true;
+      if (assigned === dCode.replace('DRV-', '')) return true;
+      if (o.driver && o.driver.toLowerCase().includes(dName)) return true;
+      // If order is claimed or done in this driver's primary zone and not explicitly assigned to another driver
+      if ((o.status === 'mine' || o.status === 'done') && !assigned) {
+        if (o.geojsonZone && o.geojsonZone.includes(driver.zone.replace('Zone ', ''))) return true;
+      }
+      return false;
+    });
+
     const bookedCount  = driverOrders.length;
     const doneCount    = driverOrders.filter(o => o.status === "done").length;
-    const codOrders    = driverOrders.filter(o => o.cod);
-    const codExpected  = codOrders.reduce((s, o) => s + (parseFloat(o.price) || 0), 0);
+    const codOrders    = driverOrders.filter(o => o.cod || o.isCod || (o.paymentType && o.paymentType.toLowerCase().includes('cash')) || (o.payment && o.payment.toLowerCase().includes('cash')));
+    const codExpected  = codOrders.reduce((s, o) => s + (parseFloat(o.price || o.totalAmount || o.total) || 0), 0);
     const pct          = bookedCount > 0 ? Math.round((doneCount / bookedCount) * 100) : 0;
 
     const zoneColor = ZONE_COLORS[driver.zone] || "var(--st-available)";
@@ -1036,6 +1062,141 @@ function supRenderDriverPanel() {
     `;
     container.appendChild(row);
   });
+}
+
+// ===========================
+// Operational Summary Cards (S3, S4, S5)
+// ===========================
+async function supRenderOperationalSummary() {
+  const container = document.getElementById("sup-op-summary-section");
+  if (!container) return;
+
+  const token = getSupToken();
+  const selectedDate = supState.selectedDate || '';
+
+  try {
+    // 1. Fetch Crosszone requests
+    const czPromise = fetch('/api/supervisor/approvals/crosszone', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).then(r => r.json()).catch(() => ({ pendingCount: 0, requests: [] }));
+
+    // 2. Fetch COD summary for selected date
+    const codPromise = fetch(`/api/cod/summary?date=${encodeURIComponent(selectedDate)}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).then(r => r.json()).catch(() => ({ totalDrivers: 0, totalExpected: 0, totalVerified: 0 }));
+
+    // 3. Fetch Returns
+    const retPromise = fetch('/api/supervisor/returns', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }).then(r => r.json()).catch(() => ({ returns: [] }));
+
+    const [czData, codData, retData] = await Promise.all([czPromise, codPromise, retPromise]);
+
+    // Compute Crosszone stats
+    const czPendingCount = czData.pendingCount || (czData.requests ? czData.requests.filter(r => r.status === 'pending').length : 0);
+    const czRequests = (czData.requests || []).filter(r => r.status === 'pending');
+    let maxWaitMins = 0;
+    const nowMs = Date.now();
+    czRequests.forEach(r => {
+      const reqTime = r.requested_at ? new Date(r.requested_at).getTime() : 0;
+      if (reqTime > 0) {
+        const diffMins = Math.round((nowMs - reqTime) / 60000);
+        if (diffMins > maxWaitMins) maxWaitMins = diffMins;
+      }
+    });
+
+    // Compute COD stats
+    const codVerified = parseFloat(codData.totalVerified || 0);
+    const codExpected = parseFloat(codData.totalExpected || 0);
+    const codDone = codExpected > 0 && codVerified >= codExpected;
+
+    // Compute Returns stats
+    const allReturns = retData.returns || [];
+    const pendingReturns = allReturns.filter(r => r.return_status === 'pending_return' || r.status === 'pending');
+    const overdueReturns = pendingReturns.filter(r => {
+      if (!r.return_created_at && !r.date) return false;
+      const t = new Date(r.return_created_at || r.date).getTime();
+      return (nowMs - t) > 24 * 60 * 60 * 1000;
+    });
+
+    // Check All-Clear Condition
+    const isAllClear = (czPendingCount === 0) && (codExpected === 0 || codVerified >= codExpected) && (pendingReturns.length === 0);
+
+    if (isAllClear) {
+      container.innerHTML = `
+        <div class="sup-op-all-clear-banner">
+          <i class="fa-solid fa-circle-check" style="font-size: 20px;"></i>
+          <span>ทุกอย่างเรียบร้อย ไม่มีรายการค้างที่ต้องจัดการเพิ่ม</span>
+        </div>
+      `;
+      return;
+    }
+
+    // Render 3 Summary Cards
+    const czSubClass = maxWaitMins > 15 ? 'is-danger' : (maxWaitMins > 5 ? 'is-warn' : '');
+    const czSubText = czPendingCount > 0 
+      ? `<i class="fa-regular fa-clock"></i> รอนานสุด ${maxWaitMins > 0 ? maxWaitMins : 1} นาที` 
+      : 'ไม่มีคำขอค้าง';
+
+    const codSubClass = (codExpected > 0 && codVerified < codExpected) ? 'is-warn' : '';
+    const codSubText = `จากยอดควรเก็บ ฿${codExpected.toLocaleString('th-TH', {minimumFractionDigits: 2})}`;
+
+    const retSubClass = overdueReturns.length > 0 ? 'is-danger' : '';
+    const retSubText = overdueReturns.length > 0 
+      ? `<i class="fa-solid fa-triangle-exclamation"></i> ค้างเกิน 1 วัน: ${overdueReturns.length} จุด`
+      : 'ไม่มีของค้างเกินกำหนด';
+
+    container.innerHTML = `
+      <div class="sup-op-grid">
+        <!-- Card 1: ขอข้ามโซน (S3) -->
+        <div class="sup-op-card">
+          <div>
+            <div class="sup-op-header">
+              <div class="sup-op-title"><i class="fa-solid fa-clock-rotate-left" style="color:#2563eb;"></i> ขอข้ามโซน</div>
+              <span class="sup-badge ${czPendingCount === 0 ? 'is-ok' : 'is-crit'}">${czPendingCount}</span>
+            </div>
+            <div class="sup-op-val">${czPendingCount} <span style="font-size:14px;font-weight:400;color:var(--ink-2);">คำขอ</span></div>
+            <div class="sup-op-sub ${czSubClass}">${czSubText}</div>
+          </div>
+          <button class="sup-op-btn" onclick="supShowPage('s3', document.querySelector('[data-page=s3]'))">
+            ไปหน้ารออนุมัติ <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Card 2: ตรวจเงิน COD (S4) -->
+        <div class="sup-op-card">
+          <div>
+            <div class="sup-op-header">
+              <div class="sup-op-title"><i class="fa-solid fa-coins" style="color:#d97706;"></i> ตรวจเงิน COD</div>
+              <span class="sup-badge ${codDone ? 'is-ok' : ''}">${codDone ? 'ตรวจครบ' : 'รอนับ'}</span>
+            </div>
+            <div class="sup-op-val" style="font-size:19px;">ตรวจแล้ว ฿${codVerified.toLocaleString('th-TH', {minimumFractionDigits:2})}</div>
+            <div class="sup-op-sub ${codSubClass}">${codSubText}</div>
+          </div>
+          <button class="sup-op-btn" onclick="supShowPage('s4', document.querySelector('[data-page=s4]'))">
+            ไปหน้าตรวจ COD <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Card 3: ของกลับเข้าคลัง (S5) -->
+        <div class="sup-op-card">
+          <div>
+            <div class="sup-op-header">
+              <div class="sup-op-title"><i class="fa-solid fa-warehouse" style="color:#dc2626;"></i> ของกลับเข้าคลัง</div>
+              <span class="sup-badge ${pendingReturns.length === 0 ? 'is-ok' : 'is-crit'}">${pendingReturns.length}</span>
+            </div>
+            <div class="sup-op-val">${pendingReturns.length} <span style="font-size:14px;font-weight:400;color:var(--ink-2);">จุดรอรับคืน</span></div>
+            <div class="sup-op-sub ${retSubClass}">${retSubText}</div>
+          </div>
+          <button class="sup-op-btn" onclick="supShowPage('s5', document.querySelector('[data-page=s5]'))">
+            ไปหน้าของกลับ <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    console.warn('[supRenderOperationalSummary] Error:', e);
+  }
 }
 
 // ===========================
