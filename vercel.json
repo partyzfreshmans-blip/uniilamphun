@@ -39,11 +39,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/sync/api-import",
-      "schedule": "*/5 * * * *"
-    }
   ]
 }
