@@ -73,8 +73,47 @@ function getZoneCardLimit(zoneLetter) {
     const found = all.find(z => (z.letter === zoneLetter || z.letters === zoneLetter));
     if (found && found.cardLimit) return parseInt(found.cardLimit, 10);
   } catch (e) {}
-  return CARD_LIMITS[zoneLetter] || 30;
-}
+// --- Diagnostic Route for Vercel Environment & Sheets ---
+app.get('/api/debug', async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  const sheetId = SHEET_ID_ORDERS;
+
+  const diagnostics = {
+    hasEmail: Boolean(email),
+    emailValue: email ? email.replace(/(.{4}).*(@.*)/, '$1...$2') : null,
+    hasPrivateKey: Boolean(privateKey),
+    privateKeyLength: privateKey ? privateKey.length : 0,
+    privateKeyHasBegin: privateKey ? privateKey.includes('-----BEGIN PRIVATE KEY-----') : false,
+    privateKeyHasEscapedNewlines: privateKey ? privateKey.includes('\\n') : false,
+    sheetIdValue: sheetId,
+    sheetsApiError: null,
+    sheetTitle: null,
+    sheetTabsFound: []
+  };
+
+  try {
+    const { getSheetsClient } = require('./api/lib/sheets');
+    const sheets = getSheetsClient();
+    const meta = await sheets.spreadsheets.get({ spreadsheetId: sheetId });
+    diagnostics.sheetTitle = meta.data.properties.title;
+    diagnostics.sheetTabsFound = (meta.data.sheets || []).map(s => ({
+      title: s.properties.title,
+      sheetId: s.properties.sheetId
+    }));
+  } catch (err) {
+    diagnostics.sheetsApiError = {
+      message: err.message,
+      code: err.code,
+      stack: err.stack
+    };
+  }
+
+  res.status(200).json(diagnostics);
+});
+
 
 function rcZoneLetter(geojsonZone) {
   if (!geojsonZone || geojsonZone === 'UNASSIGNED') return null;
