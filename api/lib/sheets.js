@@ -5,14 +5,18 @@ let sheetsClient = null;
 function getSheetsClient() {
   if (sheetsClient) return sheetsClient;
 
-  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  let privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  let email = (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '').trim();
+  let privateKey = (process.env.GOOGLE_PRIVATE_KEY || '').trim();
 
   if (!email || !privateKey) {
     throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_EMAIL or GOOGLE_PRIVATE_KEY env variables");
   }
 
-  // Handle newlines in Vercel private key
+  // Strip wrapping quotes if any
+  if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+    privateKey = privateKey.slice(1, -1);
+  }
+  // Handle escaped newlines in Vercel environment variables
   privateKey = privateKey.replace(/\\n/g, '\n');
 
   const auth = new google.auth.JWT(
@@ -76,8 +80,9 @@ async function ensureSheetExists(sheets, spreadsheetId, title, headers) {
 }
 
 async function getSheetRows(sheets, spreadsheetId, range) {
+  const cleanId = (spreadsheetId || '').trim();
   const response = await sheets.spreadsheets.values.get({
-    spreadsheetId,
+    spreadsheetId: cleanId,
     range
   });
   const rows = response.data.values;
@@ -97,9 +102,10 @@ async function getSheetRows(sheets, spreadsheetId, range) {
 
 async function appendSheetRow(sheets, spreadsheetId, range, rowValues) {
   try {
+    const cleanId = (spreadsheetId || '').trim();
     const client = sheets || getSheetsClient();
     return await client.spreadsheets.values.append({
-      spreadsheetId,
+      spreadsheetId: cleanId,
       range,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
@@ -124,18 +130,19 @@ async function appendSheetRow(sheets, spreadsheetId, range, rowValues) {
  * @returns {Promise<Object[]>}
  */
 async function getSheetRowsById(sheets, spreadsheetId, gid, a1Range = 'A1:ZZ5000') {
+  const cleanId = (spreadsheetId || '').trim();
   // ดึง metadata เพื่อหาชื่อแท็บจาก gid
-  const meta = await sheets.spreadsheets.get({ spreadsheetId });
+  const meta = await sheets.spreadsheets.get({ spreadsheetId: cleanId });
   const sheetsList = meta.data.sheets || [];
   const found = sheetsList.find(s => String(s.properties.sheetId) === String(gid));
 
   if (!found) {
-    throw new Error(`ไม่พบแท็บที่มี gid=${gid} ใน spreadsheet ${spreadsheetId}`);
+    throw new Error(`ไม่พบแท็บที่มี gid=${gid} ใน spreadsheet ${cleanId}`);
   }
 
   const title = found.properties.title;
   const fullRange = `${title}!${a1Range}`;
-  return getSheetRows(sheets, spreadsheetId, fullRange);
+  return getSheetRows(sheets, cleanId, fullRange);
 }
 
 module.exports = { getSheetsClient, ensureSheetExists, getSheetRows, getSheetRowsById, appendSheetRow };
