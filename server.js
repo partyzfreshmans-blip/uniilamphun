@@ -41,7 +41,10 @@ const ORDERS_DB      = path.join(__dirname, 'orders_data.json');   // TODO: repl
 const ROUTECODE_DB   = path.join(__dirname, 'local_routecodes.json'); // TODO: migrate to Sheets
 
 // Sheets config for _ASSIGN
-const SHEET_ID_ORDERS  = process.env.SHEET_ID_ORDERS;
+const SHEET_ID_ORDERS = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
+  ? process.env.SHEET_ID_ORDERS
+  : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
+const SHEET_ID_PRODUCTS = process.env.SHEET_ID_PRODUCTS || '1_qE1NtIfLfa2Vn0AXFxfGoD9daZB34OtLnv08Tc-o54';
 const ASSIGN_SHEET     = '_ASSIGN';
 const ASSIGN_HEADERS   = [
   'order_id','status','assigned_driver','completed_at',

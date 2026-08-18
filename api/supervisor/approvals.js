@@ -14,7 +14,9 @@ const { assignOrderToDriver } = require('../dispatch');
 
 const REQUESTS_FILE = path.join(__dirname, '../../local_crosszone_requests.json');
 const DRIVERS_FILE = path.join(__dirname, '../../local_drivers.json');
-const SHEET_ID_ORDERS = process.env.SHEET_ID_ORDERS || '18mBCg4XvPZXmh_O_m0T2OxL_wQvi_4bL1pvh9YVbM70';
+const SHEET_ID_ORDERS = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
+  ? process.env.SHEET_ID_ORDERS
+  : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
 
 function getLocalCrossZoneRequests() {
   try {

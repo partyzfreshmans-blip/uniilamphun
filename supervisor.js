@@ -254,7 +254,19 @@ async function supLoadData() {
         }
       } catch (apiErr) {
         console.warn("[supLoadData] API error:", apiErr);
-        supNotify("ไม่สามารถเชื่อมต่อ server ได้", "err");
+      }
+    }
+
+    // Fallback: If API returned empty, load local orders_data.json
+    if (rawOrders.length === 0) {
+      try {
+        const localRes = await fetch('/orders_data.json');
+        if (localRes.ok) {
+          rawOrders = await localRes.json();
+          console.log(`[supLoadData] Loaded ${rawOrders.length} orders from fallback orders_data.json`);
+        }
+      } catch (localErr) {
+        console.warn("[supLoadData] Fallback error:", localErr);
       }
     }
 

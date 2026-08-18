@@ -8,7 +8,10 @@
 
 const { getSheetsClient, getSheetRowsById, getSheetRows } = require('./sheets');
 
-const SHEET_ID_ORDERS = process.env.SHEET_ID_ORDERS;
+const SHEET_ID_ORDERS = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
+  ? process.env.SHEET_ID_ORDERS
+  : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
+const SHEET_ID_PRODUCTS = process.env.SHEET_ID_PRODUCTS || '1_qE1NtIfLfa2Vn0AXFxfGoD9daZB34OtLnv08Tc-o54';
 const GID_SKU_DETAIL = 772187603;
 
 let skuCache = null;

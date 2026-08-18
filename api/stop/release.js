@@ -46,7 +46,9 @@ module.exports = async (req, res) => {
 
     const driverProfile = getDriverProfile(decoded.username);
     const sheets = getSheetsClient();
-    const spreadsheetId = process.env.SHEET_ID_ORDERS;
+    const spreadsheetId = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
+      ? process.env.SHEET_ID_ORDERS
+      : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
 
     // Self-healing: ensure _ASSIGN sheet exists
     await ensureSheetExists(sheets, spreadsheetId, '_ASSIGN', [

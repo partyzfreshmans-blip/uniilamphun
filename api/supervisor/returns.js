@@ -13,7 +13,9 @@ const path = require('path');
 const { getSheetsClient, ensureSheetExists, getSheetRows, appendSheetRow } = require('../lib/sheets');
 
 const RETURNS_DB = path.join(__dirname, '../../local_returns.json');
-const SHEET_ID_ORDERS = process.env.SHEET_ID_ORDERS || '18mBCg4XvPZXmh_O_m0T2OxL_wQvi_4bL1pvh9YVbM70';
+const SHEET_ID_ORDERS = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
+  ? process.env.SHEET_ID_ORDERS
+  : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
 const RETURNS_SHEET = '_RETURNS';
 const RETURNS_HEADERS = [
   'order_no', 'driver_id', 'fail_reason', 'fail_at', 'photo_url',

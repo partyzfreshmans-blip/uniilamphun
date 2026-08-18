@@ -20,7 +20,9 @@ const { classifyOrderZone }                                 = require('../lib/zo
 const { normalizePhone, splitByDeliveryDate }               = require('../lib/orders');
 const { getDriverProfile }                                 = require('../lib/drivers');
 
-const SHEET_ID_ORDERS = process.env.SHEET_ID_ORDERS;
+const SHEET_ID_ORDERS = (process.env.SHEET_ID_ORDERS && process.env.SHEET_ID_ORDERS.length > 20 && !process.env.SHEET_ID_ORDERS.includes('BEWpjZ'))
+  ? process.env.SHEET_ID_ORDERS
+  : '1m1Cb_BEwPjqF3CgXNssGgjyewIgPNw_BU4EkduuV59U';
 const INACTIVE = new Set(['ยกเลิก','ส่งสำเร็จ','ได้รับแล้ว','cancelled','delivered','received']);
 const STORES_DB_PATH = path.join(__dirname, '../../local_stores.json');
 const OVERRIDES_DB_PATH = path.join(__dirname, '../../local_order_overrides.json');
@@ -256,9 +258,11 @@ const supervisorDayHandler = async (req, res) => {
       username: decoded.username
     });
 
+    const orders = (date === 'all' || !date) ? [...ordersWithDate, ...pendingSchedule] : ordersWithDate;
+
     res.status(200).json({
       success: true,
-      orders: ordersWithDate,
+      orders,
       pendingSchedule,
       summary: {
         total:           ordersWithDate.length,
